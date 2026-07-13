@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Competence & Business Services — Website
 
-## Getting Started
+Marketing + lead-generation platform for an international education and career consultancy.
+Built to match the approved purple/violet design mockup: photo-rich destination cards,
+hot-offer countdowns, AI-advisor teaser, and an application form with document uploads.
 
-First, run the development server:
+## Stack
+
+- **Next.js 16** (App Router, TypeScript, Tailwind v4) — static export (`output: "export"`)
+- **React Bits** components (`src/components/reactbits/`) — SplitText, Particles, SpotlightCard, GlareHover
+- **Cloudflare Pages** — hosting + Pages Functions (`functions/api/`)
+- **Cloudflare D1** — database `competence-db` (applications, documents, offers, leads)
+- **Cloudflare R2** — document uploads bucket `competence-documents` (**pending: enable R2 in the Cloudflare dashboard**, then uncomment the binding in `wrangler.toml`)
+
+## Local development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run build                                            # static export to out/
+npx wrangler d1 execute competence-db --local --file=./schema.sql   # once, seeds local D1
+npx wrangler pages dev --port 8788                       # serves out/ + API functions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For UI-only iteration `npm run dev` works too, but `/api/*` won't exist — the offers
+sections fall back to the bundled seed data in `src/lib/offers.ts`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npx wrangler pages deploy out
+```
 
-## Learn More
+## API (Pages Functions)
 
-To learn more about Next.js, take a look at the following resources:
+- `GET /api/offers` — active, unexpired hot-cake offers from D1
+- `POST /api/apply` — multipart form; inserts application, uploads documents to R2,
+  returns generated Application ID (`CBS-XXXXXX`)
+- `POST /api/lead` — JSON contact/lead capture
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Content to replace before launch
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- WhatsApp / Telegram / email placeholders in `src/lib/data/site.ts`
+- Tuition figures & program lists in `src/lib/data/destinations.ts` (boss to confirm)
+- Job openings in `src/app/jobs/page.tsx`
+- Testimonials in `src/lib/data/site.ts` (currently illustrative)
+- Unsplash photos → real company/destination photos when available
 
-## Deploy on Vercel
+## Managing hot-cake offers
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Offers live in the D1 `offers` table. Add a row and it appears on the site (ticker,
+Trending Now, destination banner) — no redeploy needed:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```sql
+INSERT INTO offers (slug, title, destination, tagline, badge, total_spots, spots_taken, expires_at, active)
+VALUES ('my-offer', 'Title', 'cyprus', 'One-liner', 'HOT', NULL, 0, '2026-10-01T00:00:00Z', 1);
+```
+
+Keep `src/lib/offers.ts` `fallbackOffers` roughly in sync — it's what renders if the API
+is unreachable.

@@ -4,6 +4,7 @@ export type Destination = {
   flag: string;
   tagline: string;
   heroGradient: string;
+  photo: string;
   accent: string;
   summary: string;
   capital: string;
@@ -21,6 +22,7 @@ export type Destination = {
   requirements: string[];
   documents: string[];
   faqs: { q: string; a: string }[];
+  specializations?: { name: string; photo: string }[];
 };
 
 export const destinations: Destination[] = [
@@ -30,6 +32,7 @@ export const destinations: Destination[] = [
     flag: "🇦🇱",
     tagline: "One-Year Culinary Program",
     heroGradient: "from-red-700 via-red-600 to-rose-500",
+    photo: "https://images.unsplash.com/photo-1601581875039-e899893d520c?w=1200&q=75&fm=jpg",
     accent: "#DC2626",
     summary:
       "Albania's one-year culinary program is our hottest offer: no age limit, morning-only classes so you have the whole afternoon to work, job support after graduation, and a clear pathway to bring your family once you secure employment.",
@@ -74,6 +77,12 @@ export const destinations: Destination[] = [
       { q: "Can my family join me?", a: "Family reunification is possible once you secure employment after your studies — not during the study period." },
       { q: "How long is the program?", a: "Just one year, after which you receive an internationally recognized certificate and job placement support." },
     ],
+    specializations: [
+      { name: "Culinary Arts", photo: "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=700&q=75&fm=jpg" },
+      { name: "Pastry & Baking", photo: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=700&q=75&fm=jpg" },
+      { name: "International Cuisine", photo: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=700&q=75&fm=jpg" },
+      { name: "Food & Beverage Mgmt", photo: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=75&fm=jpg" },
+    ],
   },
   {
     slug: "cyprus",
@@ -81,6 +90,7 @@ export const destinations: Destination[] = [
     flag: "🇨🇾",
     tagline: "Straightforward Visa, EU-Standard Education",
     heroGradient: "from-sky-700 via-sky-600 to-cyan-500",
+    photo: "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1200&q=75&fm=jpg",
     accent: "#0284C7",
     summary:
       "Cyprus combines a genuinely straightforward student visa process with EU-standard education, English-taught programs, and the right to work while you study — one of the most reliable routes for African students.",
@@ -131,6 +141,7 @@ export const destinations: Destination[] = [
     flag: "🇲🇾",
     tagline: "Affordable, English-Taught, Post-Study Options",
     heroGradient: "from-indigo-700 via-blue-600 to-sky-500",
+    photo: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1200&q=75&fm=jpg",
     accent: "#4F46E5",
     summary:
       "Malaysia offers globally ranked universities at a fraction of Western costs, fully English-taught programs, a large international student community, and post-study work options.",
@@ -180,6 +191,7 @@ export const destinations: Destination[] = [
     flag: "🇰🇭",
     tagline: "Fast Admissions, Emerging Opportunity",
     heroGradient: "from-violet-700 via-purple-600 to-fuchsia-500",
+    photo: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=1200&q=75&fm=jpg",
     accent: "#7C3AED",
     summary:
       "Cambodia is an emerging destination with fast admissions, low costs, English-taught programs and a growing economy full of opportunity in hospitality and business.",
@@ -223,6 +235,7 @@ export const destinations: Destination[] = [
     flag: "🇩🇿",
     tagline: "Quality Education Close to Home",
     heroGradient: "from-emerald-700 via-green-600 to-teal-500",
+    photo: "https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=1200&q=75&fm=jpg",
     accent: "#059669",
     summary:
       "Algeria offers affordable, quality education within Africa — shorter travel, lower costs, and straightforward admission for students seeking French- and Arabic-language programs plus growing English options.",
@@ -264,6 +277,7 @@ export const destinations: Destination[] = [
     flag: "🇲🇻",
     tagline: "Study Hospitality in Paradise",
     heroGradient: "from-cyan-600 via-teal-500 to-emerald-400",
+    photo: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=1200&q=75&fm=jpg",
     accent: "#0D9488",
     summary:
       "The Maldives is the world's most famous tourism economy — study hospitality and tourism where the industry actually happens, with strong internship and job pathways in world-class resorts.",

@@ -3,7 +3,11 @@ export const site = {
   shortName: "Competence",
   tagline: "Your Journey. Our Expertise.",
   description:
-    "We connect ambitious students and professionals to world-class education and global opportunities — with honest, end-to-end support from application to arrival.",
+    "We connect ambitious students and professionals to world-class education and global opportunities with end-to-end support you can trust.",
+  mission:
+    "To connect ambitious individuals with trusted international education and career opportunities while making the admission, application, and relocation process simple, transparent, and accessible.",
+  vision:
+    "To become one of Africa's most trusted global mobility consultancies, empowering thousands of students and professionals to study, work, and build successful careers around the world.",
   // TODO: replace with the real company contacts once the domain email + WhatsApp line exist
   whatsapp: "https://wa.me/2340000000000",
   telegram: "https://t.me/competencebot",
@@ -12,21 +16,30 @@ export const site = {
 };
 
 export const stats = [
-  { value: 6, suffix: "+", label: "Destinations" },
-  { value: 98, suffix: "%", label: "Visa Success Rate" },
-  { value: 2500, suffix: "+", label: "Students Guided" },
-  { value: 50, suffix: "+", label: "Partner Institutions" },
+  { icon: "🌍", value: 6, suffix: "+", label: "Destinations" },
+  { icon: "🛂", value: 98, suffix: "%", label: "Visa Success Rate" },
+  { icon: "🎓", value: 2500, suffix: "+", label: "Students Placed" },
+  { icon: "🏛️", value: 50, suffix: "+", label: "Partner Universities" },
+  { icon: "🕑", value: 24, suffix: "/7", label: "Student Support" },
+];
+
+export const features = [
+  { icon: "🧭", title: "Free Assessment", desc: "Get expert guidance for free" },
+  { icon: "⚡", title: "Fast Processing", desc: "Quick admissions & visa support" },
+  { icon: "🔒", title: "Secure & Reliable", desc: "Your documents are safe with us" },
+  { icon: "🤝", title: "End-to-End Support", desc: "From application to arrival and beyond" },
 ];
 
 export const services = [
-  { icon: "🎓", title: "Admission Processing", desc: "We secure your admission letter from trusted partner institutions.", free: true },
-  { icon: "🛂", title: "Visa Assistance", desc: "End-to-end guidance through every step of the visa process.", free: false },
-  { icon: "📄", title: "Document Review", desc: "We check your documents before submission so nothing gets rejected.", free: true },
-  { icon: "🧭", title: "Career Counseling", desc: "Honest advice on which destination and program fits your goals.", free: true },
-  { icon: "🏫", title: "University Placement", desc: "Matched to institutions where your profile is strongest.", free: false },
-  { icon: "💰", title: "Scholarship Guidance", desc: "We flag every waiver and scholarship you qualify for.", free: true },
-  { icon: "🗣️", title: "Interview Preparation", desc: "Mock interviews and coaching for admission and visa interviews.", free: false },
-  { icon: "🛬", title: "Post-Arrival Support", desc: "Accommodation, orientation and settling-in help after you land.", free: false },
+  { icon: "🎓", title: "University Admissions", desc: "International admissions with trusted partner institutions where your profile is strongest.", free: false },
+  { icon: "👨‍🍳", title: "Vocational & Culinary Placements", desc: "Short, practical programs — like Albania's one-year culinary track — that get you working fast.", free: false },
+  { icon: "💼", title: "Overseas Job Opportunities", desc: "Verified job offers with genuine employers, backed by a reasonable money-back guarantee.", free: false },
+  { icon: "🛂", title: "Visa Guidance & Application", desc: "End-to-end support through every step of the visa process for your destination.", free: false },
+  { icon: "📄", title: "Document Review & Verification", desc: "We check everything before submission so nothing gets rejected on a technicality.", free: true },
+  { icon: "🧭", title: "Education & Career Counseling", desc: "Personalized, honest advice on which destination and program fits your goals and budget.", free: true },
+  { icon: "📨", title: "Application Processing", desc: "We handle the paperwork and follow-ups with institutions on your behalf.", free: false },
+  { icon: "🛫", title: "Pre-Departure Orientation", desc: "Travel, accommodation and settling-in briefing before you fly.", free: true },
+  { icon: "🌟", title: "Ongoing Applicant Support", desc: "We stay with you after arrival — you're never on your own abroad.", free: true },
 ];
 
 export const journey = [
@@ -52,8 +65,12 @@ export const faqs = [
   { q: "What documents do I need?", a: "At minimum: an international passport, your secondary school certificate, transcripts, and passport photographs. Some programs also want a CV. Our form lets you upload everything in one place." },
   { q: "Can I travel with my family?", a: "Generally not during studies. In Albania, family reunification becomes possible once you secure employment after your program. We'll advise you honestly per destination." },
   { q: "Do I need IELTS?", a: "Not always. Several partner institutions accept alternative proof of English or internal tests. Tell us your situation and we'll match you to programs that fit." },
-  { q: "How much are your service charges?", a: "We're transparent: assessment, counseling, document review and scholarship guidance are free. Visa processing support and some placement services are paid — you'll see exact fees before committing to anything." },
+  { q: "How much are your service charges?", a: "We're transparent: assessment, counseling, document review and pre-departure orientation are free. Premium application and visa processing services carry professional fees — you'll see exact figures in writing before committing to anything." },
   { q: "What happens after I submit my application?", a: "You instantly receive an Application ID. A counselor contacts you within 24–48 hours on WhatsApp or email to review your profile and plan next steps." },
 ];
 
-export const generateApplicationIdHint = "CBS-######";
+export const heroPhotos = {
+  graduate: "https://images.unsplash.com/photo-1627556704290-2b1f5853ff78?w=600&q=75&fm=jpg",
+  student: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&q=75&fm=jpg",
+  city: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=600&q=75&fm=jpg",
+};

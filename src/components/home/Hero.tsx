@@ -3,7 +3,7 @@
 import Link from "next/link";
 import SplitText from "@/components/reactbits/SplitText";
 import Particles from "@/components/reactbits/Particles";
-import { site } from "@/lib/data/site";
+import { site, heroPhotos } from "@/lib/data/site";
 
 const pins = [
   { flag: "🇨🇾", label: "Cyprus", x: "56%", y: "18%", cls: "animate-float" },
@@ -41,6 +41,8 @@ export default function Hero() {
           <h1 className="mt-6 text-4xl font-extrabold leading-[1.08] sm:text-5xl lg:text-[3.6rem]">
             <SplitText
               text="Your Journey."
+              tag="span"
+              textAlign="left"
               className="block"
               delay={40}
               duration={0.7}
@@ -49,17 +51,10 @@ export default function Hero() {
               from={{ opacity: 0, y: 46 }}
               to={{ opacity: 1, y: 0 }}
             />
-            <span className="block bg-gradient-to-r from-brand-600 via-brand-500 to-fuchsia-500 bg-clip-text text-transparent">
-              <SplitText
-                text="Our Expertise."
-                className="block"
-                delay={40}
-                duration={0.7}
-                ease="power3.out"
-                splitType="chars"
-                from={{ opacity: 0, y: 46 }}
-                to={{ opacity: 1, y: 0 }}
-              />
+            <span
+              className="block animate-[heroRise_0.9s_cubic-bezier(0.22,1,0.36,1)_0.5s_both] bg-gradient-to-r from-brand-600 via-brand-500 to-fuchsia-500 bg-clip-text text-transparent"
+            >
+              Our Expertise.
             </span>
           </h1>
 
@@ -141,6 +136,19 @@ export default function Hero() {
 
           <span className="absolute bottom-[12%] left-[6%] flex items-center gap-1.5 rounded-full bg-hot px-3 py-1.5 text-xs font-bold text-white shadow-lg shadow-hot/30 animate-float">
             🛫 Lagos
+          </span>
+
+          {/* floating photo cards, mockup-style */}
+          <div className="absolute right-[2%] top-[30%] w-28 animate-float-slow overflow-hidden rounded-2xl border-4 border-white shadow-2xl shadow-brand-600/25 sm:w-32">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={heroPhotos.graduate} alt="Graduate abroad" className="aspect-[3/4] w-full object-cover" loading="eager" />
+          </div>
+          <div className="absolute bottom-[4%] right-[22%] w-32 animate-float overflow-hidden rounded-2xl border-4 border-white shadow-2xl shadow-brand-600/25 sm:w-36">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={heroPhotos.city} alt="Destination city" className="aspect-[4/3] w-full object-cover" loading="eager" />
+          </div>
+          <span className="absolute left-[38%] top-[6%] animate-float-slow text-4xl drop-shadow-lg" aria-hidden>
+            ✈️
           </span>
         </div>
       </div>
