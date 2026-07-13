@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { site } from "@/lib/data/site";
 import { destinations } from "@/lib/data/destinations";
+import Flag from "@/components/Flag";
+import { MessageCircle, Send } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -27,8 +29,8 @@ export default function Footer() {
           <ul className="mt-4 space-y-2.5 text-sm">
             {destinations.map((d) => (
               <li key={d.slug}>
-                <Link href={`/destinations/${d.slug}/`} className="text-brand-200/80 transition-colors hover:text-white">
-                  {d.flag} {d.name}
+                <Link href={`/destinations/${d.slug}/`} className="inline-flex items-center gap-2 text-brand-200/80 transition-colors hover:text-white">
+                  <Flag code={d.code} color={d.accent} /> {d.name}
                 </Link>
               </li>
             ))}
@@ -60,12 +62,12 @@ export default function Footer() {
           <ul className="mt-4 space-y-3 text-sm">
             <li>
               <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-green-500/15 px-4 py-2 font-semibold text-green-300 transition-colors hover:bg-green-500/25">
-                💬 WhatsApp an Advisor
+                <MessageCircle className="h-4 w-4" aria-hidden="true" /> WhatsApp an Advisor
               </a>
             </li>
             <li>
               <a href={site.telegram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full bg-sky-500/15 px-4 py-2 font-semibold text-sky-300 transition-colors hover:bg-sky-500/25">
-                ✈️ Telegram Assistant
+                <Send className="h-4 w-4" aria-hidden="true" /> Telegram Assistant
               </a>
             </li>
             <li className="pt-1 text-brand-200/80">{site.address}</li>

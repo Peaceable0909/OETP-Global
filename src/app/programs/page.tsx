@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { destinations } from "@/lib/data/destinations";
 import Reveal from "@/components/Reveal";
+import Flag from "@/components/Flag";
 import SectionHeading from "@/components/SectionHeading";
 import CTABand from "@/components/CTABand";
 
@@ -19,7 +20,7 @@ export default function ProgramsPage() {
     <>
       <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
         <SectionHeading
-          eyebrow="📚 Programs"
+          eyebrow="Programs"
           title="Find the Program That Fits You"
           sub="Every program below is offered through a verified partner institution, with admission and visa processes we know inside-out."
         />
@@ -35,8 +36,8 @@ export default function ProgramsPage() {
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-extrabold text-ink shadow">
-                    {r.dest.flag} {r.dest.name}
+                  <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-extrabold text-ink shadow">
+                    <Flag code={r.dest.code} color={r.dest.accent} /> {r.dest.name}
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col p-6">

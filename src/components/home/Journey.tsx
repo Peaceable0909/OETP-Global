@@ -11,7 +11,7 @@ export default function Journey() {
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeading
           light
-          eyebrow="✈️ How It Works"
+          eyebrow="How It Works"
           title="From Application to Arrival"
           sub="Five clear steps. You always know where you stand, what's free, and what's paid — before you commit to anything."
         />

@@ -6,6 +6,9 @@ import Reveal from "@/components/Reveal";
 import FaqAccordion from "@/components/FaqAccordion";
 import CTABand from "@/components/CTABand";
 import WaiverBanner from "@/components/WaiverBanner";
+import Flag from "@/components/Flag";
+import { Icon, type IconName } from "@/lib/icons";
+import { Briefcase, FileText } from "lucide-react";
 
 export function generateStaticParams() {
   return destinations.map((d) => ({ slug: d.slug }));
@@ -32,20 +35,20 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
   const d = getDestination(slug);
   if (!d) notFound();
 
-  const glance = [
-    { icon: "📍", label: "Capital", value: d.capital },
-    { icon: "🗣️", label: "Language", value: d.language },
-    { icon: "💶", label: "Currency", value: d.currency },
-    { icon: "🗓️", label: "Intake Months", value: d.intakeMonths },
-    { icon: "🛂", label: "Visa Processing", value: d.visaProcessing },
-    { icon: "⏳", label: "Program Duration", value: d.programLength },
+  const glance: { icon: IconName; label: string; value: string }[] = [
+    { icon: "map-pin", label: "Capital", value: d.capital },
+    { icon: "languages", label: "Language", value: d.language },
+    { icon: "coins", label: "Currency", value: d.currency },
+    { icon: "calendar-days", label: "Intake Months", value: d.intakeMonths },
+    { icon: "stamp", label: "Visa Processing", value: d.visaProcessing },
+    { icon: "hourglass", label: "Program Duration", value: d.programLength },
   ];
 
-  const feeCards = [
-    { icon: "🎓", value: d.tuitionFrom, label: "Tuition from / year" },
-    { icon: "🛂", value: d.visaProcessing, label: "Visa processing" },
-    { icon: "💼", value: d.workRights.split("—")[0].trim(), label: "Work while studying" },
-    { icon: "🗓️", value: d.intakeMonths, label: "Intake months" },
+  const feeCards: { icon: IconName; value: string; label: string }[] = [
+    { icon: "graduation-cap", value: d.tuitionFrom, label: "Tuition from / year" },
+    { icon: "stamp", value: d.visaProcessing, label: "Visa processing" },
+    { icon: "briefcase", value: d.workRights.split("—")[0].trim(), label: "Work while studying" },
+    { icon: "calendar-days", value: d.intakeMonths, label: "Intake months" },
   ];
 
   return (
@@ -63,8 +66,9 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
             <span className="text-white">{d.name}</span>
           </nav>
           <p className="mt-8 font-display text-lg font-semibold italic text-white/85">Study in</p>
-          <h1 className="text-5xl font-extrabold sm:text-6xl lg:text-7xl">
-            {d.name} <span className="align-middle text-4xl sm:text-5xl">{d.flag}</span>
+          <h1 className="flex flex-wrap items-center gap-4 text-5xl font-extrabold sm:text-6xl lg:text-7xl">
+            {d.name}
+            <Flag code={d.code} color={d.accent} className="h-9 min-w-[3.4rem] rounded-xl px-2 text-lg sm:h-11 sm:min-w-[4rem] sm:text-xl" />
           </h1>
           <p className="mt-3 font-display text-xl font-bold text-white/95 sm:text-2xl">{d.tagline}</p>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/85 sm:text-base">{d.summary}</p>
@@ -127,7 +131,9 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
               <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {feeCards.map((f) => (
                   <div key={f.label} className="rounded-2xl border border-brand-100 bg-white p-5 text-center shadow-sm">
-                    <span className="text-2xl" aria-hidden>{f.icon}</span>
+                    <span className="mx-auto grid h-10 w-10 place-items-center rounded-xl bg-brand-100 text-brand-700" aria-hidden>
+                      <Icon name={f.icon} className="h-5 w-5" />
+                    </span>
                     <p className="mt-2 font-display text-sm font-extrabold leading-tight">{f.value}</p>
                     <p className="mt-1 text-[11px] font-semibold text-ink-soft">{f.label}</p>
                   </div>
@@ -211,7 +217,9 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
                 <h2 className="font-display text-lg font-bold">Documents You&apos;ll Upload</h2>
                 <ul className="mt-4 space-y-2.5 text-sm text-ink-soft">
                   {d.documents.map((r) => (
-                    <li key={r} className="flex gap-2"><span className="text-brand-600">📄</span> {r}</li>
+                    <li key={r} className="flex gap-2">
+                      <FileText className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" aria-hidden="true" /> {r}
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -237,16 +245,16 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
               <dl className="mt-5 space-y-3.5">
                 {glance.map((g) => (
                   <div key={g.label} className="flex items-baseline justify-between gap-4 border-b border-brand-50 pb-3 text-sm">
-                    <dt className="font-semibold text-ink-soft">
-                      <span className="mr-1.5" aria-hidden>{g.icon}</span>
+                    <dt className="inline-flex items-center gap-1.5 font-semibold text-ink-soft">
+                      <Icon name={g.icon} className="h-4 w-4 text-brand-600" />
                       {g.label}
                     </dt>
                     <dd className="text-right font-bold">{g.value}</dd>
                   </div>
                 ))}
               </dl>
-              <p className="mt-4 rounded-xl bg-emerald-50 px-4 py-3 text-xs font-semibold leading-relaxed text-emerald-800">
-                💼 {d.workRights}
+              <p className="mt-4 flex items-start gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-xs font-semibold leading-relaxed text-emerald-800">
+                <Briefcase className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" /> {d.workRights}
               </p>
               <Link
                 href={`/apply/?destination=${d.slug}`}

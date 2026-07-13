@@ -7,6 +7,8 @@ import { getDestination } from "@/lib/data/destinations";
 import { useCountdown } from "@/lib/useCountdown";
 import Reveal from "@/components/Reveal";
 import GlareHover from "@/components/reactbits/GlareHover";
+import Flag from "@/components/Flag";
+import { Flame } from "lucide-react";
 
 function CountdownDigits({ expiresAt }: { expiresAt: string | null }) {
   const cd = useCountdown(expiresAt);
@@ -73,8 +75,8 @@ function OfferCard({ offer, index }: { offer: Offer; index: number }) {
                 {offer.badge}
               </span>
             )}
-            <span className="absolute bottom-3 left-4 font-display text-sm font-extrabold uppercase tracking-widest text-white drop-shadow">
-              {dest?.flag} {dest?.name}
+            <span className="absolute bottom-3 left-4 inline-flex items-center gap-1.5 font-display text-sm font-extrabold uppercase tracking-widest text-white drop-shadow">
+              {dest && <Flag code={dest.code} color={dest.accent} />} {dest?.name}
             </span>
           </div>
 
@@ -91,8 +93,9 @@ function OfferCard({ offer, index }: { offer: Offer; index: number }) {
             </ul>
 
             {limited && (
-              <p className="rounded-lg bg-orange-50 px-3 py-1.5 text-xs font-extrabold text-hot-deep">
-                🔥 Application fee waived — {spotsLeft} of {offer.total_spots} spots left
+              <p className="inline-flex items-center gap-1.5 rounded-lg bg-orange-50 px-3 py-1.5 text-xs font-extrabold text-hot-deep">
+                <Flame className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                Fee waived — {spotsLeft} of {offer.total_spots} spots left
               </p>
             )}
 
@@ -138,7 +141,7 @@ export default function HotCakes() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-hot-deep">
-              🔥 Hot Opportunities
+              <Flame className="h-4 w-4" aria-hidden="true" /> Hot Opportunities
             </span>
             <h2 className="mt-2 text-3xl font-bold sm:text-4xl lg:text-[2.75rem]">Trending Now</h2>
             <p className="mt-2 text-ink-soft">Limited seats. Exclusive offers. Don&apos;t miss out.</p>

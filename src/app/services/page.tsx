@@ -3,6 +3,8 @@ import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import CTABand from "@/components/CTABand";
 import { services } from "@/lib/data/site";
+import { Icon, type IconName } from "@/lib/icons";
+import { CreditCard } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Our Services",
@@ -14,7 +16,7 @@ export default function ServicesPage() {
     <>
       <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
         <SectionHeading
-          eyebrow="🛠️ What We Do"
+          eyebrow="What We Do"
           title="End-to-End Support, Honestly Priced"
           sub="Everything you need from first question to first day abroad. Green means free, always. Paid services show exact fees before you commit — no surprises, ever."
         />
@@ -22,7 +24,9 @@ export default function ServicesPage() {
           {services.map((s, i) => (
             <Reveal key={s.title} delay={i * 70} className="h-full">
               <div className="flex h-full flex-col rounded-3xl border border-brand-100 bg-white p-6 shadow-lg shadow-brand-600/8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-brand-600/15">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-100 text-2xl">{s.icon}</span>
+                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-100 text-brand-700">
+                  <Icon name={s.icon as IconName} className="h-6 w-6" />
+                </span>
                 <h2 className="mt-4 font-display font-bold">{s.title}</h2>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{s.desc}</p>
                 <span
@@ -30,7 +34,13 @@ export default function ServicesPage() {
                     s.free ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"
                   }`}
                 >
-                  {s.free ? "✓ Free" : "💳 Paid — quoted upfront"}
+                  {s.free ? (
+                    "✓ Free"
+                  ) : (
+                    <>
+                      <CreditCard className="h-3.5 w-3.5" aria-hidden="true" /> Paid — quoted upfront
+                    </>
+                  )}
                 </span>
               </div>
             </Reveal>

@@ -1,7 +1,7 @@
 export type Destination = {
   slug: string;
   name: string;
-  flag: string;
+  code: string;
   tagline: string;
   heroGradient: string;
   photo: string;
@@ -28,8 +28,8 @@ export type Destination = {
 export const destinations: Destination[] = [
   {
     slug: "albania",
+    code: "AL",
     name: "Albania",
-    flag: "🇦🇱",
     tagline: "One-Year Culinary Program",
     heroGradient: "from-red-700 via-red-600 to-rose-500",
     photo: "https://images.unsplash.com/photo-1601581875039-e899893d520c?w=1200&q=75&fm=jpg",
@@ -86,8 +86,8 @@ export const destinations: Destination[] = [
   },
   {
     slug: "cyprus",
+    code: "CY",
     name: "Cyprus",
-    flag: "🇨🇾",
     tagline: "Straightforward Visa, EU-Standard Education",
     heroGradient: "from-sky-700 via-sky-600 to-cyan-500",
     photo: "https://images.unsplash.com/photo-1533105079780-92b9be482077?w=1200&q=75&fm=jpg",
@@ -137,8 +137,8 @@ export const destinations: Destination[] = [
   },
   {
     slug: "malaysia",
+    code: "MY",
     name: "Malaysia",
-    flag: "🇲🇾",
     tagline: "Affordable, English-Taught, Post-Study Options",
     heroGradient: "from-indigo-700 via-blue-600 to-sky-500",
     photo: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1200&q=75&fm=jpg",
@@ -187,8 +187,8 @@ export const destinations: Destination[] = [
   },
   {
     slug: "cambodia",
+    code: "KH",
     name: "Cambodia",
-    flag: "🇰🇭",
     tagline: "Fast Admissions, Emerging Opportunity",
     heroGradient: "from-violet-700 via-purple-600 to-fuchsia-500",
     photo: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=1200&q=75&fm=jpg",
@@ -231,8 +231,8 @@ export const destinations: Destination[] = [
   },
   {
     slug: "algeria",
+    code: "DZ",
     name: "Algeria",
-    flag: "🇩🇿",
     tagline: "Quality Education Close to Home",
     heroGradient: "from-emerald-700 via-green-600 to-teal-500",
     photo: "https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=1200&q=75&fm=jpg",
@@ -273,8 +273,8 @@ export const destinations: Destination[] = [
   },
   {
     slug: "maldives",
+    code: "MV",
     name: "Maldives",
-    flag: "🇲🇻",
     tagline: "Study Hospitality in Paradise",
     heroGradient: "from-cyan-600 via-teal-500 to-emerald-400",
     photo: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=1200&q=75&fm=jpg",

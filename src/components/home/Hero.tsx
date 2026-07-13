@@ -4,12 +4,14 @@ import Link from "next/link";
 import SplitText from "@/components/reactbits/SplitText";
 import Particles from "@/components/reactbits/Particles";
 import { site, heroPhotos } from "@/lib/data/site";
+import Flag from "@/components/Flag";
+import { MessageCircle, Plane, PlaneTakeoff } from "lucide-react";
 
 const pins = [
-  { flag: "🇨🇾", label: "Cyprus", x: "56%", y: "18%", cls: "animate-float" },
-  { flag: "🇦🇱", label: "Albania", x: "78%", y: "42%", cls: "animate-float-slow" },
-  { flag: "🇲🇾", label: "Malaysia", x: "64%", y: "72%", cls: "animate-float" },
-  { flag: "🇰🇭", label: "Cambodia", x: "30%", y: "80%", cls: "animate-float-slow" },
+  { code: "CY", color: "#0284C7", label: "Cyprus", x: "56%", y: "18%", cls: "animate-float" },
+  { code: "AL", color: "#DC2626", label: "Albania", x: "78%", y: "42%", cls: "animate-float-slow" },
+  { code: "MY", color: "#4F46E5", label: "Malaysia", x: "64%", y: "72%", cls: "animate-float" },
+  { code: "KH", color: "#7C3AED", label: "Cambodia", x: "30%", y: "80%", cls: "animate-float-slow" },
 ];
 
 export default function Hero() {
@@ -76,9 +78,9 @@ export default function Hero() {
               href={site.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border-2 border-brand-200 bg-white/80 px-7 py-3.5 font-bold text-brand-800 transition-all duration-300 hover:-translate-y-1 hover:border-brand-400 hover:bg-brand-50"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-brand-200 bg-white/80 px-7 py-3.5 font-bold text-brand-800 transition-all duration-300 hover:-translate-y-1 hover:border-brand-400 hover:bg-brand-50"
             >
-              💬 Talk to an Advisor
+              <MessageCircle className="h-5 w-5" aria-hidden="true" /> Talk to an Advisor
             </a>
           </div>
 
@@ -132,12 +134,12 @@ export default function Hero() {
               className={`absolute z-10 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-brand-200 bg-white/95 px-3 py-1.5 text-xs font-bold text-ink shadow-lg shadow-brand-600/10 ${p.cls}`}
               style={{ left: p.x, top: p.y }}
             >
-              <span className="text-base leading-none">{p.flag}</span> {p.label}
+              <Flag code={p.code} color={p.color} /> {p.label}
             </span>
           ))}
 
           <span className="absolute bottom-[12%] left-[6%] flex items-center gap-1.5 rounded-full bg-hot px-3 py-1.5 text-xs font-bold text-white shadow-lg shadow-hot/30 animate-float">
-            🛫 Lagos
+            <PlaneTakeoff className="h-3.5 w-3.5" aria-hidden="true" /> Lagos
           </span>
 
           {/* floating photo cards, mockup-style */}
@@ -149,8 +151,8 @@ export default function Hero() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={heroPhotos.city} alt="Destination city" className="aspect-[4/3] w-full object-cover" loading="eager" />
           </div>
-          <span className="absolute left-[38%] top-[6%] animate-float-slow text-4xl drop-shadow-lg" aria-hidden>
-            ✈️
+          <span className="absolute left-[38%] top-[6%] animate-float-slow drop-shadow-lg" aria-hidden>
+            <Plane className="h-10 w-10 rotate-[-20deg] fill-brand-600 text-brand-600" />
           </span>
         </div>
       </div>

@@ -7,7 +7,7 @@ export default function Testimonials() {
     <section className="overflow-hidden bg-gradient-to-b from-white to-brand-50/70 py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeading
-          eyebrow="💜 Success Stories"
+          eyebrow="Success Stories"
           title="They Took the Leap. So Can You."
           sub="Real students, real visas, real new lives."
         />

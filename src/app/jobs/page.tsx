@@ -3,6 +3,8 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import { site } from "@/lib/data/site";
+import Flag from "@/components/Flag";
+import { MessageCircle, Stamp } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Job Opportunities",
@@ -11,16 +13,16 @@ export const metadata: Metadata = {
 
 // Placeholder roles until the company provides its confirmed offer list
 const roles = [
-  { title: "Culinary Staff", country: "Albania 🇦🇱", type: "Full-time", note: "For culinary program graduates — placement support included", visa: "Work permit after study" },
-  { title: "Hospitality & Resort Staff", country: "Maldives 🇲🇻", type: "Contract", note: "Resort positions with accommodation included", visa: "Employer-sponsored" },
-  { title: "Service & Retail Roles", country: "Cyprus 🇨🇾", type: "Part-time", note: "Student-friendly roles compatible with study schedules", visa: "Student work rights" },
+  { title: "Culinary Staff", country: "Albania", code: "AL", accent: "#DC2626", type: "Full-time", note: "For culinary program graduates — placement support included", visa: "Work permit after study" },
+  { title: "Hospitality & Resort Staff", country: "Maldives", code: "MV", accent: "#0D9488", type: "Contract", note: "Resort positions with accommodation included", visa: "Employer-sponsored" },
+  { title: "Service & Retail Roles", country: "Cyprus", code: "CY", accent: "#0284C7", type: "Part-time", note: "Student-friendly roles compatible with study schedules", visa: "Student work rights" },
 ];
 
 export default function JobsPage() {
   return (
     <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
       <SectionHeading
-        eyebrow="💼 Work Abroad"
+        eyebrow="Work Abroad"
         title="Genuine Job Offers. Guaranteed."
         sub="We only list confirmed, verified offers — backed by a reasonable money-back guarantee. New positions are added as they're confirmed."
       />
@@ -33,9 +35,13 @@ export default function JobsPage() {
                 {r.type}
               </span>
               <h2 className="mt-4 font-display text-xl font-bold">{r.title}</h2>
-              <p className="mt-1 font-semibold text-brand-700">{r.country}</p>
+              <p className="mt-1 inline-flex items-center gap-1.5 font-semibold text-brand-700">
+                <Flag code={r.code} color={r.accent} /> {r.country}
+              </p>
               <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-soft">{r.note}</p>
-              <p className="mt-3 text-xs font-bold text-ink-soft">🛂 {r.visa}</p>
+              <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-ink-soft">
+                <Stamp className="h-3.5 w-3.5" aria-hidden="true" /> {r.visa}
+              </p>
               <Link
                 href="/apply/"
                 className="mt-5 rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-5 py-3 text-center text-sm font-bold text-white shadow-lg shadow-brand-600/25 transition-transform hover:scale-[1.02]"
@@ -58,9 +64,9 @@ export default function JobsPage() {
             href={site.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-5 inline-block rounded-full bg-white px-7 py-3 font-bold text-brand-800 shadow-lg transition-transform hover:-translate-y-0.5"
+            className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3 font-bold text-brand-800 shadow-lg transition-transform hover:-translate-y-0.5"
           >
-            💬 Send Your Details
+            <MessageCircle className="h-4 w-4" aria-hidden="true" /> Send Your Details
           </a>
         </div>
       </Reveal>

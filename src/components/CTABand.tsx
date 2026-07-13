@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import { site } from "@/lib/data/site";
+import { MessageCircle } from "lucide-react";
 
 export default function CTABand() {
   return (
@@ -25,9 +26,9 @@ export default function CTABand() {
             href={site.whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-full border-2 border-white/25 px-8 py-4 font-bold transition-colors hover:bg-white/10"
+            className="inline-flex items-center gap-2 rounded-full border-2 border-white/25 px-8 py-4 font-bold transition-colors hover:bg-white/10"
           >
-            💬 Ask a Question First
+            <MessageCircle className="h-5 w-5" aria-hidden="true" /> Ask a Question First
           </a>
         </div>
       </Reveal>

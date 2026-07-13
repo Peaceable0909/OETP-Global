@@ -3,13 +3,14 @@ import { destinations } from "@/lib/data/destinations";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
+import Flag from "@/components/Flag";
 
 export default function DestinationsGrid() {
   return (
     <section className="relative bg-gradient-to-b from-white via-brand-50/60 to-white py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeading
-          eyebrow="🌍 Destinations"
+          eyebrow="Destinations"
           title="Where Will Your Story Begin?"
           sub="Six destinations with straightforward admissions and visa processes — each one vetted, each one with real support on the ground."
         />
@@ -33,8 +34,8 @@ export default function DestinationsGrid() {
                     <div className={`absolute inset-0 bg-gradient-to-t ${d.heroGradient} opacity-30`} />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
                     <div className="relative text-white">
-                      <h3 className="font-display text-2xl font-extrabold drop-shadow-sm">
-                        {d.flag} {d.name}
+                      <h3 className="flex items-center gap-2 font-display text-2xl font-extrabold drop-shadow-sm">
+                        <Flag code={d.code} color={d.accent} className="h-6 min-w-[2.2rem] rounded-lg px-1 text-[11px]" /> {d.name}
                       </h3>
                       <p className="text-sm font-semibold text-white/90">{d.tagline}</p>
                     </div>

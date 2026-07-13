@@ -16,30 +16,30 @@ export const site = {
 };
 
 export const stats = [
-  { icon: "🌍", value: 6, suffix: "+", label: "Destinations" },
-  { icon: "🛂", value: 98, suffix: "%", label: "Visa Success Rate" },
-  { icon: "🎓", value: 2500, suffix: "+", label: "Students Placed" },
-  { icon: "🏛️", value: 50, suffix: "+", label: "Partner Universities" },
-  { icon: "🕑", value: 24, suffix: "/7", label: "Student Support" },
+  { icon: "globe", value: 6, suffix: "+", label: "Destinations" },
+  { icon: "stamp", value: 98, suffix: "%", label: "Visa Success Rate" },
+  { icon: "graduation-cap", value: 2500, suffix: "+", label: "Students Placed" },
+  { icon: "landmark", value: 50, suffix: "+", label: "Partner Universities" },
+  { icon: "clock", value: 24, suffix: "/7", label: "Student Support" },
 ];
 
 export const features = [
-  { icon: "🧭", title: "Free Assessment", desc: "Get expert guidance for free" },
-  { icon: "⚡", title: "Fast Processing", desc: "Quick admissions & visa support" },
-  { icon: "🔒", title: "Secure & Reliable", desc: "Your documents are safe with us" },
-  { icon: "🤝", title: "End-to-End Support", desc: "From application to arrival and beyond" },
+  { icon: "compass", title: "Free Assessment", desc: "Get expert guidance for free" },
+  { icon: "zap", title: "Fast Processing", desc: "Quick admissions & visa support" },
+  { icon: "shield-check", title: "Secure & Reliable", desc: "Your documents are safe with us" },
+  { icon: "handshake", title: "End-to-End Support", desc: "From application to arrival and beyond" },
 ];
 
 export const services = [
-  { icon: "🎓", title: "University Admissions", desc: "International admissions with trusted partner institutions where your profile is strongest.", free: false },
-  { icon: "👨‍🍳", title: "Vocational & Culinary Placements", desc: "Short, practical programs — like Albania's one-year culinary track — that get you working fast.", free: false },
-  { icon: "💼", title: "Overseas Job Opportunities", desc: "Verified job offers with genuine employers, backed by a reasonable money-back guarantee.", free: false },
-  { icon: "🛂", title: "Visa Guidance & Application", desc: "End-to-end support through every step of the visa process for your destination.", free: false },
-  { icon: "📄", title: "Document Review & Verification", desc: "We check everything before submission so nothing gets rejected on a technicality.", free: true },
-  { icon: "🧭", title: "Education & Career Counseling", desc: "Personalized, honest advice on which destination and program fits your goals and budget.", free: true },
-  { icon: "📨", title: "Application Processing", desc: "We handle the paperwork and follow-ups with institutions on your behalf.", free: false },
-  { icon: "🛫", title: "Pre-Departure Orientation", desc: "Travel, accommodation and settling-in briefing before you fly.", free: true },
-  { icon: "🌟", title: "Ongoing Applicant Support", desc: "We stay with you after arrival — you're never on your own abroad.", free: true },
+  { icon: "graduation-cap", title: "University Admissions", desc: "International admissions with trusted partner institutions where your profile is strongest.", free: false },
+  { icon: "chef-hat", title: "Vocational & Culinary Placements", desc: "Short, practical programs — like Albania's one-year culinary track — that get you working fast.", free: false },
+  { icon: "briefcase", title: "Overseas Job Opportunities", desc: "Verified job offers with genuine employers, backed by a reasonable money-back guarantee.", free: false },
+  { icon: "stamp", title: "Visa Guidance & Application", desc: "End-to-end support through every step of the visa process for your destination.", free: false },
+  { icon: "file-check", title: "Document Review & Verification", desc: "We check everything before submission so nothing gets rejected on a technicality.", free: true },
+  { icon: "compass", title: "Education & Career Counseling", desc: "Personalized, honest advice on which destination and program fits your goals and budget.", free: true },
+  { icon: "send", title: "Application Processing", desc: "We handle the paperwork and follow-ups with institutions on your behalf.", free: false },
+  { icon: "plane-takeoff", title: "Pre-Departure Orientation", desc: "Travel, accommodation and settling-in briefing before you fly.", free: true },
+  { icon: "sparkles", title: "Ongoing Applicant Support", desc: "We stay with you after arrival — you're never on your own abroad.", free: true },
 ];
 
 export const journey = [
@@ -51,11 +51,11 @@ export const journey = [
 ];
 
 export const testimonials = [
-  { name: "Chinedu O.", destination: "Cyprus 🇨🇾", text: "From application to visa in 6 weeks. They told me exactly what was free and what I was paying for — no surprises." },
-  { name: "Aisha B.", destination: "Albania 🇦🇱", text: "The culinary program changed my life. Morning classes, afternoon work — I was earning within my first month." },
-  { name: "Tunde A.", destination: "Malaysia 🇲🇾", text: "I didn't have IELTS and thought it was over. They found me a pathway program and I'm now in year two of my degree." },
-  { name: "Blessing E.", destination: "Cyprus 🇨🇾", text: "My documents were rejected twice with another agent. Competence reviewed everything first and my visa came through." },
-  { name: "Ibrahim S.", destination: "Cambodia 🇰🇭", text: "Fast admission, honest advice, real support after arrival. I recommend them to everyone back home." },
+  { name: "Chinedu O.", destination: "Cyprus", text: "From application to visa in 6 weeks. They told me exactly what was free and what I was paying for — no surprises." },
+  { name: "Aisha B.", destination: "Albania", text: "The culinary program changed my life. Morning classes, afternoon work — I was earning within my first month." },
+  { name: "Tunde A.", destination: "Malaysia", text: "I didn't have IELTS and thought it was over. They found me a pathway program and I'm now in year two of my degree." },
+  { name: "Blessing E.", destination: "Cyprus", text: "My documents were rejected twice with another agent. Competence reviewed everything first and my visa came through." },
+  { name: "Ibrahim S.", destination: "Cambodia", text: "Fast admission, honest advice, real support after arrival. I recommend them to everyone back home." },
 ];
 
 export const faqs = [

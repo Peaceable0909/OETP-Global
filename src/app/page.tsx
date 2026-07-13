@@ -28,7 +28,7 @@ export default function Home() {
       <Testimonials />
       <section className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
         <SectionHeading
-          eyebrow="❓ Questions"
+          eyebrow="Questions"
           title="Answers Before You Ask"
           sub="The things every applicant wants to know — including exactly what's free and what's paid."
         />
