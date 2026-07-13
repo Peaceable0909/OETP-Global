@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HotTicker from "@/components/HotTicker";
 import BoardingPassWidget from "@/components/BoardingPassWidget";
+import { getDestinations } from "@/lib/data/destinations";
 
 const sora = Sora({
   variable: "--font-sora",
@@ -33,11 +34,12 @@ export const metadata: Metadata = {
   description: site.description,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const destinations = await getDestinations();
   return (
     <html lang="en" className={`${sora.variable} ${manrope.variable} ${caveat.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
@@ -47,7 +49,7 @@ export default function RootLayout({
         <HotTicker />
         <Navbar />
         <main id="main" className="flex-1">{children}</main>
-        <Footer />
+        <Footer destinations={destinations} />
         <BoardingPassWidget />
       </body>
     </html>

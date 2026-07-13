@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { site } from "@/lib/data/site";
-import { destinations } from "@/lib/data/destinations";
+import type { Destination } from "@/lib/data/destinations";
 import Flag from "@/components/Flag";
 import { MessageCircle, Send } from "lucide-react";
 
-export default function Footer() {
+export default function Footer({ destinations }: { destinations: Destination[] }) {
   return (
     <footer className="relative overflow-hidden bg-brand-950 text-brand-100">
       <div className="pointer-events-none absolute -top-32 left-1/2 h-64 w-[42rem] -translate-x-1/2 rounded-full bg-brand-600/20 blur-3xl" />

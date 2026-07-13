@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import ApplyForm from "@/components/ApplyForm";
+import { getDestinations } from "@/lib/data/destinations";
 
 export const metadata: Metadata = {
   title: "Apply Now",
   description: "Apply in under 10 minutes. Upload your documents and get an instant Application ID.",
 };
 
-export default function ApplyPage() {
+export default async function ApplyPage() {
+  const destinations = await getDestinations();
   return (
     <section className="bg-gradient-to-b from-brand-50 to-white px-5 py-16">
       <div className="mx-auto mb-12 max-w-2xl text-center">
@@ -20,7 +22,7 @@ export default function ApplyPage() {
         </p>
       </div>
       <Suspense>
-        <ApplyForm />
+        <ApplyForm destinations={destinations} />
       </Suspense>
     </section>
   );

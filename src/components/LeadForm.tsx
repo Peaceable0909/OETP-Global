@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { destinations } from "@/lib/data/destinations";
+import type { Destination } from "@/lib/data/destinations";
 import { CircleCheck } from "lucide-react";
 
 const inputCls =
   "w-full rounded-xl border border-brand-200 bg-white px-4 py-3 text-sm font-medium outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-100";
 
-export default function LeadForm() {
+export default function LeadForm({ destinations }: { destinations: Destination[] }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {

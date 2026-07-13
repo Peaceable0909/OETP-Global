@@ -4,6 +4,7 @@ import SectionHeading from "@/components/SectionHeading";
 import LeadForm from "@/components/LeadForm";
 import { site } from "@/lib/data/site";
 import { Icon, type IconName } from "@/lib/icons";
+import { getDestinations } from "@/lib/data/destinations";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -16,7 +17,8 @@ const channels: { icon: IconName; title: string; desc: string; href: string; cta
   { icon: "mail", title: "Email", desc: "For documents and formal enquiries.", href: `mailto:${site.email}`, cta: "Send Email", color: "bg-brand-600" },
 ];
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const destinations = await getDestinations();
   return (
     <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
       <SectionHeading
@@ -50,7 +52,7 @@ export default function ContactPage() {
           <h2 className="text-center font-display text-xl font-bold">Or leave your details</h2>
           <p className="mt-2 text-center text-sm text-ink-soft">A counselor will reach out within 24–48 hours.</p>
           <div className="mt-6">
-            <LeadForm />
+            <LeadForm destinations={destinations} />
           </div>
         </div>
       </Reveal>
