@@ -26,8 +26,6 @@ public/images/destinations/albania/hero.jpg
 public/images/destinations/cyprus/hero.jpg
 public/images/destinations/malaysia/hero.jpg
 public/images/destinations/cambodia/hero.jpg
-public/images/destinations/algeria/hero.jpg
-public/images/destinations/maldives/hero.jpg
 ```
 
 **Albania culinary specialization photos** (4 small cards on the Albania page):

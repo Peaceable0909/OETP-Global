@@ -18,7 +18,7 @@ export const site = {
 };
 
 export const stats = [
-  { icon: "globe", value: 6, suffix: "+", label: "Destinations" },
+  { icon: "globe", value: 4, suffix: "", label: "Destinations" },
   { icon: "stamp", value: 98, suffix: "%", label: "Visa Success Rate" },
   { icon: "graduation-cap", value: 2500, suffix: "+", label: "Students Placed" },
   { icon: "landmark", value: 50, suffix: "+", label: "Partner Universities" },
