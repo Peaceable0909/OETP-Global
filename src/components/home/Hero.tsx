@@ -18,7 +18,8 @@ export default function Hero() {
       {/* ambient blobs */}
       <div className="pointer-events-none absolute -left-40 -top-40 h-[30rem] w-[30rem] rounded-full bg-brand-200/40 blur-3xl" />
       <div className="pointer-events-none absolute -right-32 top-24 h-[26rem] w-[26rem] rounded-full bg-fuchsia-200/30 blur-3xl" />
-      <div className="pointer-events-none absolute inset-0 opacity-60">
+      {/* WebGL particles are desktop-only: phones get the gradient blobs, saving GPU/battery */}
+      <div className="pointer-events-none absolute inset-0 hidden opacity-60 lg:block">
         <Particles
           particleColors={["#7c3aed", "#a583f7"]}
           particleCount={140}
@@ -38,7 +39,7 @@ export default function Hero() {
             Study. Work. Succeed Anywhere.
           </span>
 
-          <h1 className="mt-6 text-4xl font-extrabold leading-[1.08] sm:text-5xl lg:text-[3.6rem]">
+          <h1 className="mt-6 text-[clamp(2.35rem,1.5rem+4vw,3.6rem)] font-extrabold leading-[1.08]">
             <SplitText
               text="Your Journey."
               tag="span"
@@ -51,10 +52,11 @@ export default function Hero() {
               from={{ opacity: 0, y: 46 }}
               to={{ opacity: 1, y: 0 }}
             />
-            <span
-              className="block animate-[heroRise_0.9s_cubic-bezier(0.22,1,0.36,1)_0.5s_both] bg-gradient-to-r from-brand-600 via-brand-500 to-fuchsia-500 bg-clip-text text-transparent"
-            >
-              Our Expertise.
+            {/* animation lives on the wrapper: transform + bg-clip-text on one element blanks the gradient in Chrome */}
+            <span className="block animate-[heroRise_0.9s_cubic-bezier(0.22,1,0.36,1)_0.5s_both]">
+              <span className="bg-gradient-to-r from-brand-600 via-brand-500 to-fuchsia-500 bg-clip-text text-transparent">
+                Our Expertise.
+              </span>
             </span>
           </h1>
 
@@ -127,7 +129,7 @@ export default function Hero() {
           {pins.map((p) => (
             <span
               key={p.label}
-              className={`absolute flex items-center gap-1.5 rounded-full border border-brand-200 bg-white/95 px-3 py-1.5 text-xs font-bold text-ink shadow-lg shadow-brand-600/10 ${p.cls}`}
+              className={`absolute z-10 flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-brand-200 bg-white/95 px-3 py-1.5 text-xs font-bold text-ink shadow-lg shadow-brand-600/10 ${p.cls}`}
               style={{ left: p.x, top: p.y }}
             >
               <span className="text-base leading-none">{p.flag}</span> {p.label}

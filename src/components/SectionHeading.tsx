@@ -17,7 +17,7 @@ export default function SectionHeading({ eyebrow, title, sub, align = "center", 
           {eyebrow}
         </span>
       )}
-      <h2 className={`mt-4 text-3xl font-bold sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15] ${light ? "text-white" : "text-ink"}`}>
+      <h2 className={`mt-4 text-[clamp(1.75rem,1.2rem+2.6vw,2.75rem)] font-bold leading-[1.15] ${light ? "text-white" : "text-ink"}`}>
         {title}
       </h2>
       {sub && <p className={`mt-4 text-base leading-relaxed sm:text-lg ${light ? "text-brand-200/85" : "text-ink-soft"}`}>{sub}</p>}

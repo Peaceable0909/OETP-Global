@@ -57,6 +57,36 @@ html {
   scroll-behavior: smooth;
 }
 
+/* interaction quality: fast taps, visible keyboard focus, gentle press feedback */
+a, button, summary, input, select, textarea, label {
+  touch-action: manipulation;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand-500);
+  outline-offset: 2px;
+}
+
+a:active, button:active, summary:active {
+  transform: scale(0.98);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  border-radius: 0 0 12px 0;
+  background: var(--color-brand-700);
+  color: #fff;
+  padding: 10px 18px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.skip-link:focus {
+  left: 0;
+}
+
 body {
   font-family: var(--font-sans);
   color: var(--color-ink);
