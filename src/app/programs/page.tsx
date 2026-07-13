@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { destinations } from "@/lib/data/destinations";
+import { getDestinations } from "@/lib/data/destinations";
 import Reveal from "@/components/Reveal";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
@@ -12,7 +12,8 @@ export const metadata: Metadata = {
   description: "Every program across our destinations — culinary, nursing, business, IT, hospitality and more.",
 };
 
-export default function ProgramsPage() {
+export default async function ProgramsPage() {
+  const destinations = await getDestinations();
   const rows = destinations.flatMap((d) =>
     d.programs.map((p) => ({ ...p, dest: d }))
   );

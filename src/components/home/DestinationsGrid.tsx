@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { destinations } from "@/lib/data/destinations";
+import type { Destination } from "@/lib/data/destinations";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
 
-export default function DestinationsGrid() {
+export default function DestinationsGrid({ destinations }: { destinations: Destination[] }) {
   return (
     <section className="relative bg-gradient-to-b from-white via-brand-50/60 to-white py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">

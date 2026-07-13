@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { destinations, getDestination } from "@/lib/data/destinations";
+import { getDestinations, getDestination } from "@/lib/data/destinations";
 import Reveal from "@/components/Reveal";
 import FaqAccordion from "@/components/FaqAccordion";
 import CTABand from "@/components/CTABand";
@@ -11,13 +11,14 @@ import SmartImage from "@/components/SmartImage";
 import { Icon, type IconName } from "@/lib/icons";
 import { Briefcase, FileText } from "lucide-react";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const destinations = await getDestinations();
   return destinations.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const d = getDestination(slug);
+  const d = await getDestination(slug);
   if (!d) return {};
   return { title: `Study in ${d.name}`, description: d.summary };
 }
@@ -33,7 +34,7 @@ const tabs = [
 
 export default async function DestinationPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = getDestination(slug);
+  const d = await getDestination(slug);
   if (!d) notFound();
 
   const glance: { icon: IconName; label: string; value: string }[] = [

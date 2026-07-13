@@ -14,19 +14,21 @@ import DeparturesBoard from "@/components/home/DeparturesBoard";
 import DarkStatsBand from "@/components/home/DarkStatsBand";
 import Link from "next/link";
 import { faqs } from "@/lib/data/site";
+import { getDestinations } from "@/lib/data/destinations";
 
-export default function Home() {
+export default async function Home() {
+  const destinations = await getDestinations();
   return (
     <>
-      <Hero />
+      <Hero destinations={destinations} />
       <StatsBar />
-      <HotCakes />
-      <DestinationsGrid />
+      <HotCakes destinations={destinations} />
+      <DestinationsGrid destinations={destinations} />
       <JourneyTimeline />
       <StoriesWall />
       <WhyChooseUs />
       <AlbaniaSpotlight />
-      <AdvisorTeaser />
+      <AdvisorTeaser destinations={destinations} />
       <FeatureStrip />
       <section className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
         <SectionHeading

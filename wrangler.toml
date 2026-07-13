@@ -10,3 +10,7 @@ database_id = "a23e3497-2f70-48c4-9f95-af493a5e8204"
 [[r2_buckets]]
 binding = "DOCS"
 bucket_name = "competence-documents"
+
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "competence-images"
