@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import LeadForm from "@/components/LeadForm";
-import { site } from "@/lib/data/site";
+import { site, getContactLinks } from "@/lib/data/site";
 import { Icon, type IconName } from "@/lib/icons";
 import { getDestinations } from "@/lib/data/destinations";
 
@@ -11,14 +11,13 @@ export const metadata: Metadata = {
   description: "Talk to a counselor on WhatsApp or Telegram, or leave your details and we'll reach out.",
 };
 
-const channels: { icon: IconName; title: string; desc: string; href: string; cta: string; color: string }[] = [
-  { icon: "message-circle", title: "WhatsApp", desc: "Fastest replies — talk to a counselor directly.", href: site.whatsapp, cta: "Open WhatsApp", color: "bg-green-500" },
-  { icon: "send", title: "Telegram", desc: "Our assistant collects your details and answers instantly.", href: site.telegram, cta: "Open Telegram", color: "bg-sky-500" },
-  { icon: "mail", title: "Email", desc: "For documents and formal enquiries.", href: `mailto:${site.email}`, cta: "Send Email", color: "bg-brand-600" },
-];
-
 export default async function ContactPage() {
-  const destinations = await getDestinations();
+  const [destinations, links] = await Promise.all([getDestinations(), getContactLinks()]);
+  const channels: { icon: IconName; title: string; desc: string; href: string; cta: string; color: string }[] = [
+    { icon: "message-circle", title: "WhatsApp", desc: "Fastest replies — talk to a counselor directly.", href: links.whatsapp, cta: "Open WhatsApp", color: "bg-green-500" },
+    { icon: "send", title: "Telegram", desc: "Our assistant collects your details and answers instantly.", href: links.telegram, cta: "Open Telegram", color: "bg-sky-500" },
+    { icon: "mail", title: "Email", desc: "For documents and formal enquiries.", href: `mailto:${site.email}`, cta: "Send Email", color: "bg-brand-600" },
+  ];
   return (
     <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
       <SectionHeading

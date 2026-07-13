@@ -1,11 +1,12 @@
 import Reveal from "@/components/Reveal";
-import { site } from "@/lib/data/site";
+import { getContactLinks } from "@/lib/data/site";
 import type { Destination } from "@/lib/data/destinations";
 import Flag from "@/components/Flag";
 import { Bot } from "lucide-react";
 
-export default function AdvisorTeaser({ destinations }: { destinations: Destination[] }) {
+export default async function AdvisorTeaser({ destinations }: { destinations: Destination[] }) {
   const featuredDestinations = destinations.filter((d) => d.featured);
+  const { telegram } = await getContactLinks();
   return (
     <section className="mx-auto max-w-7xl px-5 pb-10 lg:px-8">
       <Reveal>
@@ -23,7 +24,7 @@ export default function AdvisorTeaser({ destinations }: { destinations: Destinat
                 destination instantly, then hands you to a human counselor when you&apos;re ready.
               </p>
               <a
-                href={site.telegram}
+                href={telegram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-7 py-3.5 font-bold text-white shadow-xl shadow-brand-600/25 transition-all duration-300 hover:-translate-y-1"

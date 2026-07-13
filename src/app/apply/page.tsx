@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import ApplyForm from "@/components/ApplyForm";
 import { getDestinations } from "@/lib/data/destinations";
+import { getContactLinks } from "@/lib/data/site";
 
 export const metadata: Metadata = {
   title: "Apply Now",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ApplyPage() {
-  const destinations = await getDestinations();
+  const [destinations, links] = await Promise.all([getDestinations(), getContactLinks()]);
   return (
     <section className="bg-gradient-to-b from-brand-50 to-white px-5 py-16">
       <div className="mx-auto mb-12 max-w-2xl text-center">
@@ -22,7 +23,7 @@ export default async function ApplyPage() {
         </p>
       </div>
       <Suspense>
-        <ApplyForm destinations={destinations} />
+        <ApplyForm destinations={destinations} whatsapp={links.whatsapp} />
       </Suspense>
     </section>
   );

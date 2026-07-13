@@ -4,10 +4,10 @@ import { useState } from "react";
 import { Play, X, Quote } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import SmartImage from "@/components/SmartImage";
-import { testimonials } from "@/lib/data/site";
+import type { Testimonial } from "@/lib/data/site";
 import { testimonialImage } from "@/lib/imagePaths";
 
-export default function StoriesWall() {
+export default function StoriesWall({ testimonials }: { testimonials: Testimonial[] }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const featured = testimonials.slice(0, 3);
   const active = testimonials.find((t) => t.id === openId) ?? null;
@@ -34,7 +34,7 @@ export default function StoriesWall() {
                 className="group relative block aspect-[3/4] w-full overflow-hidden rounded-3xl text-left shadow-2xl shadow-black/40"
               >
                 <SmartImage
-                  src={testimonialImage(t.id)}
+                  src={t.photo || testimonialImage(t.id)}
                   alt={t.name}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />

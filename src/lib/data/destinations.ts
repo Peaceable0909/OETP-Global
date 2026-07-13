@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { destinationImage, specializationImage } from "@/lib/imagePaths";
+import { queryD1 } from "@/lib/data/d1";
 
 export type Destination = {
   slug: string;
@@ -239,8 +240,6 @@ const FALLBACK_DESTINATIONS: Destination[] = [
   },
 ];
 
-const D1_DATABASE_ID = "a23e3497-2f70-48c4-9f95-af493a5e8204";
-
 type CountryRow = {
   slug: string;
   name: string;
@@ -306,41 +305,9 @@ function rowToDestination(row: CountryRow): Destination {
   };
 }
 
-async function fetchFromD1(): Promise<Destination[] | null> {
-  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
-  const apiToken = process.env.CLOUDFLARE_API_TOKEN;
-  if (!accountId || !apiToken) return null;
-
-  try {
-    const res = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${accountId}/d1/database/${D1_DATABASE_ID}/query`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiToken}`,
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          sql: "SELECT * FROM countries WHERE status = 'published' ORDER BY name",
-        }),
-      }
-    );
-    if (!res.ok) return null;
-
-    const data = (await res.json()) as {
-      success: boolean;
-      result?: { results: CountryRow[]; success: boolean }[];
-    };
-    if (!data.success || !data.result?.[0]?.success) return null;
-
-    return data.result[0].results.map(rowToDestination);
-  } catch {
-    return null;
-  }
-}
-
 export const getDestinations = cache(async (): Promise<Destination[]> => {
-  const fromD1 = await fetchFromD1();
+  const rows = await queryD1<CountryRow>("SELECT * FROM countries WHERE status = 'published' ORDER BY name");
+  const fromD1 = rows?.map(rowToDestination);
   return fromD1 && fromD1.length > 0 ? fromD1 : FALLBACK_DESTINATIONS;
 });
 

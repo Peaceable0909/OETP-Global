@@ -3,7 +3,6 @@
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import type { Destination } from "@/lib/data/destinations";
-import { site } from "@/lib/data/site";
 import { AlertTriangle, MessageCircle, PartyPopper } from "lucide-react";
 
 type UploadField = { name: string; label: string; hint: string };
@@ -18,7 +17,7 @@ const uploadFields: UploadField[] = [
 const inputCls =
   "w-full rounded-xl border border-brand-200 bg-white px-4 py-3 text-sm font-medium outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-100";
 
-export default function ApplyForm({ destinations }: { destinations: Destination[] }) {
+export default function ApplyForm({ destinations, whatsapp }: { destinations: Destination[]; whatsapp: string }) {
   const params = useSearchParams();
   const preselected = params.get("destination") ?? "";
   const [submitting, setSubmitting] = useState(false);
@@ -66,7 +65,7 @@ export default function ApplyForm({ destinations }: { destinations: Destination[
           </p>
         )}
         <a
-          href={`${site.whatsapp}?text=${encodeURIComponent(`Hello! I just applied. My Application ID is ${result.id}.`)}`}
+          href={`${whatsapp}?text=${encodeURIComponent(`Hello! I just applied. My Application ID is ${result.id}.`)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-6 inline-flex items-center gap-2 rounded-full bg-green-500 px-7 py-3.5 font-bold text-white shadow-lg shadow-green-500/30 transition-transform hover:-translate-y-0.5"
