@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { destinations } from "@/lib/data/destinations";
+import type { Destination } from "@/lib/data/destinations";
 import { Search } from "lucide-react";
 
 const selectCls =
   "w-full appearance-none bg-transparent text-sm font-bold text-ink outline-none";
 
-export default function HeroSearch() {
+export default function HeroSearch({ destinations }: { destinations: Destination[] }) {
   const router = useRouter();
   const [intent, setIntent] = useState("study");
   const [country, setCountry] = useState("");

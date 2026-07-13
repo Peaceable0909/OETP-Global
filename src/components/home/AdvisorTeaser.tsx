@@ -1,10 +1,11 @@
 import Reveal from "@/components/Reveal";
 import { site } from "@/lib/data/site";
-import { featuredDestinations } from "@/lib/data/destinations";
+import type { Destination } from "@/lib/data/destinations";
 import Flag from "@/components/Flag";
 import { Bot } from "lucide-react";
 
-export default function AdvisorTeaser() {
+export default function AdvisorTeaser({ destinations }: { destinations: Destination[] }) {
+  const featuredDestinations = destinations.filter((d) => d.featured);
   return (
     <section className="mx-auto max-w-7xl px-5 pb-10 lg:px-8">
       <Reveal>

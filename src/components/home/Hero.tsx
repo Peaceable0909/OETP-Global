@@ -8,6 +8,7 @@ import SmartImage from "@/components/SmartImage";
 import HeroSearch from "@/components/home/HeroSearch";
 import Globe3D from "@/components/Globe3D";
 import { MessageCircle, Plane, PlaneTakeoff } from "lucide-react";
+import type { Destination } from "@/lib/data/destinations";
 
 const pins = [
   { code: "CY", color: "#0284C7", label: "Cyprus", x: "58%", y: "10%", cls: "animate-float" },
@@ -16,7 +17,7 @@ const pins = [
   { code: "KH", color: "#7C3AED", label: "Cambodia", x: "20%", y: "82%", cls: "animate-float-slow" },
 ];
 
-export default function Hero() {
+export default function Hero({ destinations }: { destinations: Destination[] }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 via-white to-white">
       {/* ambient blobs */}
@@ -82,7 +83,7 @@ export default function Hero() {
           </div>
 
           <div className="mt-10">
-            <HeroSearch />
+            <HeroSearch destinations={destinations} />
           </div>
         </div>
 

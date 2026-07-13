@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 // Placeholder roles until the company provides its confirmed offer list
 const roles = [
   { title: "Culinary Staff", country: "Albania", code: "AL", accent: "#DC2626", type: "Full-time", note: "For culinary program graduates — placement support included", visa: "Work permit after study" },
-  { title: "Hospitality & Resort Staff", country: "Maldives", code: "MV", accent: "#0D9488", type: "Contract", note: "Resort positions with accommodation included", visa: "Employer-sponsored" },
+  { title: "IT & Business Support Roles", country: "Malaysia", code: "MY", accent: "#4F46E5", type: "Contract", note: "Roles for graduates of business and tech programs, employer-sponsored", visa: "Employer-sponsored" },
   { title: "Service & Retail Roles", country: "Cyprus", code: "CY", accent: "#0284C7", type: "Part-time", note: "Student-friendly roles compatible with study schedules", visa: "Student work rights" },
 ];
 

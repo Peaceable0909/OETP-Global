@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { destinationImage, specializationImage } from "@/lib/imagePaths";
 
 export type Destination = {
@@ -19,7 +20,7 @@ export type Destination = {
   workRights: string;
   featured: boolean;
   highlights: string[];
-  programs: { name: string; length: string; note: string }[];
+  programs: { name: string; length: string; note: string; tuition?: string }[];
   visaSteps: { title: string; detail: string }[];
   requirements: string[];
   documents: string[];
@@ -27,7 +28,12 @@ export type Destination = {
   specializations?: { name: string; photo: string }[];
 };
 
-export const destinations: Destination[] = [
+// Used when the Cloudflare D1 HTTP API isn't reachable at build time (local
+// `next dev`/`next build` without credentials, or a PR preview build) so
+// builds never hard-fail. Kept in sync with the D1 `countries` table by the
+// one-time migration in scripts/seed-destinations.sql — this is the same
+// data, just not the live edit source of truth anymore (see /admin).
+const FALLBACK_DESTINATIONS: Destination[] = [
   {
     slug: "albania",
     code: "AL",
@@ -231,90 +237,119 @@ export const destinations: Destination[] = [
       { q: "Is it affordable?", a: "Yes, both tuition and living costs are very low, and the economy uses US dollars." },
     ],
   },
-  {
-    slug: "algeria",
-    code: "DZ",
-    name: "Algeria",
-    tagline: "Quality Education Close to Home",
-    heroGradient: "from-emerald-700 via-green-600 to-teal-500",
-    photo: destinationImage("algeria"),
-    accent: "#059669",
-    summary:
-      "Algeria offers affordable, quality education within Africa — shorter travel, lower costs, and straightforward admission for students seeking French- and Arabic-language programs plus growing English options.",
-    capital: "Algiers",
-    language: "Arabic / French / some English programs",
-    currency: "Algerian Dinar (DZD)",
-    intakeMonths: "Sep, Feb",
-    visaProcessing: "3 – 5 weeks",
-    programLength: "1 – 5 years",
-    tuitionFrom: "Very low tuition",
-    workRights: "Limited student work permitted",
-    featured: false,
-    highlights: [
-      "Close to home — short travel from West Africa",
-      "Very affordable tuition",
-      "Straightforward admission",
-      "Rich academic tradition",
-    ],
-    programs: [
-      { name: "Medicine & Pharmacy", length: "5 – 7 years", note: "Renowned faculties" },
-      { name: "Engineering", length: "4 – 5 years", note: "Strong technical schools" },
-      { name: "Languages & Humanities", length: "3 years", note: "French/Arabic immersion" },
-    ],
-    visaSteps: [
-      { title: "Apply online", detail: "Submit your application and academic records." },
-      { title: "Admission processing", detail: "We work with partner institutions on your placement." },
-      { title: "Visa support", detail: "Full guidance through the Algerian student visa." },
-      { title: "Arrival", detail: "Orientation and settling-in support." },
-    ],
-    requirements: ["Secondary school certificate", "Valid international passport", "French or Arabic is an advantage"],
-    documents: ["International passport", "Academic certificates", "Transcripts", "Passport photograph"],
-    faqs: [
-      { q: "Do I need French?", a: "Many programs are in French or Arabic, but English-taught options are growing. We match you to the right program." },
-    ],
-  },
-  {
-    slug: "maldives",
-    code: "MV",
-    name: "Maldives",
-    tagline: "Study Hospitality in Paradise",
-    heroGradient: "from-cyan-600 via-teal-500 to-emerald-400",
-    photo: destinationImage("maldives"),
-    accent: "#0D9488",
-    summary:
-      "The Maldives is the world's most famous tourism economy — study hospitality and tourism where the industry actually happens, with strong internship and job pathways in world-class resorts.",
-    capital: "Malé",
-    language: "Dhivehi / English widely used",
-    currency: "Rufiyaa (MVR) / USD accepted",
-    intakeMonths: "Jan, Jul",
-    visaProcessing: "2 – 4 weeks",
-    programLength: "1 – 3 years",
-    tuitionFrom: "$3,000 / year",
-    workRights: "Resort internships integrated into study",
-    featured: false,
-    highlights: [
-      "World-leading tourism industry on your doorstep",
-      "Resort internships built into programs",
-      "English widely spoken",
-      "Direct pathway into hospitality careers",
-    ],
-    programs: [
-      { name: "Hospitality & Tourism Management", length: "2 – 3 years", note: "Resort partnerships" },
-      { name: "Culinary & F&B Service", length: "1 – 2 years", note: "Work in 5-star kitchens" },
-    ],
-    visaSteps: [
-      { title: "Apply online", detail: "Submit your application and documents." },
-      { title: "Admission & sponsor", detail: "We arrange your institutional sponsorship." },
-      { title: "Student visa", detail: "Simple processing with our guidance." },
-      { title: "Arrival", detail: "Meet-and-greet plus accommodation support." },
-    ],
-    requirements: ["Secondary school certificate", "Valid international passport", "Basic English"],
-    documents: ["International passport", "Academic certificates", "Passport photograph", "CV / Resume"],
-    faqs: [
-      { q: "Can I work in resorts while studying?", a: "Internships in partner resorts are integrated into most hospitality programs — you gain real experience as you study." },
-    ],
-  },
 ];
 
-export const featuredDestinations = destinations.filter((d) => d.featured);
-export const getDestination = (slug: string) => destinations.find((d) => d.slug === slug);
+const D1_DATABASE_ID = "a23e3497-2f70-48c4-9f95-af493a5e8204";
+
+type CountryRow = {
+  slug: string;
+  name: string;
+  code: string;
+  tagline: string | null;
+  hero_gradient: string | null;
+  accent: string | null;
+  photo: string | null;
+  summary: string | null;
+  capital: string | null;
+  language: string | null;
+  currency: string | null;
+  intake_months: string | null;
+  visa_processing: string | null;
+  program_length: string | null;
+  tuition_from: string | null;
+  work_rights: string | null;
+  featured: number;
+  highlights: string;
+  programs: string;
+  visa_steps: string;
+  requirements: string;
+  documents: string;
+  faqs: string;
+  specializations: string;
+};
+
+function parseArray<T>(text: string): T[] {
+  try {
+    const v = JSON.parse(text);
+    return Array.isArray(v) ? v : [];
+  } catch {
+    return [];
+  }
+}
+
+function rowToDestination(row: CountryRow): Destination {
+  return {
+    slug: row.slug,
+    name: row.name,
+    code: row.code,
+    tagline: row.tagline ?? "",
+    heroGradient: row.hero_gradient ?? "",
+    photo: row.photo ?? "",
+    accent: row.accent ?? "",
+    summary: row.summary ?? "",
+    capital: row.capital ?? "",
+    language: row.language ?? "",
+    currency: row.currency ?? "",
+    intakeMonths: row.intake_months ?? "",
+    visaProcessing: row.visa_processing ?? "",
+    programLength: row.program_length ?? "",
+    tuitionFrom: row.tuition_from ?? "",
+    workRights: row.work_rights ?? "",
+    featured: !!row.featured,
+    highlights: parseArray(row.highlights),
+    programs: parseArray(row.programs),
+    visaSteps: parseArray(row.visa_steps),
+    requirements: parseArray(row.requirements),
+    documents: parseArray(row.documents),
+    faqs: parseArray(row.faqs),
+    specializations: parseArray(row.specializations),
+  };
+}
+
+async function fetchFromD1(): Promise<Destination[] | null> {
+  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+  const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+  if (!accountId || !apiToken) return null;
+
+  try {
+    const res = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${accountId}/d1/database/${D1_DATABASE_ID}/query`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiToken}`,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          sql: "SELECT * FROM countries WHERE status = 'published' ORDER BY name",
+        }),
+      }
+    );
+    if (!res.ok) return null;
+
+    const data = (await res.json()) as {
+      success: boolean;
+      result?: { results: CountryRow[]; success: boolean }[];
+    };
+    if (!data.success || !data.result?.[0]?.success) return null;
+
+    return data.result[0].results.map(rowToDestination);
+  } catch {
+    return null;
+  }
+}
+
+export const getDestinations = cache(async (): Promise<Destination[]> => {
+  const fromD1 = await fetchFromD1();
+  return fromD1 && fromD1.length > 0 ? fromD1 : FALLBACK_DESTINATIONS;
+});
+
+export async function getDestination(slug: string): Promise<Destination | undefined> {
+  const all = await getDestinations();
+  return all.find((d) => d.slug === slug);
+}
+
+export async function getFeaturedDestinations(): Promise<Destination[]> {
+  const all = await getDestinations();
+  return all.filter((d) => d.featured);
+}

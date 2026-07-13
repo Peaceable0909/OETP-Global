@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { destinations } from "@/lib/data/destinations";
+import type { Destination } from "@/lib/data/destinations";
 import { site } from "@/lib/data/site";
 import { AlertTriangle, MessageCircle, PartyPopper } from "lucide-react";
 
@@ -18,7 +18,7 @@ const uploadFields: UploadField[] = [
 const inputCls =
   "w-full rounded-xl border border-brand-200 bg-white px-4 py-3 text-sm font-medium outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-100";
 
-export default function ApplyForm() {
+export default function ApplyForm({ destinations }: { destinations: Destination[] }) {
   const params = useSearchParams();
   const preselected = params.get("destination") ?? "";
   const [submitting, setSubmitting] = useState(false);

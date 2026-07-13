@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { fetchOffers, type Offer } from "@/lib/offers";
-import { getDestination } from "@/lib/data/destinations";
+import type { Destination } from "@/lib/data/destinations";
 import { useCountdown } from "@/lib/useCountdown";
 import Reveal from "@/components/Reveal";
 import Flag from "@/components/Flag";
@@ -51,8 +51,8 @@ const badgeColors: Record<string, string> = {
   TRENDING: "bg-fuchsia-500 text-white",
 };
 
-function OfferCard({ offer, index }: { offer: Offer; index: number }) {
-  const dest = getDestination(offer.destination);
+function OfferCard({ offer, index, destinations }: { offer: Offer; index: number; destinations: Destination[] }) {
+  const dest = destinations.find((d) => d.slug === offer.destination);
   const limited = offer.total_spots != null;
   const spotsLeft = limited ? Math.max(offer.total_spots! - offer.spots_taken, 0) : null;
 
@@ -130,7 +130,7 @@ function OfferCard({ offer, index }: { offer: Offer; index: number }) {
   );
 }
 
-export default function HotCakes() {
+export default function HotCakes({ destinations }: { destinations: Destination[] }) {
   const [offers, setOffers] = useState<Offer[]>([]);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -192,7 +192,7 @@ export default function HotCakes() {
         className="mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 [scrollbar-width:none] lg:px-8 [&::-webkit-scrollbar]:hidden"
       >
         {offers.map((o, i) => (
-          <OfferCard key={o.slug} offer={o} index={i} />
+          <OfferCard key={o.slug} offer={o} index={i} destinations={destinations} />
         ))}
         <div aria-hidden className="w-px shrink-0" />
       </div>
