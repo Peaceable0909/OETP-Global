@@ -4,6 +4,7 @@ import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
 import Flag from "@/components/Flag";
+import SmartImage from "@/components/SmartImage";
 
 export default function DestinationsGrid() {
   return (
@@ -24,11 +25,10 @@ export default function DestinationsGrid() {
                   spotlightColor="rgba(124, 58, 237, 0.14)"
                 >
                   <div className="relative flex h-44 items-end overflow-hidden p-5">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <SmartImage
                       src={d.photo}
                       alt={d.name}
-                      loading="lazy"
+                      accent={d.accent}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className={`absolute inset-0 bg-gradient-to-t ${d.heroGradient} opacity-30`} />

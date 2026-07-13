@@ -1,3 +1,5 @@
+import { heroSceneImage } from "@/lib/imagePaths";
+
 export const site = {
   name: "Competence & Business Services",
   shortName: "Competence",
@@ -51,11 +53,11 @@ export const journey = [
 ];
 
 export const testimonials = [
-  { name: "Chinedu O.", destination: "Cyprus", text: "From application to visa in 6 weeks. They told me exactly what was free and what I was paying for — no surprises." },
-  { name: "Aisha B.", destination: "Albania", text: "The culinary program changed my life. Morning classes, afternoon work — I was earning within my first month." },
-  { name: "Tunde A.", destination: "Malaysia", text: "I didn't have IELTS and thought it was over. They found me a pathway program and I'm now in year two of my degree." },
-  { name: "Blessing E.", destination: "Cyprus", text: "My documents were rejected twice with another agent. Competence reviewed everything first and my visa came through." },
-  { name: "Ibrahim S.", destination: "Cambodia", text: "Fast admission, honest advice, real support after arrival. I recommend them to everyone back home." },
+  { id: "chinedu", name: "Chinedu O.", destination: "Cyprus", text: "From application to visa in 6 weeks. They told me exactly what was free and what I was paying for — no surprises." },
+  { id: "aisha", name: "Aisha B.", destination: "Albania", text: "The culinary program changed my life. Morning classes, afternoon work — I was earning within my first month." },
+  { id: "tunde", name: "Tunde A.", destination: "Malaysia", text: "I didn't have IELTS and thought it was over. They found me a pathway program and I'm now in year two of my degree." },
+  { id: "blessing", name: "Blessing E.", destination: "Cyprus", text: "My documents were rejected twice with another agent. Competence reviewed everything first and my visa came through." },
+  { id: "ibrahim", name: "Ibrahim S.", destination: "Cambodia", text: "Fast admission, honest advice, real support after arrival. I recommend them to everyone back home." },
 ];
 
 export const faqs = [
@@ -70,7 +72,7 @@ export const faqs = [
 ];
 
 export const heroPhotos = {
-  graduate: "https://images.unsplash.com/photo-1627556704290-2b1f5853ff78?w=600&q=75&fm=jpg",
-  student: "https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&q=75&fm=jpg",
-  city: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=600&q=75&fm=jpg",
+  graduate: heroSceneImage("graduate"),
+  student: heroSceneImage("student"),
+  city: heroSceneImage("city"),
 };

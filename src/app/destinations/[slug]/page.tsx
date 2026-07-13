@@ -7,6 +7,7 @@ import FaqAccordion from "@/components/FaqAccordion";
 import CTABand from "@/components/CTABand";
 import WaiverBanner from "@/components/WaiverBanner";
 import Flag from "@/components/Flag";
+import SmartImage from "@/components/SmartImage";
 import { Icon, type IconName } from "@/lib/icons";
 import { Briefcase, FileText } from "lucide-react";
 
@@ -55,8 +56,7 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
     <>
       {/* Hero with photo */}
       <section className="relative overflow-hidden text-white">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={d.photo} alt={d.name} className="absolute inset-0 h-full w-full object-cover" loading="eager" />
+        <SmartImage src={d.photo} alt={d.name} accent={d.accent} className="absolute inset-0 h-full w-full object-cover" />
         <div className={`absolute inset-0 bg-gradient-to-r ${d.heroGradient} opacity-40`} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
         <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-12 lg:px-8">
@@ -165,11 +165,10 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
               <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
                 {d.specializations.map((s) => (
                   <figure key={s.name} className="group relative h-40 overflow-hidden rounded-2xl shadow-lg">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <SmartImage
                       src={s.photo}
                       alt={s.name}
-                      loading="lazy"
+                      accent={d.accent}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />

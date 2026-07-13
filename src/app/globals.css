@@ -3,6 +3,7 @@
 @theme inline {
   --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-script), cursive;
 
   --color-brand-50: #f6f4ff;
   --color-brand-100: #ede9fe;
