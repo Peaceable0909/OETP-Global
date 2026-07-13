@@ -14,7 +14,7 @@ export default function FaqPage() {
     <>
       <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
         <SectionHeading
-          eyebrow="❓ FAQ"
+          eyebrow="FAQ"
           title="Everything, Answered"
           sub="If it's not here, message us — a real counselor replies, not a bot wall."
         />

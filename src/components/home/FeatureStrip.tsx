@@ -1,5 +1,6 @@
 import Reveal from "@/components/Reveal";
 import { features } from "@/lib/data/site";
+import { Icon, type IconName } from "@/lib/icons";
 
 export default function FeatureStrip() {
   return (
@@ -8,8 +9,8 @@ export default function FeatureStrip() {
         {features.map((f, i) => (
           <Reveal key={f.title} delay={i * 70}>
             <div className="flex items-start gap-3.5">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-xl" aria-hidden>
-                {f.icon}
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700" aria-hidden>
+                <Icon name={f.icon as IconName} className="h-5 w-5" />
               </span>
               <div>
                 <h3 className="font-display text-sm font-bold">{f.title}</h3>

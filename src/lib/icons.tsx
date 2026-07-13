@@ -1,0 +1,66 @@
+import {
+  Globe,
+  Stamp,
+  GraduationCap,
+  Landmark,
+  Clock,
+  Compass,
+  Zap,
+  ShieldCheck,
+  Handshake,
+  ChefHat,
+  Briefcase,
+  FileCheck,
+  Send,
+  PlaneTakeoff,
+  Sparkles,
+  MapPin,
+  Languages,
+  Coins,
+  CalendarDays,
+  Hourglass,
+  MessageCircle,
+  Mail,
+  Target,
+  Telescope,
+  Search,
+  FileText,
+  UtensilsCrossed,
+} from "lucide-react";
+
+export const icons = {
+  globe: Globe,
+  stamp: Stamp,
+  "graduation-cap": GraduationCap,
+  landmark: Landmark,
+  clock: Clock,
+  compass: Compass,
+  zap: Zap,
+  "shield-check": ShieldCheck,
+  handshake: Handshake,
+  "chef-hat": ChefHat,
+  briefcase: Briefcase,
+  "file-check": FileCheck,
+  send: Send,
+  "plane-takeoff": PlaneTakeoff,
+  sparkles: Sparkles,
+  "map-pin": MapPin,
+  languages: Languages,
+  coins: Coins,
+  "calendar-days": CalendarDays,
+  hourglass: Hourglass,
+  "message-circle": MessageCircle,
+  mail: Mail,
+  target: Target,
+  telescope: Telescope,
+  search: Search,
+  "file-text": FileText,
+  utensils: UtensilsCrossed,
+} as const;
+
+export type IconName = keyof typeof icons;
+
+export function Icon({ name, className }: { name: IconName; className?: string }) {
+  const C = icons[name];
+  return <C className={className} aria-hidden="true" />;
+}

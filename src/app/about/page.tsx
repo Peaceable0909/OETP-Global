@@ -4,17 +4,19 @@ import SectionHeading from "@/components/SectionHeading";
 import StatsBar from "@/components/home/StatsBar";
 import CTABand from "@/components/CTABand";
 import { site } from "@/lib/data/site";
+import { Icon, type IconName } from "@/lib/icons";
+import { Target, Telescope } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About Us",
   description: `Who ${site.name} is: our mission, our approach, and why students trust us.`,
 };
 
-const values = [
-  { icon: "🔍", title: "Radical transparency", desc: "Free means free. Paid services are quoted in writing before you commit. No hidden charges at any stage." },
-  { icon: "🎯", title: "Only routes that work", desc: "We market destinations where admissions and visa processes are genuinely straightforward — not wherever pays the highest commission." },
-  { icon: "🤝", title: "End-to-end, for real", desc: "From your first question to your first week abroad: assessment, admission, visa, pre-departure, arrival." },
-  { icon: "🛡️", title: "Guaranteed job offers", desc: "Work opportunities we list are confirmed and genuine, backed by a reasonable money-back guarantee." },
+const values: { icon: IconName; title: string; desc: string }[] = [
+  { icon: "search", title: "Radical transparency", desc: "Free means free. Paid services are quoted in writing before you commit. No hidden charges at any stage." },
+  { icon: "target", title: "Only routes that work", desc: "We market destinations where admissions and visa processes are genuinely straightforward — not wherever pays the highest commission." },
+  { icon: "handshake", title: "End-to-end, for real", desc: "From your first question to your first week abroad: assessment, admission, visa, pre-departure, arrival." },
+  { icon: "shield-check", title: "Guaranteed job offers", desc: "Work opportunities we list are confirmed and genuine, backed by a reasonable money-back guarantee." },
 ];
 
 export default function AboutPage() {
@@ -42,14 +44,18 @@ export default function AboutPage() {
       <section className="mx-auto mt-16 grid max-w-5xl gap-6 px-5 md:grid-cols-2">
         <Reveal>
           <div className="h-full rounded-3xl bg-gradient-to-br from-brand-700 to-brand-900 p-8 text-white shadow-2xl shadow-brand-600/25">
-            <span className="text-3xl" aria-hidden>🎯</span>
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/15" aria-hidden>
+              <Target className="h-6 w-6" />
+            </span>
             <h2 className="mt-3 font-display text-xl font-extrabold">Our Mission</h2>
             <p className="mt-3 text-sm leading-relaxed text-brand-100">{site.mission}</p>
           </div>
         </Reveal>
         <Reveal delay={100}>
           <div className="h-full rounded-3xl border border-brand-100 bg-white p-8 shadow-xl shadow-brand-600/10">
-            <span className="text-3xl" aria-hidden>🔭</span>
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-100 text-brand-700" aria-hidden>
+              <Telescope className="h-6 w-6" />
+            </span>
             <h2 className="mt-3 font-display text-xl font-extrabold">Our Vision</h2>
             <p className="mt-3 text-sm leading-relaxed text-ink-soft">{site.vision}</p>
           </div>
@@ -62,14 +68,16 @@ export default function AboutPage() {
 
       <section className="mx-auto max-w-7xl px-5 py-20 lg:px-8">
         <SectionHeading
-          eyebrow="💜 Our Values"
+          eyebrow="Our Values"
           title="Why Students Choose Us"
         />
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           {values.map((v, i) => (
             <Reveal key={v.title} delay={i * 80}>
               <div className="flex gap-5 rounded-3xl border border-brand-100 bg-white p-7 shadow-lg shadow-brand-600/8">
-                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brand-100 text-2xl">{v.icon}</span>
+                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
+                  <Icon name={v.icon} className="h-6 w-6" />
+                </span>
                 <div>
                   <h2 className="font-display text-lg font-bold">{v.title}</h2>
                   <p className="mt-2 text-sm leading-relaxed text-ink-soft">{v.desc}</p>

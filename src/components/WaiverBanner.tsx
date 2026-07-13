@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchOffers, fallbackOffers, type Offer } from "@/lib/offers";
 import { useCountdown } from "@/lib/useCountdown";
+import { Flame } from "lucide-react";
 
 export default function WaiverBanner({ destination }: { destination: string }) {
   const [offer, setOffer] = useState<Offer | null>(
@@ -33,7 +34,9 @@ export default function WaiverBanner({ destination }: { destination: string }) {
       <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
       <div className="relative flex flex-wrap items-center justify-between gap-6">
         <div className="flex items-center gap-4">
-          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/15 text-2xl" aria-hidden>🔥</span>
+          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/15 text-amber-300" aria-hidden>
+            <Flame className="h-6 w-6" />
+          </span>
           <div>
             <p className="text-xs font-extrabold uppercase tracking-widest text-brand-100">
               Application fee waived for first {offer.total_spots} students!

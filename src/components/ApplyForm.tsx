@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { destinations } from "@/lib/data/destinations";
 import { site } from "@/lib/data/site";
+import { AlertTriangle, MessageCircle, PartyPopper } from "lucide-react";
 
 type UploadField = { name: string; label: string; hint: string };
 
@@ -46,7 +47,9 @@ export default function ApplyForm() {
   if (result) {
     return (
       <div className="mx-auto max-w-xl rounded-3xl border border-emerald-200 bg-emerald-50 p-10 text-center shadow-xl">
-        <span className="text-5xl">🎉</span>
+        <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald-500 text-white" aria-hidden>
+          <PartyPopper className="h-8 w-8" />
+        </span>
         <h2 className="mt-4 font-display text-2xl font-extrabold">Application Received!</h2>
         <p className="mt-3 text-ink-soft">Your Application ID is</p>
         <p className="mt-2 inline-block rounded-2xl bg-white px-6 py-3 font-display text-2xl font-extrabold tracking-widest text-brand-700 shadow">
@@ -66,9 +69,9 @@ export default function ApplyForm() {
           href={`${site.whatsapp}?text=${encodeURIComponent(`Hello! I just applied. My Application ID is ${result.id}.`)}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-6 inline-block rounded-full bg-green-500 px-7 py-3.5 font-bold text-white shadow-lg shadow-green-500/30 transition-transform hover:-translate-y-0.5"
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-green-500 px-7 py-3.5 font-bold text-white shadow-lg shadow-green-500/30 transition-transform hover:-translate-y-0.5"
         >
-          💬 Continue on WhatsApp
+          <MessageCircle className="h-5 w-5" aria-hidden="true" /> Continue on WhatsApp
         </a>
       </div>
     );
@@ -77,8 +80,8 @@ export default function ApplyForm() {
   return (
     <form onSubmit={onSubmit} className="mx-auto max-w-2xl space-y-8">
       {error && (
-        <p role="alert" className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-semibold text-red-700">
-          ⚠️ {error}
+        <p role="alert" className="flex items-start gap-2 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm font-semibold text-red-700">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" /> {error}
         </p>
       )}
 
@@ -112,9 +115,9 @@ export default function ApplyForm() {
             <select name="destination" required defaultValue={preselected} className={`mt-1.5 ${inputCls}`}>
               <option value="" disabled>Select a destination…</option>
               {destinations.map((d) => (
-                <option key={d.slug} value={d.slug}>{d.flag} {d.name} — {d.tagline}</option>
+                <option key={d.slug} value={d.slug}>{d.name} — {d.tagline}</option>
               ))}
-              <option value="undecided">🤔 Not sure yet — advise me</option>
+              <option value="undecided">Not sure yet — advise me</option>
             </select>
           </label>
           <label className="block text-sm font-bold">

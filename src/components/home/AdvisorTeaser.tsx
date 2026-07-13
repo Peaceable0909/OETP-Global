@@ -1,6 +1,8 @@
 import Reveal from "@/components/Reveal";
 import { site } from "@/lib/data/site";
 import { featuredDestinations } from "@/lib/data/destinations";
+import Flag from "@/components/Flag";
+import { Bot } from "lucide-react";
 
 export default function AdvisorTeaser() {
   return (
@@ -25,14 +27,14 @@ export default function AdvisorTeaser() {
                 rel="noopener noreferrer"
                 className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-7 py-3.5 font-bold text-white shadow-xl shadow-brand-600/25 transition-all duration-300 hover:-translate-y-1"
               >
-                🤖 Chat with AI Advisor <span aria-hidden>→</span>
+                <Bot className="h-5 w-5" aria-hidden="true" /> Chat with AI Advisor <span aria-hidden>→</span>
               </a>
             </div>
 
             {/* chat mock */}
             <div className="relative">
-              <span className="absolute -top-8 right-4 animate-float text-6xl drop-shadow-xl sm:text-7xl" aria-hidden>
-                🤖
+              <span className="absolute -top-10 right-4 grid h-16 w-16 animate-float place-items-center rounded-3xl bg-gradient-to-br from-brand-500 to-fuchsia-600 text-white shadow-xl shadow-brand-600/30 sm:h-20 sm:w-20" aria-hidden>
+                <Bot className="h-9 w-9 sm:h-11 sm:w-11" />
               </span>
               <div className="space-y-3">
                 <div className="w-fit max-w-[85%] rounded-2xl rounded-bl-md border border-brand-100 bg-white px-4 py-3 text-sm font-medium shadow-lg shadow-brand-600/8">
@@ -40,9 +42,9 @@ export default function AdvisorTeaser() {
                 </div>
                 <div className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-md bg-white px-4 py-3 text-sm font-medium shadow-lg shadow-brand-600/8 ring-1 ring-brand-200">
                   Based on your profile, we recommend these destinations:
-                  <span className="mt-2 flex items-center gap-1.5 text-xl">
+                  <span className="mt-2 flex items-center gap-1.5">
                     {featuredDestinations.map((d) => (
-                      <span key={d.slug}>{d.flag}</span>
+                      <Flag key={d.slug} code={d.code} color={d.accent} className="h-6 min-w-[2.2rem] px-1 rounded-lg text-[11px]" />
                     ))}
                     <span className="grid h-7 w-7 place-items-center rounded-full bg-brand-100 text-[11px] font-extrabold text-brand-700">
                       +2

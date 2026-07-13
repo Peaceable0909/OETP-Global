@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { destinations } from "@/lib/data/destinations";
+import { CircleCheck } from "lucide-react";
 
 const inputCls =
   "w-full rounded-xl border border-brand-200 bg-white px-4 py-3 text-sm font-medium outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-100";
@@ -34,8 +35,8 @@ export default function LeadForm() {
 
   if (status === "sent") {
     return (
-      <p className="rounded-2xl bg-emerald-50 px-5 py-6 text-center text-sm font-bold text-emerald-700">
-        ✅ Got it! A counselor will contact you within 24–48 hours.
+      <p className="flex items-center justify-center gap-2 rounded-2xl bg-emerald-50 px-5 py-6 text-center text-sm font-bold text-emerald-700">
+        <CircleCheck className="h-5 w-5 shrink-0" aria-hidden="true" /> Got it! A counselor will contact you within 24–48 hours.
       </p>
     );
   }
@@ -52,7 +53,7 @@ export default function LeadForm() {
       <select name="destination" defaultValue="" className={inputCls}>
         <option value="">Interested destination (optional)</option>
         {destinations.map((d) => (
-          <option key={d.slug} value={d.slug}>{d.flag} {d.name}</option>
+          <option key={d.slug} value={d.slug}>{d.name}</option>
         ))}
       </select>
       <textarea name="note" rows={3} placeholder="Your question…" className={inputCls} />

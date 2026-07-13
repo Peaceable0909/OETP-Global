@@ -4,12 +4,13 @@ import HotCakes from "@/components/home/HotCakes";
 import AdvisorTeaser from "@/components/home/AdvisorTeaser";
 import FeatureStrip from "@/components/home/FeatureStrip";
 import DestinationsGrid from "@/components/home/DestinationsGrid";
-import Journey from "@/components/home/Journey";
+import JourneyTimeline from "@/components/home/JourneyTimeline";
 import AlbaniaSpotlight from "@/components/home/AlbaniaSpotlight";
-import Testimonials from "@/components/home/Testimonials";
+import StoriesWall from "@/components/home/StoriesWall";
+import WhyChooseUs from "@/components/home/WhyChooseUs";
 import FaqAccordion from "@/components/FaqAccordion";
 import SectionHeading from "@/components/SectionHeading";
-import CTABand from "@/components/CTABand";
+import DeparturesBoard from "@/components/home/DeparturesBoard";
 import DarkStatsBand from "@/components/home/DarkStatsBand";
 import Link from "next/link";
 import { faqs } from "@/lib/data/site";
@@ -20,15 +21,16 @@ export default function Home() {
       <Hero />
       <StatsBar />
       <HotCakes />
+      <DestinationsGrid />
+      <JourneyTimeline />
+      <StoriesWall />
+      <WhyChooseUs />
+      <AlbaniaSpotlight />
       <AdvisorTeaser />
       <FeatureStrip />
-      <DestinationsGrid />
-      <Journey />
-      <AlbaniaSpotlight />
-      <Testimonials />
       <section className="mx-auto max-w-7xl px-5 py-24 lg:px-8">
         <SectionHeading
-          eyebrow="❓ Questions"
+          eyebrow="Questions"
           title="Answers Before You Ask"
           sub="The things every applicant wants to know — including exactly what's free and what's paid."
         />
@@ -41,7 +43,7 @@ export default function Home() {
           </Link>
         </p>
       </section>
-      <CTABand />
+      <DeparturesBoard />
       <DarkStatsBand />
     </>
   );

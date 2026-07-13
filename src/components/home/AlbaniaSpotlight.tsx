@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import Flag from "@/components/Flag";
+import { Icon, type IconName } from "@/lib/icons";
 
-const schedule = [
-  { time: "08:00 – 12:00", label: "Culinary classes", icon: "👨‍🍳", note: "Hands-on training in professional kitchens" },
-  { time: "13:00 – 21:00", label: "Free to work", icon: "💼", note: "Earn while you study — restaurants, hotels, cafés" },
-  { time: "After 1 year", label: "Certified & job-ready", icon: "🎓", note: "Job placement support + pathway to bring family once employed" },
+const schedule: { time: string; label: string; icon: IconName; note: string }[] = [
+  { time: "08:00 – 12:00", label: "Culinary classes", icon: "chef-hat", note: "Hands-on training in professional kitchens" },
+  { time: "13:00 – 21:00", label: "Free to work", icon: "briefcase", note: "Earn while you study — restaurants, hotels, cafés" },
+  { time: "After 1 year", label: "Certified & job-ready", icon: "graduation-cap", note: "Job placement support + pathway to bring family once employed" },
 ];
 
 export default function AlbaniaSpotlight() {
@@ -13,7 +15,7 @@ export default function AlbaniaSpotlight() {
       <div className="grid items-center gap-12 lg:grid-cols-2">
         <Reveal>
           <span className="inline-flex items-center gap-2 rounded-full bg-red-100 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-red-700">
-            🇦🇱 Flagship Program
+            <Flag code="AL" color="#DC2626" /> Flagship Program
           </span>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
             One Year in Albania.
@@ -58,7 +60,9 @@ export default function AlbaniaSpotlight() {
               {schedule.map((s, i) => (
                 <li key={s.label} className="flex gap-4">
                   <div className="flex flex-col items-center">
-                    <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-100 text-xl">{s.icon}</span>
+                    <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-100 text-brand-700">
+                      <Icon name={s.icon} className="h-5 w-5" />
+                    </span>
                     {i < schedule.length - 1 && <span className="mt-1 h-full w-px flex-1 bg-brand-100" />}
                   </div>
                   <div className="pb-2">

@@ -1,6 +1,7 @@
 import CountUp from "@/components/CountUp";
 import Reveal from "@/components/Reveal";
 import { stats } from "@/lib/data/site";
+import { Icon, type IconName } from "@/lib/icons";
 
 export default function StatsBar() {
   return (
@@ -9,8 +10,8 @@ export default function StatsBar() {
         <div className="grid grid-cols-2 gap-6 rounded-3xl border border-brand-100 bg-white/90 p-8 shadow-2xl shadow-brand-600/10 backdrop-blur-xl sm:grid-cols-3 lg:grid-cols-5">
           {stats.map((s) => (
             <div key={s.label} className="flex items-center gap-3">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-xl" aria-hidden>
-                {s.icon}
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700" aria-hidden>
+                <Icon name={s.icon as IconName} className="h-5 w-5" />
               </span>
               <div>
                 <CountUp
