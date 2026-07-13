@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
-import { site } from "@/lib/data/site";
+import { getContactLinks } from "@/lib/data/site";
 import Flag from "@/components/Flag";
 import { MessageCircle, Stamp } from "lucide-react";
 
@@ -18,7 +18,8 @@ const roles = [
   { title: "Service & Retail Roles", country: "Cyprus", code: "CY", accent: "#0284C7", type: "Part-time", note: "Student-friendly roles compatible with study schedules", visa: "Student work rights" },
 ];
 
-export default function JobsPage() {
+export default async function JobsPage() {
+  const { whatsapp } = await getContactLinks();
   return (
     <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
       <SectionHeading
@@ -61,7 +62,7 @@ export default function JobsPage() {
             the first to hear.
           </p>
           <a
-            href={site.whatsapp}
+            href={whatsapp}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-5 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3 font-bold text-brand-800 shadow-lg transition-transform hover:-translate-y-0.5"

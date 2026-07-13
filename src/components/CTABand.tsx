@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
-import { site } from "@/lib/data/site";
+import { getContactLinks } from "@/lib/data/site";
 import { MessageCircle } from "lucide-react";
 
-export default function CTABand() {
+export default async function CTABand() {
+  const { whatsapp } = await getContactLinks();
   return (
     <section className="relative overflow-hidden bg-brand-950 py-20 text-white">
       <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[50rem] -translate-x-1/2 rounded-full bg-brand-600/30 blur-3xl" />
@@ -23,7 +24,7 @@ export default function CTABand() {
             Start My Application →
           </Link>
           <a
-            href={site.whatsapp}
+            href={whatsapp}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-full border-2 border-white/25 px-8 py-4 font-bold transition-colors hover:bg-white/10"

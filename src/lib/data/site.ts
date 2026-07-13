@@ -1,4 +1,6 @@
+import { cache } from "react";
 import { heroSceneImage } from "@/lib/imagePaths";
+import { queryD1 } from "@/lib/data/d1";
 
 export const site = {
   name: "Competence & Business Services",
@@ -52,13 +54,49 @@ export const journey = [
   { step: "05", title: "Fly", desc: "Pre-departure briefing, arrival support, and help settling in." },
 ];
 
-export const testimonials = [
+export type Testimonial = { id: string; name: string; destination: string; text: string; photo?: string };
+
+// Used when D1 build-time credentials aren't set. Kept in sync with the
+// `testimonials` table by scripts/seed-testimonials.sql.
+const FALLBACK_TESTIMONIALS: Testimonial[] = [
   { id: "chinedu", name: "Chinedu O.", destination: "Cyprus", text: "From application to visa in 6 weeks. They told me exactly what was free and what I was paying for — no surprises." },
   { id: "aisha", name: "Aisha B.", destination: "Albania", text: "The culinary program changed my life. Morning classes, afternoon work — I was earning within my first month." },
   { id: "tunde", name: "Tunde A.", destination: "Malaysia", text: "I didn't have IELTS and thought it was over. They found me a pathway program and I'm now in year two of my degree." },
   { id: "blessing", name: "Blessing E.", destination: "Cyprus", text: "My documents were rejected twice with another agent. Competence reviewed everything first and my visa came through." },
   { id: "ibrahim", name: "Ibrahim S.", destination: "Cambodia", text: "Fast admission, honest advice, real support after arrival. I recommend them to everyone back home." },
 ];
+
+type TestimonialRow = {
+  slug: string;
+  name: string;
+  destination: string | null;
+  text: string;
+  photo: string | null;
+  featured: number;
+};
+
+export const getTestimonials = cache(async (): Promise<Testimonial[]> => {
+  const rows = await queryD1<TestimonialRow>(
+    "SELECT * FROM testimonials WHERE status = 'published' ORDER BY sort_order, name"
+  );
+  if (!rows || rows.length === 0) return FALLBACK_TESTIMONIALS;
+  return rows.map((r) => ({
+    id: r.slug,
+    name: r.name,
+    destination: r.destination ?? "",
+    text: r.text,
+    photo: r.photo ?? undefined,
+  }));
+});
+
+export const getContactLinks = cache(async (): Promise<{ whatsapp: string; telegram: string }> => {
+  const rows = await queryD1<{ key: string; value: string }>("SELECT key, value FROM settings");
+  const map = new Map(rows?.map((r) => [r.key, r.value]) ?? []);
+  return {
+    whatsapp: map.get("whatsapp") || site.whatsapp,
+    telegram: map.get("telegram") || site.telegram,
+  };
+});
 
 export const faqs = [
   { q: "How long does admission take?", a: "It depends on the destination — Cambodia can take as little as 2 weeks, Cyprus and Malaysia typically 4–6 weeks. Your counselor gives you a realistic timeline upfront." },

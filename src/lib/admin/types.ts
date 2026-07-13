@@ -1,3 +1,17 @@
+export type AdminTestimonial = {
+  id: number;
+  slug: string;
+  name: string;
+  destination: string;
+  text: string;
+  photo: string;
+  featured: boolean;
+  sortOrder: number;
+  status: "draft" | "published";
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type AdminCountry = {
   id: number;
   slug: string;

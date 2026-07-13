@@ -3,7 +3,7 @@ import { requireAdmin } from "../_auth";
 
 const MAX_FILE_BYTES = 5 * 1024 * 1024; // 5 MB per image
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const ALLOWED_KINDS = ["country-hero", "program", "specialization"] as const;
+const ALLOWED_KINDS = ["country-hero", "program", "specialization", "testimonial"] as const;
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!(await requireAdmin(request, env))) return json({ error: "Unauthorized" }, 401);

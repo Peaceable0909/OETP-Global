@@ -17,7 +17,7 @@ const pins = [
   { code: "KH", color: "#7C3AED", label: "Cambodia", x: "20%", y: "82%", cls: "animate-float-slow" },
 ];
 
-export default function Hero({ destinations }: { destinations: Destination[] }) {
+export default function Hero({ destinations, whatsapp }: { destinations: Destination[]; whatsapp: string }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-brand-50 via-white to-white">
       {/* ambient blobs */}
@@ -73,7 +73,7 @@ export default function Hero({ destinations }: { destinations: Destination[] }) 
               <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
             </Link>
             <a
-              href={site.whatsapp}
+              href={whatsapp}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-full border-2 border-brand-200 bg-white/80 px-7 py-3.5 font-bold text-brand-800 transition-all duration-300 hover:-translate-y-1 hover:border-brand-400 hover:bg-brand-50"
