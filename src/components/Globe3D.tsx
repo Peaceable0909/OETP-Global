@@ -33,7 +33,19 @@ function useEarthModelAvailable(): boolean {
 
 function EarthModel() {
   const { scene } = useGLTF(EARTH_MODEL_URL);
-  return <primitive object={scene} scale={1} />;
+  // Normalize any model to a unit sphere so the destination markers (placed at
+  // radius ~1.03) always sit just above the surface, regardless of how the
+  // uploaded file was authored.
+  const { scale, offset } = useMemo(() => {
+    const sphere = new THREE.Box3().setFromObject(scene).getBoundingSphere(new THREE.Sphere());
+    const s = sphere.radius > 0 ? 1 / sphere.radius : 1;
+    return { scale: s, offset: sphere.center.multiplyScalar(-1) };
+  }, [scene]);
+  return (
+    <group scale={scale}>
+      <primitive object={scene} position={offset} />
+    </group>
+  );
 }
 
 type Marker = { slug: string; name: string; code: string; color: string; lat: number; lng: number };
@@ -154,8 +166,9 @@ export default function Globe3D() {
       gl={{ antialias: true, alpha: true }}
       style={{ touchAction: "pan-y" }}
     >
-      <ambientLight intensity={0.9} />
-      <directionalLight position={[3, 2, 4]} intensity={1.1} />
+      <ambientLight intensity={1.6} />
+      <directionalLight position={[3, 2, 4]} intensity={1.4} />
+      <directionalLight position={[-3, -1, -2]} intensity={0.5} />
       <GlobeMesh />
       <OrbitControls
         enableZoom={false}
