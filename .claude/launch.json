@@ -2,9 +2,15 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "competence-pages",
+      "name": "competence-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "competence-worker",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["wrangler", "pages", "dev", "--port", "8788"],
+      "runtimeArgs": ["wrangler", "dev", "--port", "8788"],
       "port": 8788
     }
   ]

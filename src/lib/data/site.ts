@@ -3,8 +3,8 @@ import { heroSceneImage } from "@/lib/imagePaths";
 import { queryD1 } from "@/lib/data/d1";
 
 export const site = {
-  name: "Competence & Business Services",
-  shortName: "Competence",
+  name: "CompeTenza Business Services",
+  shortName: "CompeTenza",
   tagline: "Your Journey. Our Expertise.",
   description:
     "We connect ambitious students and professionals to world-class education and global opportunities with end-to-end support you can trust.",
@@ -14,8 +14,8 @@ export const site = {
     "To become one of Africa's most trusted global mobility consultancies, empowering thousands of students and professionals to study, work, and build successful careers around the world.",
   // TODO: replace with the real company contacts once the domain email + WhatsApp line exist
   whatsapp: "https://wa.me/2340000000000",
-  telegram: "https://t.me/competencebot",
-  email: "info@competence.example",
+  telegram: "https://t.me/competenzabot",
+  email: "info@competenza.example",
   address: "Lagos, Nigeria",
 };
 
@@ -62,7 +62,7 @@ const FALLBACK_TESTIMONIALS: Testimonial[] = [
   { id: "chinedu", name: "Chinedu O.", destination: "Cyprus", text: "From application to visa in 6 weeks. They told me exactly what was free and what I was paying for — no surprises." },
   { id: "aisha", name: "Aisha B.", destination: "Albania", text: "The culinary program changed my life. Morning classes, afternoon work — I was earning within my first month." },
   { id: "tunde", name: "Tunde A.", destination: "Malaysia", text: "I didn't have IELTS and thought it was over. They found me a pathway program and I'm now in year two of my degree." },
-  { id: "blessing", name: "Blessing E.", destination: "Cyprus", text: "My documents were rejected twice with another agent. Competence reviewed everything first and my visa came through." },
+  { id: "blessing", name: "Blessing E.", destination: "Cyprus", text: "My documents were rejected twice with another agent. CompeTenza reviewed everything first and my visa came through." },
   { id: "ibrahim", name: "Ibrahim S.", destination: "Cambodia", text: "Fast admission, honest advice, real support after arrival. I recommend them to everyone back home." },
 ];
 

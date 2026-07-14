@@ -12,13 +12,12 @@ export default async function Footer({ destinations }: { destinations: Destinati
       <div className="relative mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div>
           <div className="flex items-center gap-2.5">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 font-display text-lg font-bold text-white">
-              C
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/logo-mark.png" alt="" className="h-11 w-11 object-contain" />
             <span className="leading-tight">
-              <span className="block font-display text-[15px] font-bold text-white">COMPETENCE</span>
+              <span className="block font-display text-[15px] font-bold text-white">COMPETENZA</span>
               <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-300">
-                & Business Services
+                Business Services
               </span>
             </span>
           </div>
