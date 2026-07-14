@@ -5,7 +5,7 @@ import { getDestinations } from "@/lib/data/destinations";
 
 export const metadata: Metadata = {
   title: "Study Destinations",
-  description: "Explore study and work destinations with straightforward admissions and visa processes: Cyprus, Albania, Malaysia, Cambodia.",
+  description: "Explore study and work destinations with straightforward admissions and visa processes: Cyprus, Albania, Malaysia, Cambodia, Thailand, Russia.",
 };
 
 export default async function DestinationsPage() {
@@ -14,7 +14,7 @@ export default async function DestinationsPage() {
     <>
       <section className="bg-gradient-to-b from-brand-50 to-white px-5 pt-16 text-center">
         <h1 className="mx-auto max-w-3xl text-4xl font-extrabold sm:text-5xl">
-          Four Doors to Your
+          Six Doors to Your
           <span className="bg-gradient-to-r from-brand-600 to-fuchsia-500 bg-clip-text text-transparent"> Future</span>
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-lg text-ink-soft">

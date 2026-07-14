@@ -13,19 +13,23 @@ import SectionHeading from "@/components/SectionHeading";
 import DeparturesBoard from "@/components/home/DeparturesBoard";
 import DarkStatsBand from "@/components/home/DarkStatsBand";
 import Link from "next/link";
-import { faqs } from "@/lib/data/site";
+import { faqs, getContactLinks, getTestimonials } from "@/lib/data/site";
 import { getDestinations } from "@/lib/data/destinations";
 
 export default async function Home() {
-  const destinations = await getDestinations();
+  const [destinations, links, testimonials] = await Promise.all([
+    getDestinations(),
+    getContactLinks(),
+    getTestimonials(),
+  ]);
   return (
     <>
-      <Hero destinations={destinations} />
+      <Hero destinations={destinations} whatsapp={links.whatsapp} />
       <StatsBar />
       <HotCakes destinations={destinations} />
       <DestinationsGrid destinations={destinations} />
       <JourneyTimeline />
-      <StoriesWall />
+      <StoriesWall testimonials={testimonials} />
       <WhyChooseUs />
       <AlbaniaSpotlight />
       <AdvisorTeaser destinations={destinations} />

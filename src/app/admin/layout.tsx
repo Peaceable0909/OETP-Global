@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { LogOut, Globe2 } from "lucide-react";
+import { LogOut, Globe2, Quote, Settings, BarChart3 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -47,12 +47,38 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <p className="text-xs font-bold uppercase tracking-widest text-brand-600">Admin</p>
           <h1 className="font-display text-2xl font-bold">Site Content</h1>
         </div>
-        <nav className="flex items-center gap-3">
+        <nav className="flex flex-wrap items-center gap-3">
           <Link
             href="/admin/"
-            className="inline-flex items-center gap-1.5 rounded-full bg-brand-100 px-4 py-2 text-sm font-bold text-brand-700 hover:bg-brand-200"
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold ${
+              pathname === "/admin/" ? "bg-brand-600 text-white" : "bg-brand-100 text-brand-700 hover:bg-brand-200"
+            }`}
           >
             <Globe2 className="h-4 w-4" /> Countries
+          </Link>
+          <Link
+            href="/admin/stories/"
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold ${
+              pathname?.startsWith("/admin/stories") ? "bg-brand-600 text-white" : "bg-brand-100 text-brand-700 hover:bg-brand-200"
+            }`}
+          >
+            <Quote className="h-4 w-4" /> Stories
+          </Link>
+          <Link
+            href="/admin/analytics/"
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold ${
+              pathname === "/admin/analytics/" ? "bg-brand-600 text-white" : "bg-brand-100 text-brand-700 hover:bg-brand-200"
+            }`}
+          >
+            <BarChart3 className="h-4 w-4" /> Analytics
+          </Link>
+          <Link
+            href="/admin/settings/"
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold ${
+              pathname === "/admin/settings/" ? "bg-brand-600 text-white" : "bg-brand-100 text-brand-700 hover:bg-brand-200"
+            }`}
+          >
+            <Settings className="h-4 w-4" /> Settings
           </Link>
           <button
             onClick={logout}

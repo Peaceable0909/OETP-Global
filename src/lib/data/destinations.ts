@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { destinationImage, specializationImage } from "@/lib/imagePaths";
+import { queryD1 } from "@/lib/data/d1";
 
 export type Destination = {
   slug: string;
@@ -237,9 +238,94 @@ const FALLBACK_DESTINATIONS: Destination[] = [
       { q: "Is it affordable?", a: "Yes, both tuition and living costs are very low, and the economy uses US dollars." },
     ],
   },
+  {
+    slug: "thailand",
+    code: "TH",
+    name: "Thailand",
+    tagline: "Affordable Living, World-Class Hospitality Training",
+    heroGradient: "from-amber-600 via-orange-500 to-yellow-400",
+    photo: destinationImage("thailand"),
+    accent: "#F59E0B",
+    summary:
+      "Thailand pairs genuinely affordable tuition and living costs with globally respected hospitality and business programs, English-taught options, and a growing pathway into Southeast Asia's booming tourism industry.",
+    capital: "Bangkok",
+    language: "Thai / English-taught programs",
+    currency: "Thai Baht (฿)",
+    intakeMonths: "Jan, Jun, Aug",
+    visaProcessing: "3 – 5 weeks",
+    programLength: "1 – 4 years",
+    tuitionFrom: "$2,200 / year",
+    workRights: "Limited on-campus work permitted for students",
+    featured: true,
+    highlights: [
+      "Very affordable tuition and cost of living",
+      "English-taught hospitality and business programs",
+      "Direct pathway into Southeast Asia's tourism industry",
+      "Warm climate, welcoming culture",
+      "Admissions currently open",
+    ],
+    programs: [
+      { name: "Hospitality & Tourism Management", length: "2 – 3 years", note: "Strong industry placement network" },
+      { name: "Business Administration", length: "3 years", note: "Bachelor & Masters" },
+      { name: "International Culinary Arts", length: "1 – 2 years", note: "Thai and international cuisine" },
+    ],
+    visaSteps: [
+      { title: "Apply online", detail: "Submit your application and academic documents." },
+      { title: "Admission letter", detail: "We secure your offer from a partner institution." },
+      { title: "Student visa (Non-ED)", detail: "Guided document prep and embassy submission." },
+      { title: "Fly to Bangkok", detail: "Arrival support and orientation." },
+    ],
+    requirements: ["Secondary school certificate", "Valid international passport", "Basic English proficiency"],
+    documents: ["International passport", "Academic certificates", "Passport photograph"],
+    faqs: [
+      { q: "Is Thailand affordable?", a: "Yes — tuition and living costs are among the lowest for the quality of hospitality and business training offered." },
+      { q: "Can I work while studying?", a: "Limited on-campus work is permitted; off-campus work requires separate authorization." },
+    ],
+  },
+  {
+    slug: "russia",
+    code: "RU",
+    name: "Russia",
+    tagline: "World-Class Medicine & Engineering, Low Tuition",
+    heroGradient: "from-blue-700 via-blue-600 to-sky-500",
+    photo: destinationImage("russia"),
+    accent: "#2563EB",
+    summary:
+      "Russia offers internationally recognized medical and engineering degrees at a fraction of Western tuition costs, with a long tradition of technical excellence and English-taught international programs.",
+    capital: "Moscow",
+    language: "Russian (English-taught international programs available)",
+    currency: "Russian Ruble (₽)",
+    intakeMonths: "Sep, Feb",
+    visaProcessing: "4 – 6 weeks",
+    programLength: "4 – 6 years",
+    tuitionFrom: "$3,500 / year",
+    workRights: "Limited student work permitted",
+    featured: false,
+    highlights: [
+      "Internationally recognized medical and engineering degrees",
+      "Significantly lower tuition than Western equivalents",
+      "English-taught international programs available",
+      "Strong tradition in technical and scientific education",
+    ],
+    programs: [
+      { name: "Medicine (MBBS equivalent)", length: "6 years", note: "WHO/ECFMG-listed institutions" },
+      { name: "Engineering", length: "4 years", note: "Strong technical faculties" },
+      { name: "Business & Economics", length: "4 years", note: "Bachelor & Masters" },
+    ],
+    visaSteps: [
+      { title: "Apply online", detail: "Submit your application and academic records." },
+      { title: "Admission & invitation letter", detail: "We secure your official university invitation." },
+      { title: "Student visa", detail: "Guided document prep and embassy submission." },
+      { title: "Arrival", detail: "Orientation and settling-in support." },
+    ],
+    requirements: ["Secondary school certificate", "Valid international passport", "English proficiency for English-taught programs"],
+    documents: ["International passport", "Academic certificates", "Transcripts", "Passport photograph"],
+    faqs: [
+      { q: "Are degrees internationally recognized?", a: "Yes — many Russian medical and engineering programs are listed with international accreditation bodies; we guide you to recognized institutions." },
+      { q: "Do I need to speak Russian?", a: "Not for English-taught international programs, though some Russian language preparation is often included." },
+    ],
+  },
 ];
-
-const D1_DATABASE_ID = "a23e3497-2f70-48c4-9f95-af493a5e8204";
 
 type CountryRow = {
   slug: string;
@@ -306,41 +392,9 @@ function rowToDestination(row: CountryRow): Destination {
   };
 }
 
-async function fetchFromD1(): Promise<Destination[] | null> {
-  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
-  const apiToken = process.env.CLOUDFLARE_API_TOKEN;
-  if (!accountId || !apiToken) return null;
-
-  try {
-    const res = await fetch(
-      `https://api.cloudflare.com/client/v4/accounts/${accountId}/d1/database/${D1_DATABASE_ID}/query`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiToken}`,
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          sql: "SELECT * FROM countries WHERE status = 'published' ORDER BY name",
-        }),
-      }
-    );
-    if (!res.ok) return null;
-
-    const data = (await res.json()) as {
-      success: boolean;
-      result?: { results: CountryRow[]; success: boolean }[];
-    };
-    if (!data.success || !data.result?.[0]?.success) return null;
-
-    return data.result[0].results.map(rowToDestination);
-  } catch {
-    return null;
-  }
-}
-
 export const getDestinations = cache(async (): Promise<Destination[]> => {
-  const fromD1 = await fetchFromD1();
+  const rows = await queryD1<CountryRow>("SELECT * FROM countries WHERE status = 'published' ORDER BY name");
+  const fromD1 = rows?.map(rowToDestination);
   return fromD1 && fromD1.length > 0 ? fromD1 : FALLBACK_DESTINATIONS;
 });
 

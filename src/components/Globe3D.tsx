@@ -1,10 +1,40 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Html } from "@react-three/drei";
+import { OrbitControls, Html, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+
+const EARTH_MODEL_URL = "/models/earth.glb";
+
+// Manually-uploaded Earth model (see IMAGES.md-style upload instructions):
+// drop a .glb at public/models/earth.glb via GitHub and it replaces the
+// procedural sphere below automatically, no code change needed. We HEAD-check
+// first rather than letting useGLTF throw, since a 404 inside R3F's Suspense
+// tree has no error boundary here and would crash the whole canvas.
+function useEarthModelAvailable(): boolean {
+  const [available, setAvailable] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    fetch(EARTH_MODEL_URL, { method: "HEAD" })
+      .then((res) => {
+        if (!cancelled) setAvailable(res.ok);
+      })
+      .catch(() => {
+        if (!cancelled) setAvailable(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return available;
+}
+
+function EarthModel() {
+  const { scene } = useGLTF(EARTH_MODEL_URL);
+  return <primitive object={scene} scale={1} />;
+}
 
 type Marker = { slug: string; name: string; code: string; color: string; lat: number; lng: number };
 
@@ -13,6 +43,8 @@ const markers: Marker[] = [
   { slug: "albania", name: "Albania", code: "AL", color: "#DC2626", lat: 41.15, lng: 20.17 },
   { slug: "malaysia", name: "Malaysia", code: "MY", color: "#4F46E5", lat: 4.21, lng: 101.98 },
   { slug: "cambodia", name: "Cambodia", code: "KH", color: "#7C3AED", lat: 12.57, lng: 104.99 },
+  { slug: "thailand", name: "Thailand", code: "TH", color: "#F59E0B", lat: 13.75, lng: 100.5 },
+  { slug: "russia", name: "Russia", code: "RU", color: "#2563EB", lat: 55.75, lng: 37.62 },
 ];
 
 function latLngToVec3(lat: number, lng: number, r: number): [number, number, number] {
@@ -68,23 +100,33 @@ function DestinationMarker({ marker }: { marker: Marker }) {
 }
 
 function GlobeMesh() {
+  const earthAvailable = useEarthModelAvailable();
+
   return (
     <group rotation={[0.1, 0, 0]}>
-      {/* solid core */}
-      <mesh>
-        <sphereGeometry args={[1, 48, 48]} />
-        <meshStandardMaterial color="#3b1d78" roughness={0.85} metalness={0.05} />
-      </mesh>
-      {/* wireframe graticule shell */}
-      <mesh>
-        <sphereGeometry args={[1.004, 24, 16]} />
-        <meshBasicMaterial color="#c4b0fb" wireframe transparent opacity={0.35} />
-      </mesh>
-      {/* soft outer glow shell */}
-      <mesh>
-        <sphereGeometry args={[1.08, 32, 32]} />
-        <meshBasicMaterial color="#8b5cf6" transparent opacity={0.08} side={THREE.BackSide} />
-      </mesh>
+      {earthAvailable ? (
+        <Suspense fallback={null}>
+          <EarthModel />
+        </Suspense>
+      ) : (
+        <>
+          {/* solid core */}
+          <mesh>
+            <sphereGeometry args={[1, 48, 48]} />
+            <meshStandardMaterial color="#3b1d78" roughness={0.85} metalness={0.05} />
+          </mesh>
+          {/* wireframe graticule shell */}
+          <mesh>
+            <sphereGeometry args={[1.004, 24, 16]} />
+            <meshBasicMaterial color="#c4b0fb" wireframe transparent opacity={0.35} />
+          </mesh>
+          {/* soft outer glow shell */}
+          <mesh>
+            <sphereGeometry args={[1.08, 32, 32]} />
+            <meshBasicMaterial color="#8b5cf6" transparent opacity={0.08} side={THREE.BackSide} />
+          </mesh>
+        </>
+      )}
 
       {markers.map((m) => (
         <DestinationMarker key={m.slug} marker={m} />

@@ -8,6 +8,7 @@ import CTABand from "@/components/CTABand";
 import WaiverBanner from "@/components/WaiverBanner";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
+import TrackDestinationView from "@/components/TrackDestinationView";
 import { Icon, type IconName } from "@/lib/icons";
 import { Briefcase, FileText } from "lucide-react";
 
@@ -55,6 +56,7 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
 
   return (
     <>
+      <TrackDestinationView slug={d.slug} />
       {/* Hero with photo */}
       <section className="relative overflow-hidden text-white">
         <SmartImage src={d.photo} alt={d.name} accent={d.accent} className="absolute inset-0 h-full w-full object-cover" />

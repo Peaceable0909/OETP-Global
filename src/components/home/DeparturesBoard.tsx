@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
-import { site } from "@/lib/data/site";
+import { getContactLinks } from "@/lib/data/site";
 import { MessageCircle, Send, Phone, ArrowRight } from "lucide-react";
 
-export default function DeparturesBoard() {
+export default async function DeparturesBoard() {
+  const { whatsapp, telegram } = await getContactLinks();
   return (
     <section className="relative overflow-hidden bg-brand-950 py-16 text-white">
       <div className="pointer-events-none absolute inset-0 opacity-30 [background:radial-gradient(1px_1px_at_15%_25%,white,transparent),radial-gradient(1px_1px_at_65%_70%,white,transparent),radial-gradient(1px_1px_at_85%_15%,white,transparent),radial-gradient(1px_1px_at_35%_85%,white,transparent)] [background-size:220px_220px]" />
@@ -28,7 +29,7 @@ export default function DeparturesBoard() {
 
             <div className="flex flex-wrap gap-3">
               <a
-                href={site.whatsapp}
+                href={whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-green-500/15 px-5 py-3 text-sm font-bold text-green-300 transition-colors hover:bg-green-500/25"
@@ -36,7 +37,7 @@ export default function DeparturesBoard() {
                 <MessageCircle className="h-4 w-4" aria-hidden="true" /> Chat on WhatsApp
               </a>
               <a
-                href={site.telegram}
+                href={telegram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full bg-sky-500/15 px-5 py-3 text-sm font-bold text-sky-300 transition-colors hover:bg-sky-500/25"

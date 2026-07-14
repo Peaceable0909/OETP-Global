@@ -77,3 +77,40 @@ INSERT OR IGNORE INTO countries (
   '[]',
   'published'
 );
+INSERT OR IGNORE INTO countries (
+  slug, name, code, tagline, hero_gradient, accent, photo, summary, capital, language,
+  currency, intake_months, visa_processing, program_length, tuition_from, work_rights,
+  featured, highlights, programs, visa_steps, requirements, documents, faqs, specializations, status
+) VALUES
+(
+  'thailand', 'Thailand', 'TH', 'Affordable Living, World-Class Hospitality Training',
+  'from-amber-600 via-orange-500 to-yellow-400', '#F59E0B', '/images/destinations/thailand/hero.jpg',
+  'Thailand pairs genuinely affordable tuition and living costs with globally respected hospitality and business programs, English-taught options, and a growing pathway into Southeast Asia''s booming tourism industry.',
+  'Bangkok', 'Thai / English-taught programs', 'Thai Baht (฿)',
+  'Jan, Jun, Aug', '3 – 5 weeks', '1 – 4 years', '$2,200 / year',
+  'Limited on-campus work permitted for students', 1,
+  '["Very affordable tuition and cost of living","English-taught hospitality and business programs","Direct pathway into Southeast Asia''s tourism industry","Warm climate, welcoming culture","Admissions currently open"]',
+  '[{"name":"Hospitality & Tourism Management","length":"2 – 3 years","note":"Strong industry placement network"},{"name":"Business Administration","length":"3 years","note":"Bachelor & Masters"},{"name":"International Culinary Arts","length":"1 – 2 years","note":"Thai and international cuisine"}]',
+  '[{"title":"Apply online","detail":"Submit your application and academic documents."},{"title":"Admission letter","detail":"We secure your offer from a partner institution."},{"title":"Student visa (Non-ED)","detail":"Guided document prep and embassy submission."},{"title":"Fly to Bangkok","detail":"Arrival support and orientation."}]',
+  '["Secondary school certificate","Valid international passport","Basic English proficiency"]',
+  '["International passport","Academic certificates","Passport photograph"]',
+  '[{"q":"Is Thailand affordable?","a":"Yes — tuition and living costs are among the lowest for the quality of hospitality and business training offered."},{"q":"Can I work while studying?","a":"Limited on-campus work is permitted; off-campus work requires separate authorization."}]',
+  '[]',
+  'published'
+),
+(
+  'russia', 'Russia', 'RU', 'World-Class Medicine & Engineering, Low Tuition',
+  'from-blue-700 via-blue-600 to-sky-500', '#2563EB', '/images/destinations/russia/hero.jpg',
+  'Russia offers internationally recognized medical and engineering degrees at a fraction of Western tuition costs, with a long tradition of technical excellence and English-taught international programs.',
+  'Moscow', 'Russian (English-taught international programs available)', 'Russian Ruble (₽)',
+  'Sep, Feb', '4 – 6 weeks', '4 – 6 years', '$3,500 / year',
+  'Limited student work permitted', 0,
+  '["Internationally recognized medical and engineering degrees","Significantly lower tuition than Western equivalents","English-taught international programs available","Strong tradition in technical and scientific education"]',
+  '[{"name":"Medicine (MBBS equivalent)","length":"6 years","note":"WHO/ECFMG-listed institutions"},{"name":"Engineering","length":"4 years","note":"Strong technical faculties"},{"name":"Business & Economics","length":"4 years","note":"Bachelor & Masters"}]',
+  '[{"title":"Apply online","detail":"Submit your application and academic records."},{"title":"Admission & invitation letter","detail":"We secure your official university invitation."},{"title":"Student visa","detail":"Guided document prep and embassy submission."},{"title":"Arrival","detail":"Orientation and settling-in support."}]',
+  '["Secondary school certificate","Valid international passport","English proficiency for English-taught programs"]',
+  '["International passport","Academic certificates","Transcripts","Passport photograph"]',
+  '[{"q":"Are degrees internationally recognized?","a":"Yes — many Russian medical and engineering programs are listed with international accreditation bodies; we guide you to recognized institutions."},{"q":"Do I need to speak Russian?","a":"Not for English-taught international programs, though some Russian language preparation is often included."}]',
+  '[]',
+  'published'
+);

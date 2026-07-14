@@ -26,7 +26,11 @@ public/images/destinations/albania/hero.jpg
 public/images/destinations/cyprus/hero.jpg
 public/images/destinations/malaysia/hero.jpg
 public/images/destinations/cambodia/hero.jpg
+public/images/destinations/thailand/hero.jpg
+public/images/destinations/russia/hero.jpg
 ```
+
+(Countries can now also have their hero photo uploaded directly through `/admin/destinations/edit/` instead of this manual path — either approach works.)
 
 **Albania culinary specialization photos** (4 small cards on the Albania page):
 ```
