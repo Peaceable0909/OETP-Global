@@ -43,6 +43,8 @@ const markers: Marker[] = [
   { slug: "albania", name: "Albania", code: "AL", color: "#DC2626", lat: 41.15, lng: 20.17 },
   { slug: "malaysia", name: "Malaysia", code: "MY", color: "#4F46E5", lat: 4.21, lng: 101.98 },
   { slug: "cambodia", name: "Cambodia", code: "KH", color: "#7C3AED", lat: 12.57, lng: 104.99 },
+  { slug: "thailand", name: "Thailand", code: "TH", color: "#F59E0B", lat: 13.75, lng: 100.5 },
+  { slug: "russia", name: "Russia", code: "RU", color: "#2563EB", lat: 55.75, lng: 37.62 },
 ];
 
 function latLngToVec3(lat: number, lng: number, r: number): [number, number, number] {

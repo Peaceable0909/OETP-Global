@@ -13,7 +13,7 @@ export default function DestinationsGrid({ destinations }: { destinations: Desti
         <SectionHeading
           eyebrow="Destinations"
           title="Where Will Your Story Begin?"
-          sub="Four destinations with straightforward admissions and visa processes — each one vetted, each one with real support on the ground."
+          sub="Six destinations with straightforward admissions and visa processes — each one vetted, each one with real support on the ground."
         />
 
         <div className="mt-14 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
