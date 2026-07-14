@@ -7,7 +7,7 @@ import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
 import HeroSearch from "@/components/home/HeroSearch";
 import Globe3D from "@/components/Globe3D";
-import { MessageCircle, Plane, PlaneTakeoff } from "lucide-react";
+import { MessageCircle, PlaneTakeoff } from "lucide-react";
 import type { Destination } from "@/lib/data/destinations";
 
 const pins = [
@@ -114,9 +114,6 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
           <div className="pointer-events-none absolute bottom-[-2%] right-[14%] w-32 animate-float overflow-hidden rounded-2xl border-4 border-white shadow-2xl shadow-brand-600/25 sm:w-36">
             <SmartImage src={heroPhotos.city} alt="Destination city" className="aspect-[4/3] w-full object-cover" />
           </div>
-          <span className="pointer-events-none absolute left-[34%] top-[0%] animate-float-slow drop-shadow-lg" aria-hidden>
-            <Plane className="h-10 w-10 rotate-[-20deg] fill-brand-600 text-brand-600" />
-          </span>
         </div>
       </div>
     </section>
