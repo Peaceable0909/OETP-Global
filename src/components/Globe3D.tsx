@@ -107,11 +107,16 @@ function OrbitingPlane() {
   useFrame(({ clock }) => {
     if (orbitRef.current) orbitRef.current.rotation.y = clock.elapsedTime * 0.45;
   });
+  // The model's nose points -X and its belly -Y as authored. The orbit's
+  // direction of travel is always local -Z, so: yaw -90° to fly nose-first,
+  // then roll -90° about the travel axis so the belly faces the globe.
   return (
     <group rotation={[0.45, 0, -0.3]}>
       <group ref={orbitRef}>
-        <group position={[1.22, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <PlaneModel />
+        <group position={[1.22, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
+          <group rotation={[0, -Math.PI / 2, 0]}>
+            <PlaneModel />
+          </group>
         </group>
       </group>
     </group>
