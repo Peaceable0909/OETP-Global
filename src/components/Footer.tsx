@@ -7,8 +7,7 @@ import { MessageCircle, Send } from "lucide-react";
 export default async function Footer({ destinations }: { destinations: Destination[] }) {
   const { whatsapp, telegram } = await getContactLinks();
   return (
-    <footer className="relative overflow-hidden bg-brand-950 text-brand-100">
-      <div className="pointer-events-none absolute -top-32 left-1/2 h-64 w-[42rem] -translate-x-1/2 rounded-full bg-brand-600/20 blur-3xl" />
+    <footer className="relative overflow-hidden bg-navy text-white/80">
       <div className="relative mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div>
           <div className="flex items-center gap-2.5">
@@ -16,12 +15,12 @@ export default async function Footer({ destinations }: { destinations: Destinati
             <img src="/images/logo-mark.png" alt="" className="h-11 w-11 object-contain" />
             <span className="leading-tight">
               <span className="block font-display text-[15px] font-bold text-white">COMPETENZA</span>
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-300">
+              <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
                 Business Services
               </span>
             </span>
           </div>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-brand-200/80">{site.description}</p>
+          <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/70">{site.description}</p>
         </div>
 
         <div>
@@ -29,7 +28,7 @@ export default async function Footer({ destinations }: { destinations: Destinati
           <ul className="mt-4 space-y-2.5 text-sm">
             {destinations.map((d) => (
               <li key={d.slug}>
-                <Link href={`/destinations/${d.slug}/`} className="inline-flex items-center gap-2 text-brand-200/80 transition-colors hover:text-white">
+                <Link href={`/destinations/${d.slug}/`} className="inline-flex items-center gap-2 text-white/70 transition-colors hover:text-white">
                   <Flag code={d.code} color={d.accent} /> {d.name}
                 </Link>
               </li>
@@ -49,7 +48,7 @@ export default async function Footer({ destinations }: { destinations: Destinati
               { href: "/apply/", label: "Apply Now" },
             ].map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="text-brand-200/80 transition-colors hover:text-white">
+                <Link href={l.href} className="text-white/70 transition-colors hover:text-white">
                   {l.label}
                 </Link>
               </li>
@@ -70,11 +69,11 @@ export default async function Footer({ destinations }: { destinations: Destinati
                 <Send className="h-4 w-4" aria-hidden="true" /> Telegram Assistant
               </a>
             </li>
-            <li className="pt-1 text-brand-200/80">{site.address}</li>
+            <li className="pt-1 text-white/70">{site.address}</li>
           </ul>
         </div>
       </div>
-      <div className="relative border-t border-white/10 py-5 text-center text-xs text-brand-300/70">
+      <div className="relative border-t border-white/10 py-5 text-center text-xs text-white/50">
         © {new Date().getFullYear()} {site.name}. Some services are free; others carry transparent fees you approve upfront.
       </div>
     </footer>

@@ -22,10 +22,10 @@ const values: { icon: IconName; title: string; desc: string }[] = [
 export default function AboutPage() {
   return (
     <>
-      <section className="bg-gradient-to-b from-brand-50 to-white px-5 pt-16 text-center">
+      <section className="bg-white px-5 pt-16 text-center">
         <h1 className="mx-auto max-w-3xl text-4xl font-extrabold sm:text-5xl">
           We Open Doors That
-          <span className="bg-gradient-to-r from-brand-600 to-fuchsia-500 bg-clip-text text-transparent"> Actually Open</span>
+          <span className="text-study"> Actually Open</span>
         </h1>
         <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">
           {site.name} is an international education and career consultancy. We market
@@ -34,7 +34,7 @@ export default function AboutPage() {
           you, we guide you end-to-end: from choosing a destination through documents, visa
           and pre-departure, until you arrive.
         </p>
-        <p className="mx-auto mt-4 max-w-2xl rounded-2xl bg-brand-50 px-6 py-4 text-base font-semibold italic text-brand-800">
+        <p className="mx-auto mt-4 max-w-2xl rounded-2xl bg-surface px-6 py-4 text-base font-semibold italic text-ink">
           &ldquo;Studying or working abroad doesn&apos;t have to be confusing. We&apos;ve already
           identified genuine opportunities, we know the process, and we&apos;ll guide you every
           step of the way.&rdquo;
@@ -43,17 +43,17 @@ export default function AboutPage() {
 
       <section className="mx-auto mt-16 grid max-w-5xl gap-6 px-5 md:grid-cols-2">
         <Reveal>
-          <div className="h-full rounded-3xl bg-gradient-to-br from-brand-700 to-brand-900 p-8 text-white shadow-2xl shadow-brand-600/25">
+          <div className="h-full rounded-3xl bg-navy p-8 text-white">
             <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/15" aria-hidden>
               <Target className="h-6 w-6" />
             </span>
             <h2 className="mt-3 font-display text-xl font-extrabold">Our Mission</h2>
-            <p className="mt-3 text-sm leading-relaxed text-brand-100">{site.mission}</p>
+            <p className="mt-3 text-sm leading-relaxed text-white/80">{site.mission}</p>
           </div>
         </Reveal>
         <Reveal delay={100}>
-          <div className="h-full rounded-3xl border border-brand-100 bg-white p-8 shadow-xl shadow-brand-600/10">
-            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-100 text-brand-700" aria-hidden>
+          <div className="h-full rounded-3xl border border-line bg-white p-8">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-study-soft text-study" aria-hidden>
               <Telescope className="h-6 w-6" />
             </span>
             <h2 className="mt-3 font-display text-xl font-extrabold">Our Vision</h2>
@@ -74,8 +74,8 @@ export default function AboutPage() {
         <div className="mt-12 grid gap-6 sm:grid-cols-2">
           {values.map((v, i) => (
             <Reveal key={v.title} delay={i * 80}>
-              <div className="flex gap-5 rounded-3xl border border-brand-100 bg-white p-7 shadow-lg shadow-brand-600/8">
-                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brand-100 text-brand-700">
+              <div className="flex gap-5 rounded-3xl border border-line bg-white p-7">
+                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-study-soft text-study">
                   <Icon name={v.icon} className="h-6 w-6" />
                 </span>
                 <div>

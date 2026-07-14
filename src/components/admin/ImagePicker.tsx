@@ -78,7 +78,7 @@ export default function ImagePicker({ label, value, onChange, kind, countrySlug 
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder="https://..."
-            className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm outline-none focus:border-brand-500"
+            className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
           />
         )}
       </div>
@@ -87,7 +87,7 @@ export default function ImagePicker({ label, value, onChange, kind, countrySlug 
       {error && <p className="mt-1 text-xs font-semibold text-red-600">{error}</p>}
       {value && (
         <div className="mt-2 flex items-center gap-2">
-          <img src={value} alt="" className="h-14 w-20 rounded-lg object-cover border border-brand-100" />
+          <img src={value} alt="" className="h-14 w-20 rounded-lg object-cover border border-line" />
           <span className="truncate text-xs text-ink-soft">{value}</span>
         </div>
       )}

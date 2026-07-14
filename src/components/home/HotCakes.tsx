@@ -14,7 +14,7 @@ function CountdownRibbon({ expiresAt }: { expiresAt: string | null }) {
   const cd = useCountdown(expiresAt);
   if (!cd || cd.expired) return null;
   return (
-    <span className="absolute right-3 top-3 rounded-full bg-black/55 px-2.5 py-1 text-[10px] font-bold tabular-nums text-white backdrop-blur-sm">
+    <span className="absolute right-3 top-3 rounded-full bg-black/60 px-2.5 py-1 text-[10px] font-bold tabular-nums text-white">
       Ends in {cd.days}d {String(cd.hours).padStart(2, "0")}h {String(cd.mins).padStart(2, "0")}m
     </span>
   );
@@ -33,11 +33,11 @@ function CountdownDigits({ expiresAt }: { expiresAt: string | null }) {
   return (
     <div className="grid grid-cols-4 gap-2">
       {cells.map((c) => (
-        <div key={c.l} className="rounded-xl bg-brand-950 px-1 py-1.5 text-center text-white">
+        <div key={c.l} className="rounded-xl bg-navy px-1 py-1.5 text-center text-white">
           <span className="block font-display text-base font-extrabold tabular-nums">
             {String(c.v).padStart(2, "0")}
           </span>
-          <span className="block text-[9px] font-bold uppercase tracking-widest text-brand-300">{c.l}</span>
+          <span className="block text-[9px] font-bold uppercase tracking-widest text-white/60">{c.l}</span>
         </div>
       ))}
     </div>
@@ -46,9 +46,9 @@ function CountdownDigits({ expiresAt }: { expiresAt: string | null }) {
 
 const badgeColors: Record<string, string> = {
   HOT: "bg-hot text-white",
-  "MOST POPULAR": "bg-brand-600 text-white",
-  NEW: "bg-emerald-500 text-white",
-  TRENDING: "bg-fuchsia-500 text-white",
+  "MOST POPULAR": "bg-study text-white",
+  NEW: "bg-success text-white",
+  TRENDING: "bg-scholar text-white",
 };
 
 function OfferCard({ offer, index, destinations }: { offer: Offer; index: number; destinations: Destination[] }) {
@@ -62,8 +62,8 @@ function OfferCard({ offer, index, destinations }: { offer: Offer; index: number
       className="w-[19rem] shrink-0 snap-start sm:w-[21rem]"
     >
       <article
-        className={`group flex h-full flex-col overflow-hidden rounded-3xl border bg-white shadow-xl shadow-brand-600/8 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-600/20 ${
-          limited ? "border-brand-300 ring-2 ring-brand-500/40" : "border-brand-100"
+        className={`group flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-all duration-300 hover:-translate-y-2 hover:shadow-lg ${
+          limited ? "border-hot/50" : "border-line"
         }`}
       >
         <div className="relative h-40 overflow-hidden">
@@ -91,7 +91,7 @@ function OfferCard({ offer, index, destinations }: { offer: Offer; index: number
           <ul className="space-y-1.5 text-[13px] font-medium text-ink-soft">
             {(dest?.highlights ?? []).slice(0, 3).map((h) => (
               <li key={h} className="flex gap-2">
-                <span className="text-brand-600">✦</span>
+                <span className="text-hot">✦</span>
                 <span className="line-clamp-1">{h}</span>
               </li>
             ))}
@@ -111,7 +111,7 @@ function OfferCard({ offer, index, destinations }: { offer: Offer; index: number
               <CountdownDigits expiresAt={offer.expires_at} />
               <Link
                 href={`/apply/?destination=${offer.destination}`}
-                className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-brand-600/25 transition-transform duration-200 hover:scale-[1.03]"
+                className="flex items-center justify-center gap-2 rounded-full bg-hot px-4 py-2.5 text-sm font-bold text-white transition-all duration-200 hover:scale-[1.02] hover:brightness-95"
               >
                 Apply Now <span aria-hidden>→</span>
               </Link>
@@ -119,7 +119,7 @@ function OfferCard({ offer, index, destinations }: { offer: Offer; index: number
           ) : (
             <Link
               href={`/destinations/${offer.destination}/`}
-              className="mt-auto w-max rounded-full border-2 border-brand-200 px-5 py-2 text-sm font-bold text-brand-800 transition-colors hover:border-brand-400 hover:bg-brand-50"
+              className="mt-auto w-max rounded-full border border-line px-5 py-2 text-sm font-bold text-ink transition-colors hover:border-hot hover:text-hot"
             >
               View Details →
             </Link>
@@ -143,9 +143,7 @@ export default function HotCakes({ destinations }: { destinations: Destination[]
   };
 
   return (
-    <section id="hot-cakes" className="relative scroll-mt-24 py-24">
-      <div className="pointer-events-none absolute right-0 top-10 h-72 w-72 rounded-full bg-hot/10 blur-3xl" />
-
+    <section id="hot-cakes" className="relative scroll-mt-24 bg-white py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-4">
@@ -153,13 +151,13 @@ export default function HotCakes({ destinations }: { destinations: Destination[]
               <span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-hot-deep">
                 <Flame className="h-4 w-4" aria-hidden="true" /> Hot Cakes — Limited Seats!
               </span>
-              <h2 className="mt-2 text-3xl font-bold sm:text-4xl lg:text-[2.75rem]">Grab These Before They&apos;re Gone</h2>
+              <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl lg:text-[2.75rem]">Grab These Before They&apos;re Gone</h2>
               <p className="mt-2 text-ink-soft">Limited seats. Exclusive offers. Don&apos;t miss out.</p>
             </div>
             <div className="flex items-center gap-3">
               <Link
                 href="/destinations/"
-                className="rounded-full border-2 border-brand-200 px-5 py-2.5 text-sm font-bold text-brand-800 transition-colors hover:bg-brand-50"
+                className="rounded-full border border-line px-5 py-2.5 text-sm font-bold text-ink transition-colors hover:bg-surface"
               >
                 View All Offers →
               </Link>
@@ -168,7 +166,7 @@ export default function HotCakes({ destinations }: { destinations: Destination[]
                   type="button"
                   aria-label="Scroll left"
                   onClick={() => scrollBy(-1)}
-                  className="grid h-10 w-10 place-items-center rounded-full border-2 border-brand-200 text-brand-700 transition-colors hover:bg-brand-50"
+                  className="grid h-11 w-11 place-items-center rounded-full border border-line text-ink-soft transition-colors hover:bg-surface"
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
@@ -176,7 +174,7 @@ export default function HotCakes({ destinations }: { destinations: Destination[]
                   type="button"
                   aria-label="Scroll right"
                   onClick={() => scrollBy(1)}
-                  className="grid h-10 w-10 place-items-center rounded-full border-2 border-brand-200 text-brand-700 transition-colors hover:bg-brand-50"
+                  className="grid h-11 w-11 place-items-center rounded-full border border-line text-ink-soft transition-colors hover:bg-surface"
                 >
                   <ChevronRight className="h-5 w-5" />
                 </button>

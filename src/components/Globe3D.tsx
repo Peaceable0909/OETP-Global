@@ -7,11 +7,10 @@ import { OrbitControls, Html, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 const EARTH_MODEL_URL = "/models/earth.glb";
-const PLANE_MODEL_URL = "/models/plane.glb";
 
-// Manually-uploaded models (see IMAGES.md-style upload instructions): drop a
-// .glb at public/models/earth.glb (or plane.glb) via GitHub and it is picked
-// up automatically, no code change needed. We HEAD-check first rather than
+// Manually-uploaded model (see IMAGES.md-style upload instructions): drop a
+// .glb at public/models/earth.glb via GitHub and it is picked up
+// automatically, no code change needed. We HEAD-check first rather than
 // letting useGLTF throw, since a 404 inside R3F's Suspense tree has no error
 // boundary here and would crash the whole canvas.
 function useModelAvailable(url: string): boolean {
@@ -80,17 +79,6 @@ function EarthModel() {
   );
 }
 
-function PlaneModel() {
-  const { scene } = useGLTF(PLANE_MODEL_URL);
-  const { scale, offset } = useNormalizedModel(scene, 0.42);
-  useMatteMaterials(scene);
-  return (
-    <group scale={scale}>
-      <primitive object={scene} position={offset} />
-    </group>
-  );
-}
-
 // Keeps a directional light glued to the camera so whichever side of the
 // globe faces the viewer is always lit, even while OrbitControls auto-rotates.
 function CameraLight() {
@@ -101,37 +89,15 @@ function CameraLight() {
   return <directionalLight ref={ref} intensity={1.3} />;
 }
 
-// A little plane circling the globe on a tilted orbit.
-function OrbitingPlane() {
-  const orbitRef = useRef<THREE.Group>(null);
-  useFrame(({ clock }) => {
-    if (orbitRef.current) orbitRef.current.rotation.y = clock.elapsedTime * 0.45;
-  });
-  // The model's nose points -X and its belly -Y as authored. The orbit's
-  // direction of travel is always local -Z, so: yaw -90° to fly nose-first,
-  // then roll -90° about the travel axis so the belly faces the globe.
-  return (
-    <group rotation={[0.45, 0, -0.3]}>
-      <group ref={orbitRef}>
-        <group position={[1.22, 0, 0]} rotation={[0, 0, -Math.PI / 2]}>
-          <group rotation={[0, -Math.PI / 2, 0]}>
-            <PlaneModel />
-          </group>
-        </group>
-      </group>
-    </group>
-  );
-}
-
 type Marker = { slug: string; name: string; code: string; color: string; lat: number; lng: number };
 
 const markers: Marker[] = [
   { slug: "cyprus", name: "Cyprus", code: "CY", color: "#0284C7", lat: 35.13, lng: 33.43 },
-  { slug: "albania", name: "Albania", code: "AL", color: "#DC2626", lat: 41.15, lng: 20.17 },
-  { slug: "malaysia", name: "Malaysia", code: "MY", color: "#4F46E5", lat: 4.21, lng: 101.98 },
-  { slug: "cambodia", name: "Cambodia", code: "KH", color: "#7C3AED", lat: 12.57, lng: 104.99 },
-  { slug: "thailand", name: "Thailand", code: "TH", color: "#F59E0B", lat: 13.75, lng: 100.5 },
-  { slug: "russia", name: "Russia", code: "RU", color: "#2563EB", lat: 55.75, lng: 37.62 },
+  { slug: "albania", name: "Albania", code: "AL", color: "#B91C1C", lat: 41.15, lng: 20.17 },
+  { slug: "malaysia", name: "Malaysia", code: "MY", color: "#15803D", lat: 4.21, lng: 101.98 },
+  { slug: "cambodia", name: "Cambodia", code: "KH", color: "#166534", lat: 12.57, lng: 104.99 },
+  { slug: "thailand", name: "Thailand", code: "TH", color: "#CA8A04", lat: 13.75, lng: 100.5 },
+  { slug: "russia", name: "Russia", code: "RU", color: "#0891B2", lat: 55.75, lng: 37.62 },
 ];
 
 function latLngToVec3(lat: number, lng: number, r: number): [number, number, number] {
@@ -188,15 +154,9 @@ function DestinationMarker({ marker }: { marker: Marker }) {
 
 function GlobeMesh() {
   const earthAvailable = useModelAvailable(EARTH_MODEL_URL);
-  const planeAvailable = useModelAvailable(PLANE_MODEL_URL);
 
   return (
     <group rotation={[0.1, 0, 0]}>
-      {planeAvailable && (
-        <Suspense fallback={null}>
-          <OrbitingPlane />
-        </Suspense>
-      )}
       {earthAvailable ? (
         <Suspense fallback={null}>
           <EarthModel />
@@ -235,7 +195,7 @@ export default function Globe3D() {
   if (!mounted) {
     return (
       <div className="grid h-full w-full place-items-center" aria-hidden="true">
-        <div className="h-[70%] w-[70%] animate-pulse rounded-full bg-brand-200/50" />
+        <div className="h-[70%] w-[70%] animate-pulse rounded-full bg-surface" />
       </div>
     );
   }

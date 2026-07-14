@@ -42,7 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-10 lg:px-8">
-      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-brand-100 pb-5">
+      <div className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-line pb-5">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-brand-600">Admin</p>
           <h1 className="font-display text-2xl font-bold">Site Content</h1>
@@ -82,7 +82,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Link>
           <button
             onClick={logout}
-            className="inline-flex items-center gap-1.5 rounded-full border border-brand-200 px-4 py-2 text-sm font-bold text-ink-soft hover:bg-brand-50"
+            className="inline-flex items-center gap-1.5 rounded-full border border-line px-4 py-2 text-sm font-bold text-ink-soft hover:bg-brand-50"
           >
             <LogOut className="h-4 w-4" /> Log out
           </button>

@@ -36,7 +36,7 @@ export default function HeroSearch({ destinations }: { destinations: Destination
   return (
     <form
       onSubmit={onSubmit}
-      className="grid gap-3 rounded-3xl border border-brand-100 bg-white/95 p-3 shadow-2xl shadow-brand-600/15 backdrop-blur-sm sm:grid-cols-[1fr_1fr_1fr_auto] sm:gap-0 sm:divide-x sm:divide-brand-100"
+      className="grid gap-3 rounded-3xl border border-line bg-white p-3 sm:grid-cols-[1fr_1fr_1fr_auto] sm:gap-0 sm:divide-x sm:divide-line"
     >
       <label className="block px-3 py-1.5 sm:py-2">
         <span className="block text-[10px] font-bold uppercase tracking-wider text-ink-soft">I want to</span>
@@ -68,7 +68,7 @@ export default function HeroSearch({ destinations }: { destinations: Destination
 
       <button
         type="submit"
-        className="mt-1 flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-brand-600 to-brand-800 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-brand-600/30 transition-transform hover:scale-[1.02] sm:mt-0"
+        className="mt-1 flex items-center justify-center gap-2 rounded-2xl bg-study px-6 py-3.5 text-sm font-bold text-white transition-transform hover:scale-[1.02] sm:mt-0"
       >
         <Search className="h-4 w-4" aria-hidden="true" />
         Find My Future

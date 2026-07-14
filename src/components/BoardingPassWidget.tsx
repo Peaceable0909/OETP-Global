@@ -19,16 +19,16 @@ export default function BoardingPassWidget() {
 
   return (
     <div className="fixed bottom-5 right-5 z-40 hidden animate-float sm:block">
-      <div className="relative flex items-center gap-3 rounded-2xl border border-brand-100 bg-white/95 py-2.5 pl-4 pr-3 shadow-2xl shadow-brand-600/20 backdrop-blur-sm">
+      <div className="relative flex items-center gap-3 rounded-2xl border border-line bg-white py-2.5 pl-4 pr-3">
         <button
           type="button"
           aria-label="Dismiss"
           onClick={() => setDismissed(true)}
-          className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full bg-brand-950 text-white shadow"
+          className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full bg-navy text-white shadow"
         >
           <X className="h-3 w-3" />
         </button>
-        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-600 to-brand-800 text-white">
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-study text-white">
           <PlaneTakeoff className="h-4 w-4" aria-hidden="true" />
         </span>
         <div className="leading-tight">
@@ -39,7 +39,7 @@ export default function BoardingPassWidget() {
         </div>
         <Link
           href="/apply/"
-          className="ml-1 rounded-full bg-brand-950 px-3.5 py-2 text-xs font-bold text-white transition-transform hover:scale-105"
+          className="ml-1 rounded-full bg-navy px-3.5 py-2 text-xs font-bold text-white transition-transform hover:scale-105"
         >
           Apply
         </Link>

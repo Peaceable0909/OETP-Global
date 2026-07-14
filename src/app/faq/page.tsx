@@ -24,7 +24,7 @@ export default async function FaqPage() {
         </div>
         <p className="mt-10 text-center text-sm font-semibold text-ink-soft">
           Still curious?{" "}
-          <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="font-bold text-brand-700 underline-offset-4 hover:underline">
+          <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="font-bold text-whatsapp underline-offset-4 hover:underline">
             Ask us on WhatsApp →
           </a>
         </p>

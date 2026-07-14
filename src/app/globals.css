@@ -1,26 +1,48 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-script: var(--font-script), cursive;
 
-  --color-brand-50: #f6f4ff;
+  /* brand purple is reserved for AI / smart-advisor features only */
+  --color-brand-50: #f5f3ff;
   --color-brand-100: #ede9fe;
-  --color-brand-200: #ddd3fd;
-  --color-brand-300: #c4b0fb;
-  --color-brand-400: #a583f7;
+  --color-brand-200: #ddd6fe;
+  --color-brand-300: #c4b5fd;
+  --color-brand-400: #a78bfa;
   --color-brand-500: #8b5cf6;
   --color-brand-600: #7c3aed;
-  --color-brand-700: #6b21d6;
-  --color-brand-800: #571cab;
-  --color-brand-900: #491d8b;
+  --color-brand-700: #6d28d9;
+  --color-brand-800: #5b21b6;
+  --color-brand-900: #4c1d95;
   --color-brand-950: #2e1065;
 
-  --color-ink: #191243;
-  --color-ink-soft: #4d477a;
-  --color-hot: #f97316;
-  --color-hot-deep: #ea580c;
+  /* neutrals */
+  --color-ink: #111827;
+  --color-ink-soft: #4b5563;
+  --color-ink-mute: #6b7280;
+  --color-line: #e5e7eb;
+  --color-surface: #f8fafc;
+  --color-navy: #111827;
+
+  /* functional colors — one meaning each, everywhere */
+  --color-study: #2563eb;
+  --color-study-deep: #1d4ed8;
+  --color-study-soft: #eff6ff;
+  --color-jobs: #16a34a;
+  --color-jobs-soft: #f0fdf4;
+  --color-scholar: #f59e0b;
+  --color-urgent: #dc2626;
+  --color-ai: #7c3aed;
+  --color-ai-soft: #f5f3ff;
+  --color-success: #059669;
+  --color-doc: #475569;
+  --color-contact: #0f766e;
+  --color-whatsapp: #25d366;
+  --color-telegram: #229ed9;
+  --color-hot: #ea580c;
+  --color-hot-deep: #c2410c;
 
   --animate-ticker: ticker 40s linear infinite;
   --animate-marquee: marquee 60s linear infinite;

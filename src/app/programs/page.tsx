@@ -29,7 +29,7 @@ export default async function ProgramsPage() {
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {rows.map((r, i) => (
             <Reveal key={`${r.dest.slug}-${r.name}`} delay={(i % 6) * 60} className="h-full">
-              <div className="group flex h-full flex-col overflow-hidden rounded-3xl border border-brand-100 bg-white shadow-lg shadow-brand-600/8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl">
+              <div className="group flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-white transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg">
                 <div className="relative h-36 overflow-hidden">
                   <SmartImage
                     src={r.dest.photo}
@@ -43,13 +43,13 @@ export default async function ProgramsPage() {
                 </div>
                 <div className="flex flex-1 flex-col p-6">
                   <h2 className="font-display text-lg font-bold">{r.name}</h2>
-                  <p className="mt-1 text-xs font-extrabold uppercase tracking-wider text-brand-600">{r.length}</p>
+                  <p className="mt-1 text-xs font-extrabold uppercase tracking-wider text-study">{r.length}</p>
                   <p className="mt-2 flex-1 text-sm text-ink-soft">{r.note}</p>
                   <div className="mt-4 flex items-center justify-between">
                     <span className="text-sm font-bold text-ink">From {r.dest.tuitionFrom}</span>
                     <Link
                       href={`/apply/?destination=${r.dest.slug}`}
-                      className="rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-4 py-2 text-xs font-bold text-white transition-transform hover:scale-105"
+                      className="rounded-full bg-study px-4 py-2 text-xs font-bold text-white transition-transform hover:scale-105"
                     >
                       Apply →
                     </Link>

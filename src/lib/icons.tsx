@@ -60,7 +60,7 @@ export const icons = {
 
 export type IconName = keyof typeof icons;
 
-export function Icon({ name, className }: { name: IconName; className?: string }) {
+export function Icon({ name, className, style }: { name: IconName; className?: string; style?: React.CSSProperties }) {
   const C = icons[name];
-  return <C className={className} aria-hidden="true" />;
+  return <C className={className} style={style} aria-hidden="true" />;
 }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Save } from "lucide-react";
 
 const textCls =
-  "mt-1 w-full rounded-lg border border-brand-200 px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100";
+  "mt-1 w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100";
 
 export default function AdminSettingsPage() {
   const [whatsapp, setWhatsapp] = useState("");
@@ -65,7 +65,7 @@ export default function AdminSettingsPage() {
         </p>
       )}
 
-      <div className="rounded-2xl border border-brand-100 bg-white p-6">
+      <div className="rounded-2xl border border-line bg-white p-6">
         <label className="block text-xs font-bold text-ink-soft">
           WhatsApp link (e.g. https://wa.me/234...)
           <input value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} className={textCls} />
@@ -77,7 +77,7 @@ export default function AdminSettingsPage() {
         <button
           onClick={save}
           disabled={saving}
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-brand-600/25 disabled:opacity-60"
+          className="mt-6 inline-flex items-center gap-2 rounded-full bg-study px-6 py-3 text-sm font-bold text-white disabled:opacity-60"
         >
           <Save className="h-4 w-4" /> {saving ? "Saving…" : "Save Links"}
         </button>

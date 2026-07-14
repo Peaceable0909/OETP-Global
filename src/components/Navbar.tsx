@@ -31,7 +31,7 @@ export default function Navbar() {
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/85 backdrop-blur-xl shadow-[0_1px_30px_rgba(124,58,237,0.12)]" : "bg-transparent"
+        scrolled ? "bg-white border-b border-line" : "bg-transparent"
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 lg:px-8">
@@ -49,8 +49,8 @@ export default function Navbar() {
             <li key={l.href}>
               <Link
                 href={l.href}
-                className={`relative text-sm font-semibold transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:rounded-full after:bg-brand-600 after:transition-all after:duration-300 hover:text-brand-700 ${
-                  pathname?.startsWith(l.href) ? "text-brand-700 after:w-full" : "text-ink-soft after:w-0 hover:after:w-full"
+                className={`relative text-sm font-semibold transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:rounded-full after:bg-study after:transition-all after:duration-300 hover:text-study ${
+                  pathname?.startsWith(l.href) ? "text-study after:w-full" : "text-ink-soft after:w-0 hover:after:w-full"
                 }`}
               >
                 {l.label}
@@ -62,14 +62,14 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="/apply/"
-            className="hidden rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-brand-600/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-brand-600/40 sm:block"
+            className="hidden rounded-full bg-study px-5 py-2.5 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-study-deep sm:block"
           >
             Apply Now
           </Link>
           <button
             aria-label="Toggle menu"
             onClick={() => setOpen((v) => !v)}
-            className="grid h-10 w-10 place-items-center rounded-xl border border-brand-200 bg-white/70 text-ink lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-xl border border-line bg-white text-ink lg:hidden"
           >
             <span className="relative block h-3.5 w-5">
               <span className={`absolute left-0 top-0 h-0.5 w-full rounded bg-current transition-all duration-300 ${open ? "top-1.5 rotate-45" : ""}`} />
@@ -81,20 +81,20 @@ export default function Navbar() {
       </nav>
 
       <div
-        className={`overflow-hidden bg-white/95 backdrop-blur-xl transition-all duration-300 lg:hidden ${
-          open ? "max-h-96 border-b border-brand-100 shadow-xl" : "max-h-0"
+        className={`overflow-hidden bg-white transition-all duration-300 lg:hidden ${
+          open ? "max-h-96 border-b border-line shadow-sm" : "max-h-0"
         }`}
       >
         <ul className="space-y-1 px-5 py-4">
           {links.map((l) => (
             <li key={l.href}>
-              <Link href={l.href} className="block rounded-xl px-4 py-2.5 font-semibold text-ink-soft hover:bg-brand-50 hover:text-brand-700">
+              <Link href={l.href} className="block rounded-xl px-4 py-3 font-semibold text-ink-soft hover:bg-surface hover:text-study">
                 {l.label}
               </Link>
             </li>
           ))}
           <li>
-            <Link href="/apply/" className="mt-2 block rounded-xl bg-gradient-to-r from-brand-600 to-brand-800 px-4 py-3 text-center font-bold text-white">
+            <Link href="/apply/" className="mt-2 block rounded-xl bg-study px-4 py-3 text-center font-bold text-white hover:bg-study-deep">
               Apply Now
             </Link>
           </li>

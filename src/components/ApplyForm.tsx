@@ -15,7 +15,7 @@ const uploadFields: UploadField[] = [
 ];
 
 const inputCls =
-  "w-full rounded-xl border border-brand-200 bg-white px-4 py-3 text-sm font-medium outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-100";
+  "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm font-medium outline-none transition-all focus:border-study focus:ring-4 focus:ring-study-soft";
 
 export default function ApplyForm({ destinations, whatsapp }: { destinations: Destination[]; whatsapp: string }) {
   const params = useSearchParams();
@@ -51,7 +51,7 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
         </span>
         <h2 className="mt-4 font-display text-2xl font-extrabold">Application Received!</h2>
         <p className="mt-3 text-ink-soft">Your Application ID is</p>
-        <p className="mt-2 inline-block rounded-2xl bg-white px-6 py-3 font-display text-2xl font-extrabold tracking-widest text-brand-700 shadow">
+        <p className="mt-2 inline-block rounded-2xl bg-white px-6 py-3 font-display text-2xl font-extrabold tracking-widest text-study shadow">
           {result.id}
         </p>
         <p className="mt-4 text-sm leading-relaxed text-ink-soft">
@@ -84,7 +84,7 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
         </p>
       )}
 
-      <fieldset className="rounded-3xl border border-brand-100 bg-white p-7 shadow-lg shadow-brand-600/8">
+      <fieldset className="rounded-3xl border border-line bg-white p-7">
         <legend className="px-2 font-display text-lg font-bold">1 · Personal Information</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="block text-sm font-bold">
@@ -106,7 +106,7 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
         </div>
       </fieldset>
 
-      <fieldset className="rounded-3xl border border-brand-100 bg-white p-7 shadow-lg shadow-brand-600/8">
+      <fieldset className="rounded-3xl border border-line bg-white p-7">
         <legend className="px-2 font-display text-lg font-bold">2 · Your Goal</legend>
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="block text-sm font-bold">
@@ -130,7 +130,7 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
         </div>
       </fieldset>
 
-      <fieldset className="rounded-3xl border border-brand-100 bg-white p-7 shadow-lg shadow-brand-600/8">
+      <fieldset className="rounded-3xl border border-line bg-white p-7">
         <legend className="px-2 font-display text-lg font-bold">3 · Documents</legend>
         <p className="mb-5 text-xs font-semibold text-ink-soft">
           PDF, JPG or PNG — max 10 MB each. Don&apos;t have everything? Submit what you have;
@@ -144,7 +144,7 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
                 type="file"
                 name={f.name}
                 accept=".pdf,.jpg,.jpeg,.png,.webp"
-                className="mt-1.5 w-full cursor-pointer rounded-xl border border-dashed border-brand-300 bg-brand-50/50 px-4 py-3 text-xs font-medium file:mr-3 file:rounded-full file:border-0 file:bg-brand-600 file:px-4 file:py-1.5 file:text-xs file:font-bold file:text-white hover:border-brand-500"
+                className="mt-1.5 w-full cursor-pointer rounded-xl border border-dashed border-line bg-surface px-4 py-3 text-xs font-medium file:mr-3 file:rounded-full file:border-0 file:bg-doc file:px-4 file:py-1.5 file:text-xs file:font-bold file:text-white hover:border-study"
               />
               <span className="mt-1 block text-[11px] font-medium text-ink-soft">{f.hint}</span>
             </label>
@@ -155,7 +155,7 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
       <button
         type="submit"
         disabled={submitting}
-        className="w-full rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-8 py-4 font-display text-lg font-extrabold text-white shadow-xl shadow-brand-600/30 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-full bg-study px-8 py-4 font-display text-lg font-extrabold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
       >
         {submitting ? "Submitting…" : "Submit Application →"}
       </button>

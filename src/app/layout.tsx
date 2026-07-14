@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Sora, Manrope, Caveat } from "next/font/google";
+import { Inter, Manrope, Caveat } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/data/site";
 import Navbar from "@/components/Navbar";
@@ -8,10 +8,10 @@ import HotTicker from "@/components/HotTicker";
 import BoardingPassWidget from "@/components/BoardingPassWidget";
 import { getDestinations } from "@/lib/data/destinations";
 
-const sora = Sora({
-  variable: "--font-sora",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const manrope = Manrope({
@@ -41,7 +41,7 @@ export default async function RootLayout({
 }>) {
   const destinations = await getDestinations();
   return (
-    <html lang="en" className={`${sora.variable} ${manrope.variable} ${caveat.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} ${manrope.variable} ${caveat.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         <a href="#main" className="skip-link">
           Skip to main content

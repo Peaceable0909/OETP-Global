@@ -12,10 +12,10 @@ export default async function DestinationsPage() {
   const destinations = await getDestinations();
   return (
     <>
-      <section className="bg-gradient-to-b from-brand-50 to-white px-5 pt-16 text-center">
+      <section className="bg-white px-5 pt-16 text-center">
         <h1 className="mx-auto max-w-3xl text-4xl font-extrabold sm:text-5xl">
           Six Doors to Your
-          <span className="bg-gradient-to-r from-brand-600 to-fuchsia-500 bg-clip-text text-transparent"> Future</span>
+          <span className="text-study"> Future</span>
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-lg text-ink-soft">
           Every destination below was chosen for one reason: the admission and visa process
