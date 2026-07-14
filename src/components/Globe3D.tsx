@@ -7,17 +7,18 @@ import { OrbitControls, Html, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 
 const EARTH_MODEL_URL = "/models/earth.glb";
+const PLANE_MODEL_URL = "/models/plane.glb";
 
-// Manually-uploaded Earth model (see IMAGES.md-style upload instructions):
-// drop a .glb at public/models/earth.glb via GitHub and it replaces the
-// procedural sphere below automatically, no code change needed. We HEAD-check
-// first rather than letting useGLTF throw, since a 404 inside R3F's Suspense
-// tree has no error boundary here and would crash the whole canvas.
-function useEarthModelAvailable(): boolean {
+// Manually-uploaded models (see IMAGES.md-style upload instructions): drop a
+// .glb at public/models/earth.glb (or plane.glb) via GitHub and it is picked
+// up automatically, no code change needed. We HEAD-check first rather than
+// letting useGLTF throw, since a 404 inside R3F's Suspense tree has no error
+// boundary here and would crash the whole canvas.
+function useModelAvailable(url: string): boolean {
   const [available, setAvailable] = useState(false);
   useEffect(() => {
     let cancelled = false;
-    fetch(EARTH_MODEL_URL, { method: "HEAD" })
+    fetch(url, { method: "HEAD" })
       .then((res) => {
         if (!cancelled) setAvailable(res.ok);
       })
@@ -27,13 +28,94 @@ function useEarthModelAvailable(): boolean {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [url]);
   return available;
+}
+
+// Normalize an arbitrary model so its longest axis spans `targetSize` world
+// units and it is centered on its own origin, regardless of how the uploaded
+// file was authored. (Using max box dimension / 2 as the radius — a bounding
+// *sphere* of a globe's box overshoots the true radius by ~73%.)
+function useNormalizedModel(scene: THREE.Object3D, targetSize: number) {
+  return useMemo(() => {
+    const box = new THREE.Box3().setFromObject(scene);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    const longest = Math.max(size.x, size.y, size.z);
+    const scale = longest > 0 ? targetSize / longest : 1;
+    return { scale, offset: center.multiplyScalar(-1) };
+  }, [scene, targetSize]);
+}
+
+// Some exported models ship fully-metallic materials, which render near-black
+// without an environment map. Clamp them toward a matte look our simple light
+// rig can illuminate.
+function useMatteMaterials(scene: THREE.Object3D) {
+  useEffect(() => {
+    scene.traverse((obj) => {
+      const mesh = obj as THREE.Mesh;
+      if (!mesh.isMesh) return;
+      const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      for (const m of mats) {
+        const std = m as THREE.MeshStandardMaterial;
+        if (std.isMeshStandardMaterial && std.metalness > 0.4) {
+          std.metalness = 0.15;
+          std.roughness = Math.max(std.roughness, 0.7);
+        }
+      }
+    });
+  }, [scene]);
 }
 
 function EarthModel() {
   const { scene } = useGLTF(EARTH_MODEL_URL);
-  return <primitive object={scene} scale={1} />;
+  // Diameter 2 = unit radius, so the destination markers (radius ~1.03) sit
+  // just above the surface.
+  const { scale, offset } = useNormalizedModel(scene, 2);
+  useMatteMaterials(scene);
+  return (
+    <group scale={scale}>
+      <primitive object={scene} position={offset} />
+    </group>
+  );
+}
+
+function PlaneModel() {
+  const { scene } = useGLTF(PLANE_MODEL_URL);
+  const { scale, offset } = useNormalizedModel(scene, 0.42);
+  useMatteMaterials(scene);
+  return (
+    <group scale={scale}>
+      <primitive object={scene} position={offset} />
+    </group>
+  );
+}
+
+// Keeps a directional light glued to the camera so whichever side of the
+// globe faces the viewer is always lit, even while OrbitControls auto-rotates.
+function CameraLight() {
+  const ref = useRef<THREE.DirectionalLight>(null);
+  useFrame(({ camera }) => {
+    ref.current?.position.copy(camera.position);
+  });
+  return <directionalLight ref={ref} intensity={1.3} />;
+}
+
+// A little plane circling the globe on a tilted orbit.
+function OrbitingPlane() {
+  const orbitRef = useRef<THREE.Group>(null);
+  useFrame(({ clock }) => {
+    if (orbitRef.current) orbitRef.current.rotation.y = clock.elapsedTime * 0.45;
+  });
+  return (
+    <group rotation={[0.45, 0, -0.3]}>
+      <group ref={orbitRef}>
+        <group position={[1.22, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <PlaneModel />
+        </group>
+      </group>
+    </group>
+  );
 }
 
 type Marker = { slug: string; name: string; code: string; color: string; lat: number; lng: number };
@@ -100,10 +182,16 @@ function DestinationMarker({ marker }: { marker: Marker }) {
 }
 
 function GlobeMesh() {
-  const earthAvailable = useEarthModelAvailable();
+  const earthAvailable = useModelAvailable(EARTH_MODEL_URL);
+  const planeAvailable = useModelAvailable(PLANE_MODEL_URL);
 
   return (
     <group rotation={[0.1, 0, 0]}>
+      {planeAvailable && (
+        <Suspense fallback={null}>
+          <OrbitingPlane />
+        </Suspense>
+      )}
       {earthAvailable ? (
         <Suspense fallback={null}>
           <EarthModel />
@@ -154,8 +242,9 @@ export default function Globe3D() {
       gl={{ antialias: true, alpha: true }}
       style={{ touchAction: "pan-y" }}
     >
-      <ambientLight intensity={0.9} />
-      <directionalLight position={[3, 2, 4]} intensity={1.1} />
+      <ambientLight intensity={1.4} />
+      <CameraLight />
+      <directionalLight position={[-3, -1, -2]} intensity={0.4} />
       <GlobeMesh />
       <OrbitControls
         enableZoom={false}
