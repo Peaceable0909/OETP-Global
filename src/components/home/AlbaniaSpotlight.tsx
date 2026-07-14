@@ -19,7 +19,7 @@ export default function AlbaniaSpotlight() {
           </span>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
             One Year in Albania.
-            <span className="block bg-gradient-to-r from-red-600 to-rose-500 bg-clip-text text-transparent">
+            <span className="block text-[#B91C1C]">
               A Lifetime of Skill.
             </span>
           </h2>
@@ -30,21 +30,21 @@ export default function AlbaniaSpotlight() {
           </p>
           <ul className="mt-6 grid max-w-lg grid-cols-2 gap-3 text-sm font-semibold text-ink">
             {["No age requirement", "1-year program", "Morning classes only", "Job support after graduation"].map((t) => (
-              <li key={t} className="flex items-center gap-2 rounded-xl bg-brand-50 px-3.5 py-2.5">
-                <span className="text-brand-600">✓</span> {t}
+              <li key={t} className="flex items-center gap-2 rounded-xl bg-orange-50 px-3.5 py-2.5">
+                <span className="text-hot">✓</span> {t}
               </li>
             ))}
           </ul>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               href="/apply/?destination=albania"
-              className="rounded-full bg-gradient-to-r from-red-600 to-rose-500 px-7 py-3.5 font-bold text-white shadow-xl shadow-red-600/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+              className="rounded-full bg-[#B91C1C] px-7 py-3.5 font-bold text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               Claim a Fee Waiver →
             </Link>
             <Link
               href="/destinations/albania/"
-              className="rounded-full border-2 border-brand-200 px-7 py-3.5 font-bold text-brand-800 transition-colors hover:bg-brand-50"
+              className="rounded-full border-2 border-line px-7 py-3.5 font-bold text-ink transition-colors hover:bg-surface"
             >
               Full Program Details
             </Link>
@@ -52,21 +52,21 @@ export default function AlbaniaSpotlight() {
         </Reveal>
 
         <Reveal delay={150}>
-          <div className="relative rounded-3xl border border-brand-100 bg-white p-7 shadow-2xl shadow-brand-600/10">
-            <span className="absolute -top-4 left-7 rounded-full bg-brand-950 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white">
+          <div className="relative rounded-3xl border border-line bg-white p-7">
+            <span className="absolute -top-4 left-7 rounded-full bg-navy px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white">
               A Day in Your New Life
             </span>
             <ul className="mt-4 space-y-5">
               {schedule.map((s, i) => (
                 <li key={s.label} className="flex gap-4">
                   <div className="flex flex-col items-center">
-                    <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-100 text-brand-700">
+                    <span className="grid h-12 w-12 place-items-center rounded-2xl bg-orange-50 text-hot">
                       <Icon name={s.icon} className="h-5 w-5" />
                     </span>
-                    {i < schedule.length - 1 && <span className="mt-1 h-full w-px flex-1 bg-brand-100" />}
+                    {i < schedule.length - 1 && <span className="mt-1 h-full w-px flex-1 bg-line" />}
                   </div>
                   <div className="pb-2">
-                    <p className="text-xs font-extrabold uppercase tracking-wider text-brand-600">{s.time}</p>
+                    <p className="text-xs font-extrabold uppercase tracking-wider text-hot">{s.time}</p>
                     <h3 className="font-display font-bold">{s.label}</h3>
                     <p className="mt-0.5 text-sm text-ink-soft">{s.note}</p>
                   </div>

@@ -34,7 +34,7 @@ export default function AdminLoginPage() {
 
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-5 py-16">
-      <div className="rounded-3xl border border-brand-100 bg-white p-8 shadow-xl shadow-brand-600/10">
+      <div className="rounded-3xl border border-line bg-white p-8">
         <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-brand-100 text-brand-700">
           <Lock className="h-5 w-5" />
         </span>
@@ -52,12 +52,12 @@ export default function AdminLoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="w-full rounded-xl border border-brand-200 px-4 py-3 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
+            className="w-full rounded-xl border border-line px-4 py-3 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
           />
           <button
             type="submit"
             disabled={submitting}
-            className="w-full rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-6 py-3 font-bold text-white shadow-lg shadow-brand-600/25 disabled:opacity-60"
+            className="w-full rounded-full bg-study px-6 py-3 font-bold text-white disabled:opacity-60"
           >
             {submitting ? "Signing in…" : "Sign In"}
           </button>

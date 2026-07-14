@@ -23,8 +23,8 @@ export default function ServicesPage() {
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((s, i) => (
             <Reveal key={s.title} delay={i * 70} className="h-full">
-              <div className="flex h-full flex-col rounded-3xl border border-brand-100 bg-white p-6 shadow-lg shadow-brand-600/8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-brand-600/15">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-brand-100 text-brand-700">
+              <div className="flex h-full flex-col rounded-3xl border border-line bg-white p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg">
+                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-study-soft text-study">
                   <Icon name={s.icon as IconName} className="h-6 w-6" />
                 </span>
                 <h2 className="mt-4 font-display font-bold">{s.title}</h2>
@@ -48,7 +48,7 @@ export default function ServicesPage() {
         </div>
 
         <Reveal className="mt-14">
-          <div className="mx-auto max-w-3xl rounded-3xl bg-brand-50 p-8 text-center">
+          <div className="mx-auto max-w-3xl rounded-3xl bg-surface p-8 text-center">
             <h2 className="font-display text-xl font-bold">Our transparency promise</h2>
             <p className="mt-3 text-sm leading-relaxed text-ink-soft">
               Some agencies hide their fees until you&apos;re committed. We don&apos;t. Your free

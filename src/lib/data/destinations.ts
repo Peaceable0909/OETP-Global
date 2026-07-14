@@ -42,7 +42,7 @@ const FALLBACK_DESTINATIONS: Destination[] = [
     tagline: "One-Year Culinary Program",
     heroGradient: "from-red-700 via-red-600 to-rose-500",
     photo: destinationImage("albania"),
-    accent: "#DC2626",
+    accent: "#B91C1C",
     summary:
       "Albania's one-year culinary program is our hottest offer: no age limit, morning-only classes so you have the whole afternoon to work, job support after graduation, and a clear pathway to bring your family once you secure employment.",
     capital: "Tirana",
@@ -151,7 +151,7 @@ const FALLBACK_DESTINATIONS: Destination[] = [
     tagline: "Affordable, English-Taught, Post-Study Options",
     heroGradient: "from-indigo-700 via-blue-600 to-sky-500",
     photo: destinationImage("malaysia"),
-    accent: "#4F46E5",
+    accent: "#15803D",
     summary:
       "Malaysia offers globally ranked universities at a fraction of Western costs, fully English-taught programs, a large international student community, and post-study work options.",
     capital: "Kuala Lumpur",
@@ -201,7 +201,7 @@ const FALLBACK_DESTINATIONS: Destination[] = [
     tagline: "Fast Admissions, Emerging Opportunity",
     heroGradient: "from-violet-700 via-purple-600 to-fuchsia-500",
     photo: destinationImage("cambodia"),
-    accent: "#7C3AED",
+    accent: "#166534",
     summary:
       "Cambodia is an emerging destination with fast admissions, low costs, English-taught programs and a growing economy full of opportunity in hospitality and business.",
     capital: "Phnom Penh",
@@ -245,7 +245,7 @@ const FALLBACK_DESTINATIONS: Destination[] = [
     tagline: "Affordable Living, World-Class Hospitality Training",
     heroGradient: "from-amber-600 via-orange-500 to-yellow-400",
     photo: destinationImage("thailand"),
-    accent: "#F59E0B",
+    accent: "#CA8A04",
     summary:
       "Thailand pairs genuinely affordable tuition and living costs with globally respected hospitality and business programs, English-taught options, and a growing pathway into Southeast Asia's booming tourism industry.",
     capital: "Bangkok",
@@ -289,7 +289,7 @@ const FALLBACK_DESTINATIONS: Destination[] = [
     tagline: "World-Class Medicine & Engineering, Low Tuition",
     heroGradient: "from-blue-700 via-blue-600 to-sky-500",
     photo: destinationImage("russia"),
-    accent: "#2563EB",
+    accent: "#0891B2",
     summary:
       "Russia offers internationally recognized medical and engineering degrees at a fraction of Western tuition costs, with a long tradition of technical excellence and English-taught international programs.",
     capital: "Moscow",

@@ -35,14 +35,14 @@ export default function AdminAnalyticsPage() {
       <div className="mt-6 space-y-3">
         {!rows && !error && <p className="text-sm text-ink-soft">Loading…</p>}
         {rows?.map((r) => (
-          <div key={r.slug} className="rounded-2xl border border-brand-100 bg-white p-4">
+          <div key={r.slug} className="rounded-2xl border border-line bg-white p-4">
             <div className="flex items-center justify-between text-sm">
               <span className="font-bold">{r.name}</span>
               <span className="font-bold text-brand-700">{r.views} views</span>
             </div>
             <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-brand-50">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-brand-500 to-brand-700"
+                className="h-full rounded-full bg-study"
                 style={{ width: `${Math.max((r.views / max) * 100, r.views > 0 ? 4 : 0)}%` }}
               />
             </div>

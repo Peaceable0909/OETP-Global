@@ -46,7 +46,7 @@ export default function RepeatableEditor({ label, items, fields, onChange, count
       <div className="mt-2 space-y-4">
         {items.length === 0 && <p className="text-xs text-ink-soft">Nothing added yet.</p>}
         {items.map((item, i) => (
-          <div key={i} className="rounded-xl border border-brand-100 bg-brand-50/40 p-4">
+          <div key={i} className="rounded-xl border border-line bg-brand-50/40 p-4">
             <div className="mb-2 flex justify-end">
               <button
                 type="button"
@@ -75,13 +75,13 @@ export default function RepeatableEditor({ label, items, fields, onChange, count
                           value={item[f.key] ?? ""}
                           onChange={(e) => updateItem(i, f.key, e.target.value)}
                           rows={2}
-                          className="mt-1 w-full rounded-lg border border-brand-200 px-3 py-2 text-sm outline-none focus:border-brand-500"
+                          className="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
                         />
                       ) : (
                         <input
                           value={item[f.key] ?? ""}
                           onChange={(e) => updateItem(i, f.key, e.target.value)}
-                          className="mt-1 w-full rounded-lg border border-brand-200 px-3 py-2 text-sm outline-none focus:border-brand-500"
+                          className="mt-1 w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
                         />
                       )}
                     </label>

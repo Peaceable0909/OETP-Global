@@ -72,9 +72,7 @@ export default function JourneyTimeline() {
   );
 
   return (
-    <section ref={sectionRef} className="relative overflow-hidden bg-brand-950 py-24 text-white">
-      <div className="pointer-events-none absolute -left-24 top-0 h-96 w-96 rounded-full bg-brand-600/25 blur-3xl" />
-      <div className="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-fuchsia-600/15 blur-3xl" />
+    <section ref={sectionRef} className="relative overflow-hidden bg-navy py-24 text-white">
 
       <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
         <SectionHeading
@@ -124,11 +122,11 @@ export default function JourneyTimeline() {
                   >
                     <s.icon className="h-7 w-7" aria-hidden="true" />
                   </span>
-                  <span className="mt-3 block font-display text-xs font-extrabold uppercase tracking-widest text-brand-300">
+                  <span className="mt-3 block font-display text-xs font-extrabold uppercase tracking-widest text-white/60">
                     Step {i + 1}
                   </span>
                   <h3 className="mt-1 font-display text-lg font-bold">{s.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-brand-200/85">{s.desc}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-white/70">{s.desc}</p>
                 </li>
               </Reveal>
             ))}

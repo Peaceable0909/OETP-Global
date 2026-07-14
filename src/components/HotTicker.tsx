@@ -23,13 +23,13 @@ export default function HotTicker() {
   const loop = [...items, ...items];
 
   return (
-    <Link href="/#hot-cakes" aria-label="View hot offers" className="block overflow-hidden bg-gradient-to-r from-brand-950 via-brand-900 to-brand-950 text-white">
+    <Link href="/#hot-cakes" aria-label="View hot offers" className="block overflow-hidden bg-navy text-white">
       <div className="flex w-max animate-ticker gap-12 whitespace-nowrap py-2 pr-12 text-[13px] font-semibold tracking-wide hover:[animation-play-state:paused]">
         {loop.map((t, i) => (
           <span key={i} className="inline-flex items-center gap-2">
             <Flame className="h-3.5 w-3.5 text-hot" aria-hidden="true" />
             {t}
-            <span className="text-brand-400">•</span>
+            <span className="text-hot">•</span>
           </span>
         ))}
       </div>

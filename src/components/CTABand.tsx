@@ -6,20 +6,19 @@ import { MessageCircle } from "lucide-react";
 export default async function CTABand() {
   const { whatsapp } = await getContactLinks();
   return (
-    <section className="relative overflow-hidden bg-brand-950 py-20 text-white">
-      <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[50rem] -translate-x-1/2 rounded-full bg-brand-600/30 blur-3xl" />
+    <section className="relative overflow-hidden bg-navy py-20 text-white">
       <Reveal className="relative mx-auto max-w-3xl px-5 text-center">
         <h2 className="font-display text-3xl font-extrabold sm:text-4xl lg:text-5xl">
           Your new life won&apos;t apply for itself.
         </h2>
-        <p className="mx-auto mt-4 max-w-xl text-brand-200/85">
+        <p className="mx-auto mt-4 max-w-xl text-white/70">
           Applications take under 10 minutes. You&apos;ll get an Application ID instantly and
           hear from a counselor within 48 hours.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Link
             href="/apply/"
-            className="rounded-full bg-gradient-to-r from-hot to-hot-deep px-8 py-4 font-bold text-white shadow-xl shadow-hot/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+            className="rounded-full bg-hot px-8 py-4 font-bold text-white hover:brightness-95 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
           >
             Start My Application →
           </Link>

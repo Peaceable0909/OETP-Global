@@ -44,7 +44,7 @@ export default async function Home() {
           <FaqAccordion items={faqs.slice(0, 5)} />
         </div>
         <p className="mt-8 text-center">
-          <Link href="/faq/" className="font-bold text-brand-700 underline-offset-4 hover:underline">
+          <Link href="/faq/" className="font-bold text-study underline-offset-4 hover:underline">
             See all frequently asked questions →
           </Link>
         </p>

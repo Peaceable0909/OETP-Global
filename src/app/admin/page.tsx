@@ -36,7 +36,7 @@ export default function AdminDashboardPage() {
         <p className="text-sm text-ink-soft">{countries ? `${countries.length} countries` : "Loading…"}</p>
         <Link
           href="/admin/destinations/edit/"
-          className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-brand-600/25"
+          className="inline-flex items-center gap-1.5 rounded-full bg-study px-4 py-2.5 text-sm font-bold text-white"
         >
           <Plus className="h-4 w-4" /> Add Country
         </Link>
@@ -44,7 +44,7 @@ export default function AdminDashboardPage() {
 
       {error && <p className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p>}
 
-      <div className="overflow-hidden rounded-2xl border border-brand-100">
+      <div className="overflow-hidden rounded-2xl border border-line">
         <table className="w-full text-sm">
           <thead className="bg-brand-50 text-left text-xs font-bold uppercase tracking-wider text-ink-soft">
             <tr>
@@ -74,7 +74,7 @@ export default function AdminDashboardPage() {
                   <div className="flex justify-end gap-2">
                     <Link
                       href={`/admin/destinations/edit/?slug=${c.slug}`}
-                      className="inline-flex items-center gap-1 rounded-lg border border-brand-200 px-2.5 py-1.5 text-xs font-bold text-brand-700 hover:bg-brand-50"
+                      className="inline-flex items-center gap-1 rounded-lg border border-line px-2.5 py-1.5 text-xs font-bold text-brand-700 hover:bg-brand-50"
                     >
                       <Pencil className="h-3.5 w-3.5" /> Edit
                     </Link>

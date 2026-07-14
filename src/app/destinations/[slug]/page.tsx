@@ -60,7 +60,6 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
       {/* Hero with photo */}
       <section className="relative overflow-hidden text-white">
         <SmartImage src={d.photo} alt={d.name} accent={d.accent} className="absolute inset-0 h-full w-full object-cover" />
-        <div className={`absolute inset-0 bg-gradient-to-r ${d.heroGradient} opacity-40`} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
         <div className="relative mx-auto max-w-7xl px-5 pb-16 pt-12 lg:px-8">
           <nav className="text-sm font-semibold text-white/75">
@@ -78,7 +77,7 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
 
           <div className="mt-8 flex flex-wrap gap-2.5">
             {d.highlights.slice(0, 5).map((h) => (
-              <span key={h} className="rounded-full border border-white/25 bg-white/10 px-4 py-2 text-xs font-bold backdrop-blur-sm">
+              <span key={h} className="rounded-full bg-black/45 px-4 py-2 text-xs font-bold">
                 ✦ {h}
               </span>
             ))}
@@ -94,15 +93,16 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
       </div>
 
       {/* Tab-style anchor nav */}
-      <nav className="sticky top-[60px] z-40 mt-8 border-b border-brand-100 bg-white/90 backdrop-blur-xl">
+      <nav className="sticky top-[60px] z-40 mt-8 border-b border-line bg-white">
         <div className="mx-auto flex max-w-7xl gap-1 overflow-x-auto px-5 lg:px-8">
           {tabs.map((t, i) => (
             <a
               key={t.href}
               href={t.href}
               className={`whitespace-nowrap border-b-2 px-4 py-3.5 text-sm font-bold transition-colors ${
-                i === 0 ? "border-brand-600 text-brand-700" : "border-transparent text-ink-soft hover:text-brand-700"
+                i === 0 ? "" : "border-transparent text-ink-soft hover:text-ink"
               }`}
+              style={i === 0 ? { borderColor: d.accent, color: d.accent } : undefined}
             >
               {t.label}
             </a>
@@ -118,8 +118,8 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
               <h2 className="text-2xl font-bold sm:text-3xl">Why Choose {d.name}?</h2>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {d.highlights.map((h) => (
-                  <div key={h} className="flex items-start gap-3 rounded-2xl border border-brand-100 bg-white p-5 shadow-sm">
-                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-brand-100 text-brand-700">◎</span>
+                  <div key={h} className="flex items-start gap-3 rounded-2xl border border-line bg-white p-5">
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-surface" style={{ color: d.accent }}>◎</span>
                     <p className="text-sm font-semibold leading-relaxed">{h}</p>
                   </div>
                 ))}
@@ -133,8 +133,8 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
               <h2 className="text-2xl font-bold sm:text-3xl">Fees & Living</h2>
               <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {feeCards.map((f) => (
-                  <div key={f.label} className="rounded-2xl border border-brand-100 bg-white p-5 text-center shadow-sm">
-                    <span className="mx-auto grid h-10 w-10 place-items-center rounded-xl bg-brand-100 text-brand-700" aria-hidden>
+                  <div key={f.label} className="rounded-2xl border border-line bg-white p-5 text-center">
+                    <span className="mx-auto grid h-10 w-10 place-items-center rounded-xl bg-surface" style={{ color: d.accent }} aria-hidden>
                       <Icon name={f.icon} className="h-5 w-5" />
                     </span>
                     <p className="mt-2 font-display text-sm font-extrabold leading-tight">{f.value}</p>
@@ -151,9 +151,9 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
               <h2 className="text-2xl font-bold sm:text-3xl">Available Programs</h2>
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {d.programs.map((p) => (
-                  <div key={p.name} className="rounded-2xl border border-brand-100 bg-white p-5 shadow-sm transition-shadow hover:shadow-lg hover:shadow-brand-600/10">
+                  <div key={p.name} className="rounded-2xl border border-line bg-white p-5 transition-shadow hover:shadow-lg">
                     <h3 className="font-display font-bold">{p.name}</h3>
-                    <p className="mt-1 text-xs font-bold uppercase tracking-wider text-brand-600">{p.length}</p>
+                    <p className="mt-1 text-xs font-bold uppercase tracking-wider" style={{ color: d.accent }}>{p.length}</p>
                     <p className="mt-2 text-sm text-ink-soft">{p.note}</p>
                   </div>
                 ))}
@@ -190,8 +190,8 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
               <h2 className="text-2xl font-bold sm:text-3xl">Visa Process, Step by Step</h2>
               <ol className="mt-6 space-y-4">
                 {d.visaSteps.map((s, i) => (
-                  <li key={s.title} className="flex gap-4 rounded-2xl border border-brand-100 bg-white p-5 shadow-sm">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 font-display font-extrabold text-white">
+                  <li key={s.title} className="flex gap-4 rounded-2xl border border-line bg-white p-5">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl font-display font-extrabold text-white" style={{ backgroundColor: d.accent }}>
                       {i + 1}
                     </span>
                     <div>
@@ -207,20 +207,20 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
           {/* Requirements + documents */}
           <Reveal>
             <div id="requirements" className="scroll-mt-36 grid gap-6 sm:grid-cols-2">
-              <div className="rounded-2xl bg-brand-50 p-6">
+              <div className="rounded-2xl border border-line bg-surface p-6">
                 <h2 className="font-display text-lg font-bold">Admission Requirements</h2>
                 <ul className="mt-4 space-y-2.5 text-sm text-ink-soft">
                   {d.requirements.map((r) => (
-                    <li key={r} className="flex gap-2"><span className="text-brand-600">✓</span> {r}</li>
+                    <li key={r} className="flex gap-2"><span className="text-success">✓</span> {r}</li>
                   ))}
                 </ul>
               </div>
-              <div className="rounded-2xl bg-brand-50 p-6">
+              <div className="rounded-2xl border border-line bg-surface p-6">
                 <h2 className="font-display text-lg font-bold">Documents You&apos;ll Upload</h2>
                 <ul className="mt-4 space-y-2.5 text-sm text-ink-soft">
                   {d.documents.map((r) => (
                     <li key={r} className="flex gap-2">
-                      <FileText className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" aria-hidden="true" /> {r}
+                      <FileText className="mt-0.5 h-4 w-4 shrink-0 text-doc" aria-hidden="true" /> {r}
                     </li>
                   ))}
                 </ul>
@@ -242,13 +242,13 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
         {/* At a glance sidebar */}
         <aside className="lg:sticky lg:top-32 lg:self-start">
           <Reveal delay={100}>
-            <div className="rounded-3xl border border-brand-100 bg-white p-7 shadow-xl shadow-brand-600/10">
+            <div className="rounded-3xl border border-line bg-white p-7">
               <h2 className="font-display text-lg font-bold">At a Glance</h2>
               <dl className="mt-5 space-y-3.5">
                 {glance.map((g) => (
-                  <div key={g.label} className="flex items-baseline justify-between gap-4 border-b border-brand-50 pb-3 text-sm">
+                  <div key={g.label} className="flex items-baseline justify-between gap-4 border-b border-line pb-3 text-sm">
                     <dt className="inline-flex items-center gap-1.5 font-semibold text-ink-soft">
-                      <Icon name={g.icon} className="h-4 w-4 text-brand-600" />
+                      <Icon name={g.icon} className="h-4 w-4" style={{ color: d.accent }} />
                       {g.label}
                     </dt>
                     <dd className="text-right font-bold">{g.value}</dd>
@@ -260,7 +260,7 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
               </p>
               <Link
                 href={`/apply/?destination=${d.slug}`}
-                className="mt-6 block rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-6 py-3.5 text-center font-bold text-white shadow-lg shadow-brand-600/25 transition-transform duration-300 hover:scale-[1.02]"
+                className="mt-6 block rounded-full bg-study px-6 py-3.5 text-center font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-study-deep"
               >
                 Apply Now →
               </Link>

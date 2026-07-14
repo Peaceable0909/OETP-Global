@@ -34,7 +34,7 @@ export default function StringListEditor({ label, values, onChange, placeholder 
                 next[i] = e.target.value;
                 onChange(next);
               }}
-              className="w-full rounded-lg border border-brand-200 px-3 py-2 text-sm outline-none focus:border-brand-500"
+              className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-brand-500"
             />
             <button
               type="button"

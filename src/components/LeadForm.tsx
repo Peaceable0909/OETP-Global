@@ -5,7 +5,7 @@ import type { Destination } from "@/lib/data/destinations";
 import { CircleCheck } from "lucide-react";
 
 const inputCls =
-  "w-full rounded-xl border border-brand-200 bg-white px-4 py-3 text-sm font-medium outline-none transition-all focus:border-brand-500 focus:ring-4 focus:ring-brand-100";
+  "w-full rounded-xl border border-line bg-white px-4 py-3 text-sm font-medium outline-none transition-all focus:border-study focus:ring-4 focus:ring-study-soft";
 
 export default function LeadForm({ destinations }: { destinations: Destination[] }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -60,7 +60,7 @@ export default function LeadForm({ destinations }: { destinations: Destination[]
       <button
         type="submit"
         disabled={status === "sending"}
-        className="w-full rounded-full bg-gradient-to-r from-brand-600 to-brand-800 px-6 py-3.5 font-bold text-white shadow-lg shadow-brand-600/25 transition-transform hover:scale-[1.01] disabled:opacity-60"
+        className="w-full rounded-full bg-study px-6 py-3.5 font-bold text-white transition-transform hover:scale-[1.01] disabled:opacity-60"
       >
         {status === "sending" ? "Sending…" : "Request a Call Back"}
       </button>
