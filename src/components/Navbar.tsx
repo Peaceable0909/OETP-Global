@@ -35,16 +35,13 @@ export default function Navbar() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3.5 lg:px-8">
-        <Link href="/" className="group flex items-center gap-2.5">
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-600 to-brand-800 font-display text-lg font-800 text-white shadow-lg shadow-brand-600/30 transition-transform duration-300 group-hover:rotate-6">
-            C
-          </span>
-          <span className="leading-tight">
-            <span className="block font-display text-[15px] font-bold tracking-tight">COMPETENCE</span>
-            <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-ink-soft">
-              & Business Services
-            </span>
-          </span>
+        <Link href="/" className="group flex items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/logo.png"
+            alt="CompeTenza Business Services"
+            className="h-10 w-auto transition-transform duration-300 group-hover:scale-[1.03] sm:h-11"
+          />
         </Link>
 
         <ul className="hidden items-center gap-7 lg:flex">
