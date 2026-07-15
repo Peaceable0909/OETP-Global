@@ -9,6 +9,7 @@ import Reveal from "@/components/Reveal";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
 import TiltCard from "@/components/TiltCard";
+import SwipeStack from "@/components/SwipeStack";
 import SplitTextReveal from "@/components/reactbits/SplitTextReveal";
 import { Flame, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -53,16 +54,22 @@ const badgeColors: Record<string, string> = {
   TRENDING: "bg-scholar text-white",
 };
 
-function OfferCard({ offer, index, destinations }: { offer: Offer; index: number; destinations: Destination[] }) {
+function OfferCard({
+  offer,
+  index,
+  destinations,
+  stack = false,
+}: {
+  offer: Offer;
+  index: number;
+  destinations: Destination[];
+  stack?: boolean;
+}) {
   const dest = destinations.find((d) => d.slug === offer.destination);
   const limited = offer.total_spots != null;
   const spotsLeft = limited ? Math.max(offer.total_spots! - offer.spots_taken, 0) : null;
 
-  return (
-    <Reveal
-      delay={index * 90}
-      className="w-[19rem] shrink-0 snap-start sm:w-[21rem]"
-    >
+  const card = (
       <TiltCard className="h-full" maxTilt={6}>
       <article
         className={`group flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-shadow duration-300 hover:shadow-lg ${
@@ -130,6 +137,16 @@ function OfferCard({ offer, index, destinations }: { offer: Offer; index: number
         </div>
       </article>
       </TiltCard>
+  );
+
+  // in the mobile swipe deck the card fills its cell; on desktop it keeps
+  // its conveyor width and scroll-in reveal
+  if (stack) {
+    return <div className="h-full">{card}</div>;
+  }
+  return (
+    <Reveal delay={index * 90} className="w-[19rem] shrink-0 snap-start sm:w-[21rem]">
+      {card}
     </Reveal>
   );
 }
@@ -192,10 +209,21 @@ export default function HotCakes({ destinations }: { destinations: Destination[]
         </Reveal>
       </div>
 
-      {/* The "conveyor": a snap-scrolling row instead of a static grid */}
+      {/* Mobile: a 3D swipe deck — flick cards away to browse offers */}
+      <div className="mt-10 px-5 sm:hidden">
+        <Reveal>
+          <SwipeStack>
+            {offers.map((o, i) => (
+              <OfferCard key={o.slug} offer={o} index={i} destinations={destinations} stack />
+            ))}
+          </SwipeStack>
+        </Reveal>
+      </div>
+
+      {/* Desktop: the snap-scrolling conveyor */}
       <div
         ref={trackRef}
-        className="mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 [scrollbar-width:none] lg:px-8 [&::-webkit-scrollbar]:hidden"
+        className="mt-10 hidden snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:flex lg:px-8 [&::-webkit-scrollbar]:hidden"
       >
         {offers.map((o, i) => (
           <OfferCard key={o.slug} offer={o} index={i} destinations={destinations} />
