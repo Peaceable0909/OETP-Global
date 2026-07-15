@@ -1,4 +1,5 @@
 import Reveal from "./Reveal";
+import SplitTextReveal from "./reactbits/SplitTextReveal";
 
 type Props = {
   eyebrow?: string;
@@ -17,9 +18,11 @@ export default function SectionHeading({ eyebrow, title, sub, align = "center", 
           {eyebrow}
         </span>
       )}
-      <h2 className={`mt-4 text-[clamp(1.75rem,1.2rem+2.6vw,2.75rem)] font-bold leading-[1.15] ${light ? "text-white" : "text-ink"}`}>
-        {title}
-      </h2>
+      <SplitTextReveal
+        as="h2"
+        text={title}
+        className={`mt-4 block text-[clamp(1.75rem,1.2rem+2.6vw,2.75rem)] font-bold leading-[1.15] ${light ? "text-white" : "text-ink"}`}
+      />
       {sub && <p className={`mt-4 text-base leading-relaxed sm:text-lg ${light ? "text-white/70" : "text-ink-soft"}`}>{sub}</p>}
     </Reveal>
   );

@@ -50,6 +50,56 @@
   --animate-float-slow: float 11s ease-in-out infinite;
   --animate-dash: dash 4s linear infinite;
   --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+  --animate-wiggle: wiggle 1.6s ease-in-out infinite;
+}
+
+/* Headline words cycle through the six country accent colors — a text-only
+   color effect, not a background gradient (those stay banned). */
+.text-accent-cycle {
+  background-image: linear-gradient(
+    100deg,
+    #2563eb, #0284c7, #15803d, #ca8a04, #ea580c, #b91c1c, #0891b2, #2563eb
+  );
+  background-size: 700% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: accentCycle 9s linear infinite;
+}
+@keyframes accentCycle {
+  from { background-position: 0% 50%; }
+  to { background-position: 700% 50%; }
+}
+
+/* A single sheen band sweeps across primary buttons on hover — light moving
+   over a solid color, not a gradient fill. */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  height: 100%;
+  width: 45%;
+  transform: skewX(-22deg);
+  background: rgba(255, 255, 255, 0.35);
+  filter: blur(2px);
+  transition: left 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.btn-sheen:hover::after {
+  left: 130%;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-8deg) scale(1); }
+  25% { transform: rotate(6deg) scale(1.12); }
+  55% { transform: rotate(-4deg) scale(1.05); }
+  80% { transform: rotate(8deg) scale(1.1); }
 }
 
 @keyframes ticker {

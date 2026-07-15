@@ -8,6 +8,8 @@ import { useCountdown } from "@/lib/useCountdown";
 import Reveal from "@/components/Reveal";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
+import TiltCard from "@/components/TiltCard";
+import SplitTextReveal from "@/components/reactbits/SplitTextReveal";
 import { Flame, ChevronLeft, ChevronRight } from "lucide-react";
 
 function CountdownRibbon({ expiresAt }: { expiresAt: string | null }) {
@@ -61,8 +63,9 @@ function OfferCard({ offer, index, destinations }: { offer: Offer; index: number
       delay={index * 90}
       className="w-[19rem] shrink-0 snap-start sm:w-[21rem]"
     >
+      <TiltCard className="h-full" maxTilt={6}>
       <article
-        className={`group flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-all duration-300 hover:-translate-y-2 hover:shadow-lg ${
+        className={`group flex h-full flex-col overflow-hidden rounded-3xl border bg-white transition-shadow duration-300 hover:shadow-lg ${
           limited ? "border-hot/50" : "border-line"
         }`}
       >
@@ -111,7 +114,7 @@ function OfferCard({ offer, index, destinations }: { offer: Offer; index: number
               <CountdownDigits expiresAt={offer.expires_at} />
               <Link
                 href={`/apply/?destination=${offer.destination}`}
-                className="flex items-center justify-center gap-2 rounded-full bg-hot px-4 py-2.5 text-sm font-bold text-white transition-all duration-200 hover:scale-[1.02] hover:brightness-95"
+                className="btn-sheen flex items-center justify-center gap-2 rounded-full bg-hot px-4 py-2.5 text-sm font-bold text-white transition-all duration-200 hover:scale-[1.02] hover:brightness-95"
               >
                 Apply Now <span aria-hidden>→</span>
               </Link>
@@ -126,6 +129,7 @@ function OfferCard({ offer, index, destinations }: { offer: Offer; index: number
           )}
         </div>
       </article>
+      </TiltCard>
     </Reveal>
   );
 }
@@ -149,9 +153,13 @@ export default function HotCakes({ destinations }: { destinations: Destination[]
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
               <span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-hot-deep">
-                <Flame className="h-4 w-4" aria-hidden="true" /> Hot Cakes — Limited Seats!
+                <Flame className="h-4 w-4 animate-wiggle" aria-hidden="true" /> Hot Cakes — Limited Seats!
               </span>
-              <h2 className="mt-2 font-display text-3xl font-bold text-ink sm:text-4xl lg:text-[2.75rem]">Grab These Before They&apos;re Gone</h2>
+              <SplitTextReveal
+                as="h2"
+                text="Grab These Before They're Gone"
+                className="mt-2 block font-display text-3xl font-bold text-ink sm:text-4xl lg:text-[2.75rem]"
+              />
               <p className="mt-2 text-ink-soft">Limited seats. Exclusive offers. Don&apos;t miss out.</p>
             </div>
             <div className="flex items-center gap-3">

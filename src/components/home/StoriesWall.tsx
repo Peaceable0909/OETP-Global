@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Play, X, Quote } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import SmartImage from "@/components/SmartImage";
+import SplitTextReveal from "@/components/reactbits/SplitTextReveal";
 import type { Testimonial } from "@/lib/data/site";
 import { testimonialImage } from "@/lib/imagePaths";
 
@@ -21,7 +22,11 @@ export default function StoriesWall({ testimonials }: { testimonials: Testimonia
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-white/70">
             An Immersive Experience
           </span>
-          <h2 className="mt-4 text-3xl font-bold sm:text-4xl lg:text-[2.75rem]">Real Stories. Real Success.</h2>
+          <SplitTextReveal
+            as="h2"
+            text="Real Stories. Real Success."
+            className="mt-4 block text-3xl font-bold sm:text-4xl lg:text-[2.75rem]"
+          />
           <p className="mt-3 max-w-lg text-white/70">Thousands have done it. You could be next.</p>
         </Reveal>
 

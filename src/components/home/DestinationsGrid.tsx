@@ -4,6 +4,7 @@ import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
+import TiltCard from "@/components/TiltCard";
 
 export default function DestinationsGrid({ destinations }: { destinations: Destination[] }) {
   return (
@@ -19,7 +20,8 @@ export default function DestinationsGrid({ destinations }: { destinations: Desti
           {destinations.map((d, i) => (
             <Reveal key={d.slug} delay={i * 80} className="h-full">
               <Link href={`/destinations/${d.slug}/`} className="group block h-full">
-                <article className="h-full overflow-hidden rounded-3xl border border-line bg-white transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-lg">
+                <TiltCard className="h-full">
+                <article className="h-full overflow-hidden rounded-3xl border border-line bg-white transition-shadow duration-300 group-hover:shadow-lg">
                   <div className="relative flex h-44 items-end overflow-hidden p-5">
                     <SmartImage
                       src={d.photo}
@@ -55,6 +57,7 @@ export default function DestinationsGrid({ destinations }: { destinations: Desti
                     </span>
                   </div>
                 </article>
+                </TiltCard>
               </Link>
             </Reveal>
           ))}

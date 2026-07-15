@@ -11,12 +11,15 @@ import SectionHeading from "@/components/SectionHeading";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
+// each step lights up in its functional color as the plane reaches it:
+// choose = study blue, apply = telegram, offer = scholarship amber,
+// visa = success green, fly = hot orange
 const steps = [
-  { icon: Backpack, title: "Choose Program", desc: "Pick your destination and program." },
-  { icon: Send, title: "Apply Online", desc: "We help you build and submit the application." },
-  { icon: Mail, title: "Get Offer", desc: "Receive your admission offer letter." },
-  { icon: ShieldCheck, title: "Visa Success", desc: "Guided document prep, submission, approval." },
-  { icon: PlaneTakeoff, title: "Fly & Thrive", desc: "Arrival support and your new journey begins." },
+  { icon: Backpack, title: "Choose Program", desc: "Pick your destination and program.", color: "#2563eb" },
+  { icon: Send, title: "Apply Online", desc: "We help you build and submit the application.", color: "#229ed9" },
+  { icon: Mail, title: "Get Offer", desc: "Receive your admission offer letter.", color: "#f59e0b" },
+  { icon: ShieldCheck, title: "Visa Success", desc: "Guided document prep, submission, approval.", color: "#059669" },
+  { icon: PlaneTakeoff, title: "Fly & Thrive", desc: "Arrival support and your new journey begins.", color: "#ea580c" },
 ];
 
 export default function JourneyTimeline() {
@@ -61,8 +64,14 @@ export default function JourneyTimeline() {
           onUpdate: (self) => {
             const lit = Math.floor(self.progress * badges.length);
             badges.forEach((b, i) => {
-              b.style.background = i <= lit ? "linear-gradient(135deg,#a583f7,#7c3aed)" : "rgba(255,255,255,0.08)";
-              b.style.color = i <= lit ? "#ffffff" : "rgba(255,255,255,0.7)";
+              const on = i <= lit;
+              const wasOn = b.dataset.lit === "1";
+              b.style.background = on ? steps[i].color : "rgba(255,255,255,0.08)";
+              b.style.color = on ? "#ffffff" : "rgba(255,255,255,0.7)";
+              if (on && !wasOn) {
+                gsap.fromTo(b, { scale: 1 }, { scale: 1.18, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" });
+              }
+              b.dataset.lit = on ? "1" : "0";
             });
           },
         },
@@ -90,17 +99,11 @@ export default function JourneyTimeline() {
             preserveAspectRatio="none"
             aria-hidden="true"
           >
-            <defs>
-              <linearGradient id="journeyLine" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#a583f7" stopOpacity="0.15" />
-                <stop offset="100%" stopColor="#a583f7" stopOpacity="0.9" />
-              </linearGradient>
-            </defs>
             <path
               ref={pathRef}
               d="M 60 90 C 260 10, 340 150, 540 80 S 860 10, 1140 80"
               fill="none"
-              stroke="url(#journeyLine)"
+              stroke="rgba(255,255,255,0.35)"
               strokeWidth="2"
               strokeDasharray="6 10"
             />
