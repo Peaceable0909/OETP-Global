@@ -18,3 +18,9 @@ bucket_name = "competence-documents"
 [[r2_buckets]]
 binding = "IMAGES"
 bucket_name = "competence-images"
+
+[vars]
+# Same-origin route (functions/api/images/[[key]].ts) that streams uploads
+# straight out of the IMAGES bucket — keeps the bucket private, no R2 public
+# access or custom domain needed in the Cloudflare dashboard.
+IMAGES_PUBLIC_BASE = "/api/images"

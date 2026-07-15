@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = React.ImgHTMLAttributes<HTMLImageElement> & {
   src: string;
@@ -17,6 +17,28 @@ type Props = React.ImgHTMLAttributes<HTMLImageElement> & {
  */
 export default function SmartImage({ src, alt, accent = "#7C3AED", className = "", ...rest }: Props) {
   const [failed, setFailed] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    setFailed(false);
+  }, [src]);
+
+  // onError normally catches a failed load, but a plain <img> starts fetching
+  // as soon as the browser parses it — before React hydrates and attaches
+  // this listener. A photo that 404s in that window never fires an event we
+  // can hear, and is left stuck as a native broken-image icon forever. This
+  // backstop checks the actual load state directly instead of only waiting
+  // for the event (same idea as the plane animation's timeout backstop).
+  useEffect(() => {
+    const checkFailed = () => {
+      if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth === 0) {
+        setFailed(true);
+      }
+    };
+    checkFailed();
+    const t = setTimeout(checkFailed, 1000);
+    return () => clearTimeout(t);
+  }, [src]);
 
   if (failed) {
     return (
@@ -38,5 +60,15 @@ export default function SmartImage({ src, alt, accent = "#7C3AED", className = "
     );
   }
 
-  return <img src={src} alt={alt} className={className} loading="lazy" onError={() => setFailed(true)} {...rest} />;
+  return (
+    <img
+      ref={imgRef}
+      src={src}
+      alt={alt}
+      className={className}
+      loading="lazy"
+      onError={() => setFailed(true)}
+      {...rest}
+    />
+  );
 }
