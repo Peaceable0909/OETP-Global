@@ -6,6 +6,8 @@ import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
 import HeroSearch from "@/components/home/HeroSearch";
 import Globe3D from "@/components/Globe3D";
+import Magnetic from "@/components/Magnetic";
+import SplitTextReveal from "@/components/reactbits/SplitTextReveal";
 import { MessageCircle, PlaneTakeoff } from "lucide-react";
 import type { Destination } from "@/lib/data/destinations";
 
@@ -32,9 +34,14 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
             Your Passport to
           </p>
           <h1 className="mt-1 font-display text-[clamp(2.6rem,1.6rem+5vw,4.4rem)] font-extrabold leading-[1.02] text-ink">
-            <span className="block animate-[heroRise_0.8s_cubic-bezier(0.22,1,0.36,1)_0.15s_both]">
-              The World
-            </span>
+            <SplitTextReveal
+              text="The World"
+              per="char"
+              stagger={60}
+              delay={150}
+              className="block"
+              unitClassName="text-accent-cycle"
+            />
           </h1>
 
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-ink-soft">
@@ -42,21 +49,25 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Link
-              href="/destinations/"
-              className="group rounded-full bg-study px-7 py-3.5 font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-study-deep"
-            >
-              Explore Destinations
-              <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </Link>
-            <a
-              href={whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-whatsapp px-7 py-3.5 font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95"
-            >
-              <MessageCircle className="h-5 w-5" aria-hidden="true" /> Talk to an Advisor
-            </a>
+            <Magnetic>
+              <Link
+                href="/destinations/"
+                className="btn-sheen group inline-block rounded-full bg-study px-7 py-3.5 font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-study-deep"
+              >
+                Explore Destinations
+                <span className="ml-2 inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
+            </Magnetic>
+            <Magnetic>
+              <a
+                href={whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-sheen inline-flex items-center gap-2 rounded-full bg-whatsapp px-7 py-3.5 font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:brightness-95"
+              >
+                <MessageCircle className="h-5 w-5" aria-hidden="true" /> Talk to an Advisor
+              </a>
+            </Magnetic>
           </div>
 
           <div className="mt-10">

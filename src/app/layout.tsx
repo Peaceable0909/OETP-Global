@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HotTicker from "@/components/HotTicker";
 import BoardingPassWidget from "@/components/BoardingPassWidget";
+import ScrollProgress from "@/components/ScrollProgress";
 import { getDestinations } from "@/lib/data/destinations";
 
 const inter = Inter({
@@ -46,6 +47,7 @@ export default async function RootLayout({
         <a href="#main" className="skip-link">
           Skip to main content
         </a>
+        <ScrollProgress />
         <HotTicker />
         <Navbar />
         <main id="main" className="flex-1">{children}</main>

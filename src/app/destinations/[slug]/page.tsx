@@ -9,6 +9,7 @@ import WaiverBanner from "@/components/WaiverBanner";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
 import TrackDestinationView from "@/components/TrackDestinationView";
+import VisaStepsStack from "@/components/VisaStepsStack";
 import { Icon, type IconName } from "@/lib/icons";
 import { Briefcase, FileText } from "lucide-react";
 
@@ -184,23 +185,13 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
             </Reveal>
           )}
 
-          {/* Visa steps */}
+          {/* Visa steps — scroll-stacking cards */}
           <Reveal>
             <div id="visa" className="scroll-mt-36">
               <h2 className="text-2xl font-bold sm:text-3xl">Visa Process, Step by Step</h2>
-              <ol className="mt-6 space-y-4">
-                {d.visaSteps.map((s, i) => (
-                  <li key={s.title} className="flex gap-4 rounded-2xl border border-line bg-white p-5">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl font-display font-extrabold text-white" style={{ backgroundColor: d.accent }}>
-                      {i + 1}
-                    </span>
-                    <div>
-                      <h3 className="font-display font-bold">{s.title}</h3>
-                      <p className="mt-1 text-sm text-ink-soft">{s.detail}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
+              <div className="mt-6">
+                <VisaStepsStack steps={d.visaSteps} accent={d.accent} />
+              </div>
             </div>
           </Reveal>
 
@@ -260,7 +251,7 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
               </p>
               <Link
                 href={`/apply/?destination=${d.slug}`}
-                className="mt-6 block rounded-full bg-study px-6 py-3.5 text-center font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-study-deep"
+                className="btn-sheen mt-6 block rounded-full bg-study px-6 py-3.5 text-center font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-study-deep"
               >
                 Apply Now →
               </Link>
