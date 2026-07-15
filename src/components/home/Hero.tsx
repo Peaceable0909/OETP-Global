@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { site, heroPhotos } from "@/lib/data/site";
 import Flag from "@/components/Flag";
@@ -21,6 +22,37 @@ const pins = [
 ];
 
 export default function Hero({ destinations, whatsapp }: { destinations: Destination[]; whatsapp: string }) {
+  // The plane sits parked beside the globe and only takes off when the user
+  // drags the globe roughly top-left -> bottom-right (a diagonal, not just
+  // any rotate) — everything else about the globe's rotation is untouched,
+  // this is a plain sibling overlay watching the same pointer events.
+  const [flying, setFlying] = useState(false);
+  const dragStart = useRef<{ x: number; y: number } | null>(null);
+
+  const onGlobePointerDown = (e: React.PointerEvent) => {
+    dragStart.current = { x: e.clientX, y: e.clientY };
+  };
+  const onGlobePointerUp = (e: React.PointerEvent) => {
+    const start = dragStart.current;
+    dragStart.current = null;
+    if (!start || flying) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+    if (Math.hypot(dx, dy) < 40) return; // too small to count as a swipe
+    const angle = Math.atan2(dy, dx) * (180 / Math.PI); // 0=right, 90=down
+    if (angle > 20 && angle < 70) setFlying(true); // roughly top-left -> bottom-right
+  };
+
+  // onAnimationEnd normally resets this, but it's not guaranteed to fire in
+  // every browser/backgrounded-tab edge case — a timeout backstop means a
+  // missed event can't permanently ground the plane.
+  useEffect(() => {
+    if (!flying) return;
+    const t = setTimeout(() => setFlying(false), 950);
+    return () => clearTimeout(t);
+  }, [flying]);
+
   return (
     <section className="relative overflow-hidden bg-white">
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-5 pb-16 pt-14 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:pt-20">
@@ -77,9 +109,22 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
 
         {/* 3D interactive globe + flight-path pins */}
         <div className="relative mx-auto aspect-square w-full max-w-[30rem]">
-          <div className="absolute inset-0">
+          <div className="absolute inset-0" onPointerDown={onGlobePointerDown} onPointerUp={onGlobePointerUp}>
             <Globe3D />
           </div>
+
+          {/* parked beside the globe — only takes off on a top-left to
+              bottom-right drag, otherwise it just sits still */}
+          <span
+            aria-hidden="true"
+            onAnimationEnd={() => setFlying(false)}
+            className={`pointer-events-none absolute z-10 grid h-9 w-9 place-items-center rounded-full border border-line bg-white text-hot shadow-sm ${
+              flying ? "animate-plane-fly" : ""
+            }`}
+            style={{ left: "-5%", top: "56%" }}
+          >
+            <PlaneTakeoff className="h-4 w-4" aria-hidden="true" />
+          </span>
 
           {pins.map((p) => (
             <span

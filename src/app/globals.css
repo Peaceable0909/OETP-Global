@@ -102,6 +102,18 @@
   80% { transform: rotate(8deg) scale(1.1); }
 }
 
+/* the parked hero plane's one-shot flight, triggered by a top-left ->
+   bottom-right drag on the globe — a short diagonal hop with a bank, not a
+   continuous orbit */
+.animate-plane-fly {
+  animation: planeFly 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes planeFly {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  45% { transform: translate(22px, 17px) rotate(18deg) scale(1.08); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
 @keyframes ticker {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
