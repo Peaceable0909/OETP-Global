@@ -202,7 +202,10 @@ export default function Globe3D() {
 
   return (
     <Canvas
-      camera={{ position: [0, 0, 2.7], fov: 42 }}
+      // camera sits back a bit further than the globe's radius strictly
+      // needs so the sphere never touches the frame edge — too tight a fit
+      // here reads as a flat-cut/clipped circle rather than a floating globe
+      camera={{ position: [0, 0, 3.05], fov: 42 }}
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true }}
       style={{ touchAction: "pan-y" }}
