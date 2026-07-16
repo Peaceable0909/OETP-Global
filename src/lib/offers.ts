@@ -59,14 +59,24 @@ export const fallbackOffers: Offer[] = [
   },
 ];
 
-export async function fetchOffers(): Promise<Offer[]> {
-  try {
-    const res = await fetch("/api/offers", { headers: { accept: "application/json" } });
-    if (!res.ok) throw new Error(`offers api ${res.status}`);
-    const data = (await res.json()) as { offers: Offer[] };
-    if (!Array.isArray(data.offers) || data.offers.length === 0) throw new Error("empty");
-    return data.offers;
-  } catch {
-    return fallbackOffers;
+// WaiverBanner, HotTicker, and HotCakes each call fetchOffers() independently
+// and commonly co-exist on the same page — cache the in-flight/resolved
+// request at module scope so they share one network call instead of firing
+// one each.
+let offersPromise: Promise<Offer[]> | null = null;
+
+export function fetchOffers(): Promise<Offer[]> {
+  if (!offersPromise) {
+    offersPromise = fetch("/api/offers", { headers: { accept: "application/json" } })
+      .then((res) => {
+        if (!res.ok) throw new Error(`offers api ${res.status}`);
+        return res.json() as Promise<{ offers: Offer[] }>;
+      })
+      .then((data) => {
+        if (!Array.isArray(data.offers) || data.offers.length === 0) throw new Error("empty");
+        return data.offers;
+      })
+      .catch(() => fallbackOffers);
   }
+  return offersPromise;
 }
