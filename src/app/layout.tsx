@@ -6,8 +6,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import HotTicker from "@/components/HotTicker";
 import BoardingPassWidget from "@/components/BoardingPassWidget";
+import MobileTabBar from "@/components/MobileTabBar";
 import ScrollProgress from "@/components/ScrollProgress";
 import { getDestinations } from "@/lib/data/destinations";
+import { getContactLinks } from "@/lib/data/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -40,10 +42,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const destinations = await getDestinations();
+  const [destinations, links] = await Promise.all([getDestinations(), getContactLinks()]);
   return (
     <html lang="en" className={`${inter.variable} ${manrope.variable} ${caveat.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col pb-20 sm:pb-0">
         <a href="#main" className="skip-link">
           Skip to main content
         </a>
@@ -53,6 +55,7 @@ export default async function RootLayout({
         <main id="main" className="flex-1">{children}</main>
         <Footer destinations={destinations} />
         <BoardingPassWidget />
+        <MobileTabBar whatsapp={links.whatsapp} />
       </body>
     </html>
   );
