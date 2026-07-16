@@ -45,7 +45,7 @@ export default async function AdvisorTeaser({ destinations }: { destinations: De
                   Based on your profile, we recommend these destinations:
                   <span className="mt-2 flex items-center gap-1.5">
                     {featuredDestinations.map((d) => (
-                      <Flag key={d.slug} code={d.code} color={d.accent} className="h-6 min-w-[2.2rem] px-1 rounded-lg text-[11px]" />
+                      <Flag key={d.slug} code={d.code} color={d.accent} className="h-6 w-[2.2rem] rounded-lg" />
                     ))}
                     <span className="grid h-7 w-7 place-items-center rounded-full bg-ai-soft text-[11px] font-extrabold text-ai">
                       +2

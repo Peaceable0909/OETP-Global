@@ -25,7 +25,7 @@ function DestinationCard({ d }: { d: Destination }) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
             <div className="relative text-white">
               <h3 className="flex items-center gap-1.5 font-display text-base font-extrabold drop-shadow-sm sm:gap-2 sm:text-2xl">
-                <Flag code={d.code} color={d.accent} className="h-5 min-w-[1.9rem] rounded-md px-1 text-[10px] sm:h-6 sm:min-w-[2.2rem] sm:rounded-lg sm:text-[11px]" /> {d.name}
+                <Flag code={d.code} color={d.accent} className="h-5 w-[1.9rem] rounded-md sm:h-6 sm:w-[2.2rem] sm:rounded-lg" /> {d.name}
               </h3>
               <p className="hidden text-sm font-semibold text-white/90 sm:block">{d.tagline}</p>
             </div>

@@ -71,7 +71,7 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
           <p className="mt-8 font-display text-lg font-semibold italic text-white/85">Study in</p>
           <h1 className="flex flex-wrap items-center gap-4 text-5xl font-extrabold sm:text-6xl lg:text-7xl">
             {d.name}
-            <Flag code={d.code} color={d.accent} className="h-9 min-w-[3.4rem] rounded-xl px-2 text-lg sm:h-11 sm:min-w-[4rem] sm:text-xl" />
+            <Flag code={d.code} color={d.accent} className="h-9 w-[3.4rem] rounded-xl sm:h-11 sm:w-[4rem]" />
           </h1>
           <p className="mt-3 font-display text-xl font-bold text-white/95 sm:text-2xl">{d.tagline}</p>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/85 sm:text-base">{d.summary}</p>
