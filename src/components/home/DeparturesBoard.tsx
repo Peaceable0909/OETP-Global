@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import FlightPaths from "@/components/home/FlightPaths";
 import { getContactLinks } from "@/lib/data/site";
 import { MessageCircle, Send, Phone, ArrowRight } from "lucide-react";
 
@@ -8,6 +9,7 @@ export default async function DeparturesBoard() {
   return (
     <section className="relative overflow-hidden bg-navy py-16 text-white">
       <div className="pointer-events-none absolute inset-0 opacity-30 [background:radial-gradient(1px_1px_at_15%_25%,white,transparent),radial-gradient(1px_1px_at_65%_70%,white,transparent),radial-gradient(1px_1px_at_85%_15%,white,transparent),radial-gradient(1px_1px_at_35%_85%,white,transparent)] [background-size:220px_220px]" />
+      <FlightPaths />
 
       <Reveal className="relative mx-auto max-w-6xl px-5 lg:px-8">
         <div className="overflow-hidden rounded-3xl border border-white/10 bg-black/30">
