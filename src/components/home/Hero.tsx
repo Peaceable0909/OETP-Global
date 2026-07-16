@@ -2,15 +2,28 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { site, heroPhotos } from "@/lib/data/site";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
 import HeroSearch from "@/components/home/HeroSearch";
-import Globe3D from "@/components/Globe3D";
 import Magnetic from "@/components/Magnetic";
 import SplitTextReveal from "@/components/reactbits/SplitTextReveal";
 import { MessageCircle, PlaneTakeoff } from "lucide-react";
 import type { Destination } from "@/lib/data/destinations";
+
+// Three.js/R3F is the single heaviest chunk on the homepage (~285KB) — split
+// it out of the main bundle so it downloads after the page is interactive
+// instead of blocking it. Loading state matches Globe3D's own pre-mount
+// placeholder so there's no visual jump once the real chunk arrives.
+const Globe3D = dynamic(() => import("@/components/Globe3D"), {
+  ssr: false,
+  loading: () => (
+    <div className="grid h-full w-full place-items-center" aria-hidden="true">
+      <div className="h-[70%] w-[70%] animate-pulse rounded-full bg-surface" />
+    </div>
+  ),
+});
 
 const pins = [
   { code: "CY", color: "#0284C7", label: "Cyprus", x: "58%", y: "10%", cls: "animate-float" },
@@ -28,6 +41,24 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
   // this is a plain sibling overlay watching the same pointer events.
   const [flying, setFlying] = useState(false);
   const dragStart = useRef<{ x: number; y: number } | null>(null);
+
+  // The globe's chunk is ~285KB — code-splitting it alone doesn't stop the
+  // browser from fetching it immediately, since it renders on first paint
+  // like everything else above the fold. Waiting for the page's own `load`
+  // event means the rest of the page (text, buttons, images) gets full
+  // bandwidth/parse priority first, and the globe's chunk starts only once
+  // that's done — same placeholder either way, so there's no visible change
+  // beyond the globe animating in a beat later.
+  const [globeReady, setGlobeReady] = useState(false);
+  useEffect(() => {
+    if (document.readyState === "complete") {
+      setGlobeReady(true);
+      return;
+    }
+    const onLoad = () => setGlobeReady(true);
+    window.addEventListener("load", onLoad);
+    return () => window.removeEventListener("load", onLoad);
+  }, []);
 
   const onGlobePointerDown = (e: React.PointerEvent) => {
     dragStart.current = { x: e.clientX, y: e.clientY };
@@ -110,7 +141,13 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
         {/* 3D interactive globe + flight-path pins */}
         <div className="relative mx-auto aspect-square w-full max-w-[30rem]">
           <div className="absolute inset-0" onPointerDown={onGlobePointerDown} onPointerUp={onGlobePointerUp}>
-            <Globe3D />
+            {globeReady ? (
+              <Globe3D />
+            ) : (
+              <div className="grid h-full w-full place-items-center" aria-hidden="true">
+                <div className="h-[70%] w-[70%] animate-pulse rounded-full bg-surface" />
+              </div>
+            )}
           </div>
 
           {/* parked beside the globe — only takes off on a top-left to
