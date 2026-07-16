@@ -32,22 +32,26 @@ export default function FlightPaths() {
   }, []);
 
   return (
-    <div ref={ref} className="pointer-events-none absolute inset-0 hidden lg:block" aria-hidden="true">
+    <div
+      ref={ref}
+      className="pointer-events-none absolute inset-x-0 top-0 hidden h-28 -translate-y-1/2 sm:h-36 lg:block lg:h-44"
+      aria-hidden="true"
+    >
       {ready && (
         <Strands
-          colors={["#2563EB", "#EA580C", "#16A34A"]}
+          colors={["#25D366", "#229ED9", "#EA580C"]}
           count={3}
-          speed={0.35}
-          amplitude={0.55}
-          waviness={1.1}
-          thickness={0.14}
-          glow={1.7}
-          taper={2.4}
-          spread={2.1}
-          intensity={0.32}
-          saturation={1.05}
-          opacity={0.4}
-          scale={2.3}
+          speed={0.3}
+          amplitude={0.7}
+          waviness={0.7}
+          thickness={0.32}
+          glow={1.5}
+          taper={0.9}
+          spread={2.6}
+          intensity={0.4}
+          saturation={1.6}
+          opacity={0.85}
+          scale={13}
         />
       )}
     </div>
