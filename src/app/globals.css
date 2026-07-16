@@ -3,7 +3,6 @@
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
-  --font-script: var(--font-script), cursive;
 
   /* brand purple is reserved for AI / smart-advisor features only */
   --color-brand-50: #f5f3ff;
@@ -51,25 +50,6 @@
   --animate-dash: dash 4s linear infinite;
   --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
   --animate-wiggle: wiggle 1.6s ease-in-out infinite;
-}
-
-/* Headline words cycle through the six country accent colors — a text-only
-   color effect, not a background gradient (those stay banned). */
-.text-accent-cycle {
-  background-image: linear-gradient(
-    100deg,
-    #2563eb, #0284c7, #15803d, #ca8a04, #ea580c, #b91c1c, #0891b2, #2563eb
-  );
-  background-size: 700% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  animation: accentCycle 9s linear infinite;
-}
-@keyframes accentCycle {
-  from { background-position: 0% 50%; }
-  to { background-position: 700% 50%; }
 }
 
 /* A single sheen band sweeps across primary buttons on hover — light moving

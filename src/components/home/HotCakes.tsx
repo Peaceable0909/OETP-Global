@@ -9,9 +9,8 @@ import Reveal from "@/components/Reveal";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
 import TiltCard from "@/components/TiltCard";
-import SwipeStack from "@/components/SwipeStack";
 import SplitTextReveal from "@/components/reactbits/SplitTextReveal";
-import { Flame, ChevronLeft, ChevronRight } from "lucide-react";
+import { Flame, Check, ChevronLeft, ChevronRight } from "lucide-react";
 
 function CountdownRibbon({ expiresAt }: { expiresAt: string | null }) {
   const cd = useCountdown(expiresAt);
@@ -101,24 +100,34 @@ function OfferCard({
           <ul className="space-y-1.5 text-[13px] font-medium text-ink-soft">
             {(dest?.highlights ?? []).slice(0, 3).map((h) => (
               <li key={h} className="flex gap-2">
-                <span className="text-hot">✦</span>
+                <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-success" aria-hidden="true" />
                 <span className="line-clamp-1">{h}</span>
               </li>
             ))}
           </ul>
 
           {limited && (
-            <p className="inline-flex items-center gap-1.5 rounded-lg bg-orange-50 px-3 py-1.5 text-xs font-extrabold text-hot-deep">
-              <Flame className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-              Fee waived — {spotsLeft} of {offer.total_spots} spots left
-            </p>
+            <div className="space-y-1.5">
+              <div className="h-2 w-full overflow-hidden rounded-full bg-orange-100">
+                <div
+                  className="h-full rounded-full bg-hot transition-all duration-500"
+                  style={{ width: `${Math.min((offer.spots_taken / offer.total_spots!) * 100, 100)}%` }}
+                />
+              </div>
+              <p className="inline-flex items-center gap-1.5 text-xs font-extrabold text-hot-deep">
+                <Flame className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                Fee waived — {spotsLeft} of {offer.total_spots} spots left
+              </p>
+            </div>
           )}
 
           <p className="text-sm font-bold text-ink">From {dest?.tuitionFrom}</p>
 
           {limited ? (
             <div className="mt-auto space-y-3">
-              <CountdownDigits expiresAt={offer.expires_at} />
+              <div className="hidden sm:block">
+                <CountdownDigits expiresAt={offer.expires_at} />
+              </div>
               <Link
                 href={`/apply/?destination=${offer.destination}`}
                 className="btn-sheen flex items-center justify-center gap-2 rounded-full bg-hot px-4 py-2.5 text-sm font-bold text-white transition-all duration-200 hover:scale-[1.02] hover:brightness-95"
@@ -172,11 +181,10 @@ export default function HotCakes({ destinations }: { destinations: Destination[]
               <span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.2em] text-hot-deep">
                 <Flame className="h-4 w-4 animate-wiggle" aria-hidden="true" /> Hot Cakes — Limited Seats!
               </span>
-              <SplitTextReveal
-                as="h2"
-                text="Grab These Before They're Gone"
-                className="mt-2 block font-display text-3xl font-bold text-ink sm:text-4xl lg:text-[2.75rem]"
-              />
+              <h2 className="mt-2 flex flex-wrap items-center gap-2 font-display text-3xl font-bold text-ink sm:text-4xl lg:text-[2.75rem]">
+                <SplitTextReveal text="Grab These Before They're Gone" className="inline" />
+                <Flame className="h-7 w-7 shrink-0 text-hot sm:h-8 sm:w-8" aria-hidden="true" />
+              </h2>
               <p className="mt-2 text-ink-soft">Limited seats. Exclusive offers. Don&apos;t miss out.</p>
             </div>
             <div className="flex items-center gap-3">
@@ -209,15 +217,13 @@ export default function HotCakes({ destinations }: { destinations: Destination[]
         </Reveal>
       </div>
 
-      {/* Mobile: a 3D swipe deck — flick cards away to browse offers */}
-      <div className="mt-10 px-5 sm:hidden">
-        <Reveal>
-          <SwipeStack>
-            {offers.map((o, i) => (
-              <OfferCard key={o.slug} offer={o} index={i} destinations={destinations} stack />
-            ))}
-          </SwipeStack>
-        </Reveal>
+      {/* Mobile: a plain vertical stack of full-width cards */}
+      <div className="mt-10 space-y-5 px-5 sm:hidden">
+        {offers.map((o, i) => (
+          <Reveal key={o.slug} delay={i * 80}>
+            <OfferCard offer={o} index={i} destinations={destinations} stack />
+          </Reveal>
+        ))}
       </div>
 
       {/* Desktop: the snap-scrolling conveyor */}

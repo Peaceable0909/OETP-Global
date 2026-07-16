@@ -93,18 +93,9 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
             Study. Work. Succeed Anywhere.
           </span>
 
-          <p className="mt-5 font-script text-3xl leading-none text-study sm:text-4xl">
-            Your Passport to
-          </p>
-          <h1 className="mt-1 font-display text-[clamp(2.6rem,1.6rem+5vw,4.4rem)] font-extrabold leading-[1.02] text-ink">
-            <SplitTextReveal
-              text="The World"
-              per="char"
-              stagger={60}
-              delay={150}
-              className="block"
-              unitClassName="text-accent-cycle"
-            />
+          <h1 className="mt-5 font-display text-[clamp(2.4rem,1.5rem+4.5vw,4rem)] font-extrabold leading-[1.05]">
+            <SplitTextReveal text="Your Passport" per="word" className="block text-study" />
+            <SplitTextReveal text="to The World" per="word" delay={150} className="block text-hot" />
           </h1>
 
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-ink-soft">
@@ -139,7 +130,7 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
         </div>
 
         {/* 3D interactive globe + flight-path pins */}
-        <div className="relative mx-auto aspect-square w-full max-w-[30rem]">
+        <div className="relative mx-auto aspect-square w-full max-w-[22rem] sm:max-w-[26rem]">
           <div className="absolute inset-0" onPointerDown={onGlobePointerDown} onPointerUp={onGlobePointerUp}>
             {globeReady ? (
               <Globe3D />
@@ -177,11 +168,11 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
             <PlaneTakeoff className="h-3.5 w-3.5" aria-hidden="true" /> Lagos
           </span>
 
-          {/* floating photo cards, mockup-style */}
-          <div className="pointer-events-none absolute right-[-4%] top-[26%] w-28 animate-float-slow overflow-hidden rounded-2xl border-4 border-white shadow-lg sm:w-32">
+          {/* floating photo cards, mockup-style — tucked into the empty corners so they don't crowd the pin badges. Offsets differ per breakpoint since the bigger sm+ card needs more room to clear the same pins. */}
+          <div className="pointer-events-none absolute right-[-3%] top-[6%] w-14 animate-float-slow overflow-hidden rounded-xl border-2 border-white shadow-lg sm:right-[-5%] sm:top-[-4%] sm:w-32 sm:rounded-2xl sm:border-4">
             <SmartImage src={heroPhotos.graduate} alt="Graduate abroad" className="aspect-[3/4] w-full object-cover" />
           </div>
-          <div className="pointer-events-none absolute bottom-[-2%] right-[14%] w-32 animate-float overflow-hidden rounded-2xl border-4 border-white shadow-lg sm:w-36">
+          <div className="pointer-events-none absolute bottom-[-3%] right-[-2%] w-16 animate-float overflow-hidden rounded-xl border-2 border-white shadow-lg sm:bottom-[-14%] sm:right-[-4%] sm:w-36 sm:rounded-2xl sm:border-4">
             <SmartImage src={heroPhotos.city} alt="Destination city" className="aspect-[4/3] w-full object-cover" />
           </div>
         </div>
