@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Manrope, Caveat } from "next/font/google";
+import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/data/site";
 import Navbar from "@/components/Navbar";
@@ -23,12 +23,6 @@ const manrope = Manrope({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-const caveat = Caveat({
-  variable: "--font-script",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-});
-
 export const metadata: Metadata = {
   title: {
     default: `${site.name} — Study & Work Abroad`,
@@ -44,7 +38,7 @@ export default async function RootLayout({
 }>) {
   const [destinations, links] = await Promise.all([getDestinations(), getContactLinks()]);
   return (
-    <html lang="en" className={`${inter.variable} ${manrope.variable} ${caveat.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} ${manrope.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col pb-20 sm:pb-0">
         <a href="#main" className="skip-link">
           Skip to main content
