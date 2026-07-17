@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { fetchOffers, fallbackOffers, type Offer } from "@/lib/offers";
 import { useCountdown } from "@/lib/useCountdown";
+import { DOCUMENT_PORTAL_URL } from "@/lib/documentPortal";
 import { Flame } from "lucide-react";
 
 export default function WaiverBanner({ destination }: { destination: string }) {
@@ -63,12 +63,12 @@ export default function WaiverBanner({ destination }: { destination: string }) {
           </div>
           <div className="text-right">
             <p className="mb-1.5 text-[11px] font-bold text-white/80">Offer ends soon. Apply now!</p>
-            <Link
-              href={`/apply/?destination=${destination}`}
+            <a
+              href={`${DOCUMENT_PORTAL_URL}/?destination=${destination}`}
               className="inline-block rounded-full bg-white px-6 py-3 font-bold text-urgent transition-transform duration-300 hover:-translate-y-0.5"
             >
               Apply Now →
-            </Link>
+            </a>
           </div>
         </div>
       </div>

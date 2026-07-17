@@ -2,6 +2,7 @@ import Link from "next/link";
 import { site, getContactLinks } from "@/lib/data/site";
 import type { Destination } from "@/lib/data/destinations";
 import Flag from "@/components/Flag";
+import { DOCUMENT_PORTAL_URL } from "@/lib/documentPortal";
 import { MessageCircle, Send } from "lucide-react";
 
 export default async function Footer({ destinations }: { destinations: Destination[] }) {
@@ -45,7 +46,6 @@ export default async function Footer({ destinations }: { destinations: Destinati
               { href: "/faq/", label: "FAQ" },
               { href: "/about/", label: "About Us" },
               { href: "/contact/", label: "Contact" },
-              { href: "/apply/", label: "Apply Now" },
             ].map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className="text-white/70 transition-colors hover:text-white">
@@ -53,6 +53,11 @@ export default async function Footer({ destinations }: { destinations: Destinati
                 </Link>
               </li>
             ))}
+            <li>
+              <a href={DOCUMENT_PORTAL_URL} className="text-white/70 transition-colors hover:text-white">
+                Apply Now
+              </a>
+            </li>
           </ul>
         </div>
 
