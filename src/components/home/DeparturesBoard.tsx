@@ -1,7 +1,7 @@
-import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import FlightPaths from "@/components/home/FlightPaths";
 import { getContactLinks } from "@/lib/data/site";
+import { DOCUMENT_PORTAL_URL } from "@/lib/documentPortal";
 import { MessageCircle, Send, Phone, ArrowRight } from "lucide-react";
 
 export default async function DeparturesBoard() {
@@ -52,12 +52,12 @@ export default async function DeparturesBoard() {
               >
                 <Phone className="h-4 w-4" aria-hidden="true" /> Call Us
               </a>
-              <Link
-                href="/apply/"
+              <a
+                href={DOCUMENT_PORTAL_URL}
                 className="inline-flex items-center gap-2 rounded-full bg-hot px-6 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5"
               >
                 Apply Now <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Link>
+              </a>
             </div>
           </div>
         </div>

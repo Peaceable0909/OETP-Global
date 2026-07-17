@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { fetchOffers, type Offer } from "@/lib/offers";
 import type { Destination } from "@/lib/data/destinations";
 import { useCountdown } from "@/lib/useCountdown";
+import { DOCUMENT_PORTAL_URL } from "@/lib/documentPortal";
 import Reveal from "@/components/Reveal";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
@@ -128,12 +129,12 @@ function OfferCard({
               <div className="hidden sm:block">
                 <CountdownDigits expiresAt={offer.expires_at} />
               </div>
-              <Link
-                href={`/apply/?destination=${offer.destination}`}
+              <a
+                href={`${DOCUMENT_PORTAL_URL}/?destination=${offer.destination}`}
                 className="btn-sheen flex items-center justify-center gap-2 rounded-full bg-hot px-4 py-2.5 text-sm font-bold text-white transition-all duration-200 hover:scale-[1.02] hover:brightness-95"
               >
                 Apply Now <span aria-hidden>→</span>
-              </Link>
+              </a>
             </div>
           ) : (
             <Link

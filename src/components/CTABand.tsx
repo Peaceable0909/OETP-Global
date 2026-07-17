@@ -1,9 +1,9 @@
-import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import Magnetic from "@/components/Magnetic";
 import Cubes from "@/components/reactbits/Cubes";
 import SplitTextReveal from "@/components/reactbits/SplitTextReveal";
 import { getContactLinks } from "@/lib/data/site";
+import { DOCUMENT_PORTAL_URL } from "@/lib/documentPortal";
 import { MessageCircle } from "lucide-react";
 
 export default async function CTABand() {
@@ -30,12 +30,12 @@ export default async function CTABand() {
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
           <Magnetic>
-            <Link
-              href="/apply/"
+            <a
+              href={DOCUMENT_PORTAL_URL}
               className="btn-sheen inline-block rounded-full bg-hot px-8 py-4 font-bold text-white hover:brightness-95 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               Start My Application →
-            </Link>
+            </a>
           </Magnetic>
           <Magnetic>
             <a

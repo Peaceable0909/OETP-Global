@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FileText, MessageCircle, Compass } from "lucide-react";
+import { DOCUMENT_PORTAL_URL } from "@/lib/documentPortal";
 
 export default function MobileTabBar({ whatsapp }: { whatsapp: string }) {
   const pathname = usePathname();
@@ -24,12 +25,12 @@ export default function MobileTabBar({ whatsapp }: { whatsapp: string }) {
       className="fixed inset-x-0 bottom-0 z-40 flex border-t border-line bg-white/95 backdrop-blur sm:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
-      <Link href="/apply/" className={tabCls}>
+      <a href={DOCUMENT_PORTAL_URL} className={tabCls}>
         <span className={iconWrapCls(applyActive)}>
           <FileText className="h-[18px] w-[18px]" aria-hidden="true" />
         </span>
         <span className={labelCls(applyActive)}>Apply</span>
-      </Link>
+      </a>
 
       <a href={whatsapp} target="_blank" rel="noopener noreferrer" className={tabCls}>
         <span className={iconWrapCls(false)}>
