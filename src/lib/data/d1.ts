@@ -31,6 +31,12 @@ export async function queryD1<T = Record<string, unknown>>(sql: string): Promise
           "content-type": "application/json",
         },
         body: JSON.stringify({ sql }),
+        // Next.js's App Router caches fetch() by default and persists that
+        // cache to disk across builds — Cloudflare Workers Build retains
+        // that cache between CI runs, so without this every rebuild was
+        // silently reusing whichever result got cached on the very first
+        // successful build, never picking up later D1 edits.
+        cache: "no-store",
       }
     );
     if (!res.ok) {
