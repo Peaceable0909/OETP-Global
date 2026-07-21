@@ -31,6 +31,7 @@ function emptyForm(): FormState {
     name: "",
     city: "",
     tagline: "",
+    description: "",
     heroPhoto: "",
     rankingNational: "",
     rankingWorld: "",
@@ -245,6 +246,16 @@ export default function EditUniversityForm() {
           />
           <Field label="Campus tour video URL (optional)" value={form.videoUrl} onChange={(e) => set("videoUrl", e.target.value)} />
         </div>
+        <label className="mt-4 block text-xs font-bold text-ink-soft">
+          Description
+          <textarea
+            value={form.description}
+            onChange={(e) => set("description", e.target.value)}
+            rows={4}
+            placeholder="A few paragraphs introducing this university — shown on its Overview section."
+            className={textCls}
+          />
+        </label>
         <label className="mt-4 flex items-center gap-2 text-sm font-bold">
           <input type="checkbox" checked={form.featured} onChange={(e) => set("featured", e.target.checked)} />
           Featured on the country page

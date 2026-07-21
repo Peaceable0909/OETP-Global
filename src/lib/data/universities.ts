@@ -8,6 +8,7 @@ export type University = {
   name: string;
   city: string;
   tagline: string;
+  description: string;
   heroPhoto: string;
   rankingNational: number | null;
   rankingWorld: number | null;
@@ -51,6 +52,7 @@ const FALLBACK_UNIVERSITIES: University[] = [
   ...u,
   city: "",
   tagline: "",
+  description: "",
   heroPhoto: universityImage(u.slug),
   rankingNational: null,
   rankingWorld: null,
@@ -75,6 +77,7 @@ type UniversityRow = {
   name: string;
   city: string | null;
   tagline: string | null;
+  description: string | null;
   hero_photo: string | null;
   ranking_national: number | null;
   ranking_world: number | null;
@@ -109,6 +112,7 @@ function rowToUniversity(row: UniversityRow): University {
     name: row.name,
     city: row.city ?? "",
     tagline: row.tagline ?? "",
+    description: row.description ?? "",
     heroPhoto: row.hero_photo ?? universityImage(row.slug),
     rankingNational: row.ranking_national,
     rankingWorld: row.ranking_world,

@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ uslug: st
   const { uslug } = await params;
   const u = await getUniversity(uslug);
   if (!u) return {};
-  return { title: u.name, description: u.tagline || `Programs, fees, and requirements at ${u.name}.` };
+  return { title: u.name, description: u.tagline || u.description || `Programs, fees, and requirements at ${u.name}.` };
 }
 
 const tabs = [
@@ -109,6 +109,9 @@ export default async function UniversityPage({ params }: { params: Promise<{ slu
           <Reveal>
             <div id="overview" className="scroll-mt-36">
               <h2 className="text-2xl font-bold sm:text-3xl">Overview</h2>
+              {university.description && (
+                <p className="mt-4 max-w-2xl whitespace-pre-line text-ink-soft">{university.description}</p>
+              )}
               <div className="mt-6 grid gap-4 sm:grid-cols-3">
                 {university.foundedYear && <StatCell label="Founded" value={String(university.foundedYear)} />}
                 {university.studentPopulation && (

@@ -31,7 +31,7 @@ export const onRequestPut: PagesFunction<Env> = async ({ request, env, params })
 
   await env.DB.prepare(
     `UPDATE universities SET
-      country_slug = ?, name = ?, city = ?, tagline = ?, hero_photo = ?, ranking_national = ?,
+      country_slug = ?, name = ?, city = ?, tagline = ?, description = ?, hero_photo = ?, ranking_national = ?,
       ranking_world = ?, founded_year = ?, student_population = ?, international_student_pct = ?,
       campus_type = ?, gallery = ?, video_url = ?, accreditations = ?, accommodation_summary = ?,
       accommodation_cost_range = ?, student_life = ?, faqs = ?, featured = ?,

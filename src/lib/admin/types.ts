@@ -43,6 +43,7 @@ export type AdminUniversity = {
   name: string;
   city: string;
   tagline: string;
+  description: string;
   heroPhoto: string;
   rankingNational: number | null;
   rankingWorld: number | null;
