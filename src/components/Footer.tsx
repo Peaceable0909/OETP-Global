@@ -2,7 +2,6 @@ import Link from "next/link";
 import { site, getContactLinks } from "@/lib/data/site";
 import type { Destination } from "@/lib/data/destinations";
 import Flag from "@/components/Flag";
-import { DOCUMENT_PORTAL_URL } from "@/lib/documentPortal";
 import { MessageCircle, Send } from "lucide-react";
 
 export default async function Footer({ destinations }: { destinations: Destination[] }) {
@@ -54,9 +53,9 @@ export default async function Footer({ destinations }: { destinations: Destinati
               </li>
             ))}
             <li>
-              <a href={DOCUMENT_PORTAL_URL} className="text-white/70 transition-colors hover:text-white">
+              <Link href="/apply/" className="text-white/70 transition-colors hover:text-white">
                 Apply Now
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

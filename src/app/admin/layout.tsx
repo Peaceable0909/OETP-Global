@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { LogOut, Globe2, Quote, Settings, BarChart3, Landmark, GraduationCap } from "lucide-react";
+import { LogOut, Globe2, Quote, Settings, BarChart3, Landmark, GraduationCap, Inbox } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -71,6 +71,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             }`}
           >
             <GraduationCap className="h-4 w-4" /> Programs
+          </Link>
+          <Link
+            href="/admin/applications/"
+            className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-bold ${
+              pathname?.startsWith("/admin/applications") ? "bg-brand-600 text-white" : "bg-brand-100 text-brand-700 hover:bg-brand-200"
+            }`}
+          >
+            <Inbox className="h-4 w-4" /> Applications
           </Link>
           <Link
             href="/admin/stories/"

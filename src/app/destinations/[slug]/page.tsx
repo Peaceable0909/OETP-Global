@@ -14,7 +14,6 @@ import TrackDestinationView from "@/components/TrackDestinationView";
 import VisaStepsStack from "@/components/VisaStepsStack";
 import UniversityCard from "@/components/UniversityCard";
 import { Icon, type IconName } from "@/lib/icons";
-import { DOCUMENT_PORTAL_URL } from "@/lib/documentPortal";
 import { Briefcase, FileText } from "lucide-react";
 
 export async function generateStaticParams() {
@@ -274,12 +273,12 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
               <p className="mt-4 flex items-start gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-xs font-semibold leading-relaxed text-emerald-800">
                 <Briefcase className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" /> {d.workRights}
               </p>
-              <a
-                href={`${DOCUMENT_PORTAL_URL}/?destination=${d.slug}`}
+              <Link
+                href={`/apply/?destination=${d.slug}`}
                 className="btn-sheen mt-6 block rounded-full bg-study px-6 py-3.5 text-center font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-study-deep"
               >
                 Apply Now →
-              </a>
+              </Link>
             </div>
           </Reveal>
         </aside>

@@ -12,6 +12,28 @@ export type AdminTestimonial = {
   updatedAt: string;
 };
 
+export type AdminApplication = {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  country: string;
+  destination: string;
+  program: string;
+  message: string;
+  status: string;
+  createdAt: string;
+};
+
+export type AdminApplicationDocument = {
+  id: number;
+  applicationId: string;
+  docType: string;
+  filename: string;
+  sizeBytes: number | null;
+  createdAt: string;
+};
+
 export type AdminUniversity = {
   id: number;
   slug: string;

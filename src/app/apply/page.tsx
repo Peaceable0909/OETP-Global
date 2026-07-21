@@ -21,14 +21,6 @@ export default async function ApplyPage() {
         <p className="mt-4 text-lg text-ink-soft">
           Under 10 minutes. Instant Application ID. A counselor reviews your profile — free.
         </p>
-        <a
-          href="https://competenza-document-form.vercel.app"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-line px-4 py-2 text-sm font-semibold text-ink-soft transition-colors hover:border-study hover:text-study"
-        >
-          Prefer saving straight to Google Drive? Try our Document Portal →
-        </a>
       </div>
       <Suspense>
         <ApplyForm destinations={destinations} whatsapp={links.whatsapp} />
