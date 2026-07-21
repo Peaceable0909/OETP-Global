@@ -52,7 +52,8 @@ export type AdminUniversity = {
   internationalStudentPct: number | null;
   campusType: string;
   gallery: string[];
-  videoUrl: string;
+  keyPoints: string[];
+  videos: { title: string; url: string }[];
   accreditations: string[];
   accommodationSummary: string;
   accommodationCostRange: string;

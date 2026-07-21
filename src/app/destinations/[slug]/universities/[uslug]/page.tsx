@@ -10,6 +10,7 @@ import Flag from "@/components/Flag";
 import UniversityCard from "@/components/UniversityCard";
 import ProgramsCompare from "@/components/ProgramsCompare";
 import Gallery from "@/components/Gallery";
+import VideoGrid from "@/components/VideoGrid";
 import ReviewsSection from "@/components/ReviewsSection";
 import FaqAccordion from "@/components/FaqAccordion";
 import RankingBadge from "@/components/RankingBadge";
@@ -28,9 +29,11 @@ export async function generateMetadata({ params }: { params: Promise<{ uslug: st
 }
 
 const tabs = [
+  { href: "#about", label: "About" },
   { href: "#overview", label: "Overview" },
   { href: "#programs", label: "Programs" },
   { href: "#campus", label: "Campus & Life" },
+  { href: "#videos", label: "Videos" },
   { href: "#fees", label: "Fees & Scholarships" },
   { href: "#reviews", label: "Reviews" },
   { href: "#faq", label: "FAQ" },
@@ -106,12 +109,32 @@ export default async function UniversityPage({ params }: { params: Promise<{ slu
 
       <div className="mx-auto max-w-7xl px-5 py-14 lg:px-8">
         <div className="space-y-16">
+          {(university.description || university.keyPoints.length > 0) && (
+            <Reveal>
+              <div id="about" className="scroll-mt-36">
+                <h2 className="text-2xl font-bold sm:text-3xl">About {university.name}</h2>
+                {university.description && (
+                  <p className="mt-4 max-w-2xl whitespace-pre-line text-ink-soft">{university.description}</p>
+                )}
+                {university.keyPoints.length > 0 && (
+                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                    {university.keyPoints.map((k) => (
+                      <div key={k} className="flex items-start gap-3 rounded-2xl border border-line bg-white p-5">
+                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-surface" style={{ color: accent }}>
+                          ✓
+                        </span>
+                        <p className="text-sm font-semibold leading-relaxed">{k}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </Reveal>
+          )}
+
           <Reveal>
             <div id="overview" className="scroll-mt-36">
               <h2 className="text-2xl font-bold sm:text-3xl">Overview</h2>
-              {university.description && (
-                <p className="mt-4 max-w-2xl whitespace-pre-line text-ink-soft">{university.description}</p>
-              )}
               <div className="mt-6 grid gap-4 sm:grid-cols-3">
                 {university.foundedYear && <StatCell label="Founded" value={String(university.foundedYear)} />}
                 {university.studentPopulation && (
@@ -152,6 +175,17 @@ export default async function UniversityPage({ params }: { params: Promise<{ slu
                       <p className="text-sm font-semibold leading-relaxed">{s}</p>
                     </div>
                   ))}
+                </div>
+              </div>
+            </Reveal>
+          )}
+
+          {university.videos.length > 0 && (
+            <Reveal>
+              <div id="videos" className="scroll-mt-36">
+                <h2 className="text-2xl font-bold sm:text-3xl">Videos</h2>
+                <div className="mt-6">
+                  <VideoGrid videos={university.videos} accent={accent} />
                 </div>
               </div>
             </Reveal>
