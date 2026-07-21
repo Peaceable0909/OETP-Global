@@ -35,9 +35,9 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     `INSERT INTO universities (
       slug, country_slug, name, city, tagline, description, hero_photo, ranking_national, ranking_world,
       founded_year, student_population, international_student_pct, campus_type, gallery,
-      video_url, accreditations, accommodation_summary, accommodation_cost_range, student_life,
+      key_points, videos, accreditations, accommodation_summary, accommodation_cost_range, student_life,
       faqs, featured
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
     .bind(...bindingsForInsert(input))
     .run();
