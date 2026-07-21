@@ -21,6 +21,7 @@ export default function ApplicationDetail() {
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [emailNotice, setEmailNotice] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -38,15 +39,20 @@ export default function ApplicationDetail() {
     if (!id) return;
     setUpdating(true);
     setError(null);
+    setEmailNotice(null);
     try {
       const res = await fetch(`/api/admin/applications/${id}`, {
         method: "PATCH",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ status }),
       });
-      const data = await res.json().catch(() => null);
+      const data = (await res.json().catch(() => null)) as
+        | { application: AdminApplication; emailSent?: boolean; emailError?: string | null; error?: string }
+        | null;
       if (!res.ok) throw new Error(data?.error ?? "Update failed");
-      setApplication(data.application);
+      setApplication(data!.application);
+      if (data!.emailSent) setEmailNotice("Status update email sent to the applicant.");
+      else if (data!.emailError) setEmailNotice(`Status saved, but no email was sent: ${data!.emailError}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Update failed");
     } finally {
@@ -83,6 +89,7 @@ export default function ApplicationDetail() {
       </div>
 
       {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">{error}</p>}
+      {emailNotice && <p className="rounded-xl bg-sky-50 px-4 py-3 text-sm font-semibold text-sky-700">{emailNotice}</p>}
 
       <section className="rounded-2xl border border-line bg-white p-6">
         <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-brand-600">Applicant</h3>
@@ -110,6 +117,18 @@ export default function ApplicationDetail() {
           <div>
             <dt className="text-xs font-bold text-ink-soft">Submitted</dt>
             <dd className="text-sm">{new Date(application.createdAt).toLocaleString()}</dd>
+          </div>
+          <div>
+            <dt className="text-xs font-bold text-ink-soft">Confirmation email</dt>
+            <dd className="text-sm">
+              {application.confirmationSentAt ? new Date(application.confirmationSentAt).toLocaleString() : "Not sent yet"}
+            </dd>
+          </div>
+          <div>
+            <dt className="text-xs font-bold text-ink-soft">Last status email</dt>
+            <dd className="text-sm">
+              {application.lastStatusEmailAt ? new Date(application.lastStatusEmailAt).toLocaleString() : "None sent yet"}
+            </dd>
           </div>
         </dl>
         {application.message && (

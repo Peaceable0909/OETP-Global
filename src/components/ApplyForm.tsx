@@ -4,6 +4,9 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import type { Destination } from "@/lib/data/destinations";
 import { AlertTriangle, MessageCircle, PartyPopper } from "lucide-react";
+import DestinationPicker from "@/components/apply/DestinationPicker";
+import ProgramPicker from "@/components/apply/ProgramPicker";
+import Reveal from "@/components/Reveal";
 
 type UploadField = { name: string; label: string; hint: string };
 
@@ -12,6 +15,7 @@ const uploadFields: UploadField[] = [
   { name: "certificate", label: "Certificates", hint: "Secondary school / degree certificate" },
   { name: "transcript", label: "Transcript", hint: "Academic transcript if available" },
   { name: "cv", label: "CV / Resume", hint: "Optional but recommended" },
+  { name: "other", label: "Other Document", hint: "Anything else that supports your application (optional)" },
 ];
 
 const inputCls =
@@ -21,6 +25,7 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
   const params = useSearchParams();
   const preselected = params.get("destination") ?? "";
   const preselectedProgram = params.get("program") ?? "";
+  const [destinationSlug, setDestinationSlug] = useState(preselected);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{ id: string; skipped: string[] } | null>(null);
@@ -28,6 +33,10 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
+    if (!destinationSlug) {
+      setError("Please choose a destination.");
+      return;
+    }
     setSubmitting(true);
     try {
       const res = await fetch("/api/apply", { method: "POST", body: new FormData(e.currentTarget) });
@@ -59,6 +68,7 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
           Save this ID — you&apos;ll use it in every conversation with us. A counselor will
           contact you within 24–48 hours.
         </p>
+        <p className="mt-2 text-xs font-semibold text-ink-mute">A confirmation email is on its way to your inbox.</p>
         {result.skipped.length > 0 && (
           <p className="mt-3 rounded-xl bg-amber-100 px-4 py-3 text-xs font-semibold text-amber-800">
             Note: we couldn&apos;t store these uploads yet: {result.skipped.join(", ")}. A counselor
@@ -85,78 +95,75 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
         </p>
       )}
 
-      <fieldset className="rounded-3xl border border-line bg-white p-7">
-        <legend className="px-2 font-display text-lg font-bold">1 · Personal Information</legend>
-        <div className="grid gap-5 sm:grid-cols-2">
-          <label className="block text-sm font-bold">
-            Full Name *
-            <input name="full_name" required placeholder="e.g. Femi Olaniyi" className={`mt-1.5 ${inputCls}`} />
-          </label>
-          <label className="block text-sm font-bold">
-            Email *
-            <input name="email" type="email" required placeholder="you@example.com" className={`mt-1.5 ${inputCls}`} />
-          </label>
-          <label className="block text-sm font-bold">
-            Phone (WhatsApp) *
-            <input name="phone" required placeholder="+234 ..." className={`mt-1.5 ${inputCls}`} />
-          </label>
-          <label className="block text-sm font-bold">
-            Country of Residence *
-            <input name="country" required placeholder="e.g. Nigeria" className={`mt-1.5 ${inputCls}`} />
-          </label>
-        </div>
-      </fieldset>
-
-      <fieldset className="rounded-3xl border border-line bg-white p-7">
-        <legend className="px-2 font-display text-lg font-bold">2 · Your Goal</legend>
-        <div className="grid gap-5 sm:grid-cols-2">
-          <label className="block text-sm font-bold">
-            Preferred Destination *
-            <select name="destination" required defaultValue={preselected} className={`mt-1.5 ${inputCls}`}>
-              <option value="" disabled>Select a destination…</option>
-              {destinations.map((d) => (
-                <option key={d.slug} value={d.slug}>{d.name} — {d.tagline}</option>
-              ))}
-              <option value="undecided">Not sure yet — advise me</option>
-            </select>
-          </label>
-          <label className="block text-sm font-bold">
-            Preferred Program
-            <input
-              name="program"
-              defaultValue={preselectedProgram}
-              placeholder="e.g. Culinary Arts, Nursing…"
-              className={`mt-1.5 ${inputCls}`}
-            />
-          </label>
-          <label className="block text-sm font-bold sm:col-span-2">
-            Anything we should know?
-            <textarea name="message" rows={3} placeholder="Your budget, timeline, qualifications…" className={`mt-1.5 ${inputCls}`} />
-          </label>
-        </div>
-      </fieldset>
-
-      <fieldset className="rounded-3xl border border-line bg-white p-7">
-        <legend className="px-2 font-display text-lg font-bold">3 · Documents</legend>
-        <p className="mb-5 text-xs font-semibold text-ink-soft">
-          PDF, JPG or PNG — max 10 MB each. Don&apos;t have everything? Submit what you have;
-          a counselor will guide you on the rest.
-        </p>
-        <div className="grid gap-5 sm:grid-cols-2">
-          {uploadFields.map((f) => (
-            <label key={f.name} className="block text-sm font-bold">
-              {f.label}
-              <input
-                type="file"
-                name={f.name}
-                accept=".pdf,.jpg,.jpeg,.png,.webp"
-                className="mt-1.5 w-full cursor-pointer rounded-xl border border-dashed border-line bg-surface px-4 py-3 text-xs font-medium file:mr-3 file:rounded-full file:border-0 file:bg-doc file:px-4 file:py-1.5 file:text-xs file:font-bold file:text-white hover:border-study"
-              />
-              <span className="mt-1 block text-[11px] font-medium text-ink-soft">{f.hint}</span>
+      <Reveal delay={0}>
+        <fieldset className="rounded-3xl border border-line bg-white p-7">
+          <legend className="px-2 font-display text-lg font-bold">1 · Personal Information</legend>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="block text-sm font-bold">
+              Full Name *
+              <input name="full_name" required placeholder="e.g. Femi Olaniyi" className={`mt-1.5 ${inputCls}`} />
             </label>
-          ))}
-        </div>
-      </fieldset>
+            <label className="block text-sm font-bold">
+              Email *
+              <input name="email" type="email" required placeholder="you@example.com" className={`mt-1.5 ${inputCls}`} />
+            </label>
+            <label className="block text-sm font-bold">
+              Phone (WhatsApp) *
+              <input name="phone" required placeholder="+234 ..." className={`mt-1.5 ${inputCls}`} />
+            </label>
+            <label className="block text-sm font-bold">
+              Country of Residence *
+              <input name="country" required placeholder="e.g. Nigeria" className={`mt-1.5 ${inputCls}`} />
+            </label>
+          </div>
+        </fieldset>
+      </Reveal>
+
+      <Reveal delay={90}>
+        <fieldset className="rounded-3xl border border-line bg-white p-7">
+          <legend className="px-2 font-display text-lg font-bold">2 · Your Goal</legend>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <label className="block text-sm font-bold sm:col-span-2">
+              Preferred Destination *
+              <div className="mt-1.5">
+                <DestinationPicker destinations={destinations} value={destinationSlug} onChange={setDestinationSlug} />
+              </div>
+            </label>
+            <label className="block text-sm font-bold sm:col-span-2">
+              Preferred Program
+              <ProgramPicker destinationSlug={destinationSlug} defaultValue={preselectedProgram} />
+            </label>
+            <label className="block text-sm font-bold sm:col-span-2">
+              Anything we should know?
+              <textarea name="message" rows={3} placeholder="Your budget, timeline, qualifications…" className={`mt-1.5 ${inputCls}`} />
+            </label>
+          </div>
+        </fieldset>
+      </Reveal>
+
+      <Reveal delay={180}>
+        <fieldset className="rounded-3xl border border-line bg-white p-7">
+          <legend className="px-2 font-display text-lg font-bold">3 · Documents</legend>
+          <p className="mb-5 text-xs font-semibold text-ink-soft">
+            PDF, JPG, PNG or WEBP — max 10 MB each. Don&apos;t have everything? Submit what you have;
+            a counselor will guide you on the rest.
+          </p>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {uploadFields.map((f) => (
+              <label key={f.name} className="block text-sm font-bold">
+                {f.label}
+                <input
+                  type="file"
+                  name={f.name}
+                  accept=".pdf,.jpg,.jpeg,.png,.webp"
+                  className="mt-1.5 w-full cursor-pointer rounded-xl border border-dashed border-line bg-surface px-4 py-3 text-xs font-medium file:mr-3 file:rounded-full file:border-0 file:bg-doc file:px-4 file:py-1.5 file:text-xs file:font-bold file:text-white hover:border-study"
+                />
+                <span className="mt-1 block text-[11px] font-medium text-ink-soft">{f.hint}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      </Reveal>
 
       <button
         type="submit"
@@ -166,8 +173,8 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
         {submitting ? "Submitting…" : "Submit Application →"}
       </button>
       <p className="text-center text-xs font-medium text-ink-soft">
-        Submitting is free. You instantly receive an Application ID, and we&apos;re transparent
-        about any service fees before you commit to anything.
+        Submitting is free. You&apos;ll get an Application ID and a confirmation email right away,
+        and we&apos;re transparent about any service fees before you commit to anything.
       </p>
     </form>
   );

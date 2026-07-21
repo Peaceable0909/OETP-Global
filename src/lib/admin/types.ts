@@ -23,6 +23,8 @@ export type AdminApplication = {
   message: string;
   status: string;
   createdAt: string;
+  confirmationSentAt: string | null;
+  lastStatusEmailAt: string | null;
 };
 
 export type AdminApplicationDocument = {
