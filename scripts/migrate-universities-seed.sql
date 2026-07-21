@@ -19,9 +19,11 @@
 -- member fills in the rest.
 --
 -- Slugs are a best-effort ASCII slugify (spaces/parens/commas/apostrophes
--- stripped, "&" -> "and") — good enough for the program names in production
--- today, but check for stray punctuation before relying on it for a name
--- with characters not seen here.
+-- stripped, "&" -> "and", "/" -> "-") — good enough for the program names in
+-- production today, but check for stray punctuation before relying on it for
+-- a name with characters not seen here. A literal "/" is not just cosmetic:
+-- it breaks the program's route ("/programs/[pslug]/" would parse it as an
+-- extra path segment), so this one is load-bearing, not just tidiness.
 --
 -- entry_requirements/required_documents seed from the *country's* existing
 -- requirements/documents lists as a starting point (most partner programs
@@ -48,9 +50,9 @@ INSERT OR IGNORE INTO programs (
 SELECT
   c.slug || '-partner-institutions-' ||
     lower(
-      replace(replace(replace(replace(replace(replace(
+      replace(replace(replace(replace(replace(replace(replace(
         json_extract(je.value, '$.name'),
-      ' & ', ' and '), ' ', '-'), '(', ''), ')', ''), ',', ''), '''', '')
+      ' & ', ' and '), ' / ', '-'), ' ', '-'), '(', ''), ')', ''), ',', ''), '''', '')
     ),
   c.slug || '-partner-institutions',
   json_extract(je.value, '$.name'),

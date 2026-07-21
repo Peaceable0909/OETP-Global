@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDestinations, getDestination } from "@/lib/data/destinations";
+import { getFeaturedUniversities } from "@/lib/data/universities";
+import { getPrograms } from "@/lib/data/programs";
 import Reveal from "@/components/Reveal";
 import FaqAccordion from "@/components/FaqAccordion";
 import CTABand from "@/components/CTABand";
@@ -10,6 +12,7 @@ import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
 import TrackDestinationView from "@/components/TrackDestinationView";
 import VisaStepsStack from "@/components/VisaStepsStack";
+import UniversityCard from "@/components/UniversityCard";
 import { Icon, type IconName } from "@/lib/icons";
 import { DOCUMENT_PORTAL_URL } from "@/lib/documentPortal";
 import { Briefcase, FileText } from "lucide-react";
@@ -28,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 const tabs = [
   { href: "#overview", label: "Overview" },
-  { href: "#programs", label: "Programs" },
+  { href: "#universities", label: "Universities" },
   { href: "#fees", label: "Fees & Living" },
   { href: "#visa", label: "Visa Process" },
   { href: "#requirements", label: "Requirements" },
@@ -37,7 +40,11 @@ const tabs = [
 
 export default async function DestinationPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const d = await getDestination(slug);
+  const [d, featuredUniversities, allPrograms] = await Promise.all([
+    getDestination(slug),
+    getFeaturedUniversities(slug),
+    getPrograms(),
+  ]);
   if (!d) notFound();
 
   const glance: { icon: IconName; label: string; value: string }[] = [
@@ -147,19 +154,36 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
             </div>
           </Reveal>
 
-          {/* Programs */}
+          {/* Featured Universities */}
           <Reveal>
-            <div id="programs" className="scroll-mt-36">
-              <h2 className="text-2xl font-bold sm:text-3xl">Available Programs</h2>
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                {d.programs.map((p) => (
-                  <div key={p.name} className="rounded-2xl border border-line bg-white p-5 transition-shadow hover:shadow-lg">
-                    <h3 className="font-display font-bold">{p.name}</h3>
-                    <p className="mt-1 text-xs font-bold uppercase tracking-wider" style={{ color: d.accent }}>{p.length}</p>
-                    <p className="mt-2 text-sm text-ink-soft">{p.note}</p>
-                  </div>
-                ))}
+            <div id="universities" className="scroll-mt-36">
+              <div className="flex flex-wrap items-end justify-between gap-3">
+                <h2 className="text-2xl font-bold sm:text-3xl">Featured Universities</h2>
+                <Link
+                  href={`/destinations/${d.slug}/universities/`}
+                  className="text-sm font-bold"
+                  style={{ color: d.accent }}
+                >
+                  View all universities in {d.name} →
+                </Link>
               </div>
+              {featuredUniversities.length === 0 ? (
+                <p className="mt-6 text-ink-soft">Universities for {d.name} are being added — check back soon.</p>
+              ) : (
+                <div className="mt-6 flex gap-5 overflow-x-auto pb-2">
+                  {featuredUniversities.map((u, i) => (
+                    <div key={u.slug} className="w-72 shrink-0">
+                      <UniversityCard
+                        university={u}
+                        countrySlug={d.slug}
+                        accent={d.accent}
+                        programCount={allPrograms.filter((p) => p.universitySlug === u.slug).length}
+                        delay={i * 70}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </Reveal>
 

@@ -7,3 +7,6 @@ export const destinationGalleryImage = (slug: string, n: number) => `/images/des
 export const testimonialImage = (id: string) => `/images/testimonials/${id}.jpg`;
 export const heroSceneImage = (name: "graduate" | "city" | "student") => `/images/hero/${name}.jpg`;
 export const specializationImage = (slug: string) => `/images/specializations/${slug}.jpg`;
+export const universityImage = (slug: string) => `/images/universities/${slug}/hero.jpg`;
+export const universityGalleryImage = (slug: string, n: number) => `/images/universities/${slug}/gallery-${n}.jpg`;
+export const programImage = (slug: string) => `/images/programs/${slug}/hero.jpg`;
