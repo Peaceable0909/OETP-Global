@@ -1,4 +1,7 @@
 import { json, type Env } from "./types";
+import { sendEmail, applicationConfirmationEmail } from "./_email";
+
+const DEFAULT_WHATSAPP = "https://wa.me/2340000000000";
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB per document
 const ALLOWED_TYPES = ["application/pdf", "image/jpeg", "image/png", "image/webp"];
@@ -85,5 +88,16 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     ).run();
   }
 
-  return json({ id, uploaded, skipped });
+  const whatsappRow = await env.DB.prepare(`SELECT value FROM settings WHERE key = 'whatsapp'`).first<{ value: string }>();
+  const whatsapp = whatsappRow?.value || DEFAULT_WHATSAPP;
+
+  const emailResult = await sendEmail(env, {
+    to: email,
+    ...applicationConfirmationEmail({ id, fullName, whatsapp }),
+  });
+  if (emailResult.sent) {
+    await env.DB.prepare(`UPDATE applications SET confirmation_sent_at = datetime('now') WHERE id = ?`).bind(id).run();
+  }
+
+  return json({ id, uploaded, skipped, emailSent: emailResult.sent, emailError: emailResult.error ?? null });
 };

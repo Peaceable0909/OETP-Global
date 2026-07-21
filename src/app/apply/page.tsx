@@ -19,7 +19,8 @@ export default async function ApplyPage() {
           <span className="text-study"> Application</span>
         </h1>
         <p className="mt-4 text-lg text-ink-soft">
-          Under 10 minutes. Instant Application ID. A counselor reviews your profile — free.
+          Under 10 minutes. Instant Application ID, an emailed confirmation, and a counselor who
+          reviews your profile — free.
         </p>
       </div>
       <Suspense>

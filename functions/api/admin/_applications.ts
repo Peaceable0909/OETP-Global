@@ -9,6 +9,8 @@ export type ApplicationRow = {
   message: string | null;
   status: string;
   created_at: string;
+  confirmation_sent_at: string | null;
+  last_status_email_at: string | null;
 };
 
 export type ApplicationDocumentRow = {
@@ -32,6 +34,8 @@ export function rowToApi(row: ApplicationRow) {
     message: row.message ?? "",
     status: row.status,
     createdAt: row.created_at,
+    confirmationSentAt: row.confirmation_sent_at,
+    lastStatusEmailAt: row.last_status_email_at,
   };
 }
 
