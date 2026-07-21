@@ -5,6 +5,7 @@ export type UniversityRow = {
   name: string;
   city: string | null;
   tagline: string | null;
+  description: string | null;
   hero_photo: string | null;
   ranking_national: number | null;
   ranking_world: number | null;
@@ -43,6 +44,7 @@ export function rowToApi(row: UniversityRow) {
     name: row.name,
     city: row.city ?? "",
     tagline: row.tagline ?? "",
+    description: row.description ?? "",
     heroPhoto: row.hero_photo ?? "",
     rankingNational: row.ranking_national,
     rankingWorld: row.ranking_world,
@@ -70,6 +72,7 @@ export type UniversityInput = {
   name: string;
   city?: string;
   tagline?: string;
+  description?: string;
   heroPhoto?: string;
   rankingNational?: number | null;
   rankingWorld?: number | null;
@@ -107,6 +110,7 @@ export function bindingsForInsert(input: UniversityInput) {
     input.name,
     input.city || null,
     input.tagline || null,
+    input.description || null,
     input.heroPhoto || null,
     input.rankingNational ?? null,
     input.rankingWorld ?? null,
@@ -131,6 +135,7 @@ export function bindingsForUpdate(input: UniversityInput) {
     input.name,
     input.city || null,
     input.tagline || null,
+    input.description || null,
     input.heroPhoto || null,
     input.rankingNational ?? null,
     input.rankingWorld ?? null,
