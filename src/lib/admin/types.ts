@@ -12,6 +12,61 @@ export type AdminTestimonial = {
   updatedAt: string;
 };
 
+export type AdminUniversity = {
+  id: number;
+  slug: string;
+  countrySlug: string;
+  name: string;
+  city: string;
+  tagline: string;
+  heroPhoto: string;
+  rankingNational: number | null;
+  rankingWorld: number | null;
+  foundedYear: number | null;
+  studentPopulation: number | null;
+  internationalStudentPct: number | null;
+  campusType: string;
+  gallery: string[];
+  videoUrl: string;
+  accreditations: string[];
+  accommodationSummary: string;
+  accommodationCostRange: string;
+  studentLife: string[];
+  faqs: { q: string; a: string }[];
+  featured: boolean;
+  status: "draft" | "published";
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AdminProgram = {
+  id: number;
+  slug: string;
+  universitySlug: string;
+  name: string;
+  overview: string;
+  photo: string;
+  degreeType: string;
+  fieldOfStudy: string;
+  durationMonths: number | null;
+  tuitionPerYear: number | null;
+  applicationFee: number | null;
+  deposit: number | null;
+  currency: string;
+  entryRequirements: string[];
+  minGpa: number | null;
+  minIelts: number | null;
+  minToefl: number | null;
+  requiredDocuments: string[];
+  modules: { year: number; courses: string[] }[];
+  careerProspects: string[];
+  scholarships: { name: string; amount?: string; note?: string }[];
+  faqs: { q: string; a: string }[];
+  status: "draft" | "published";
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type AdminCountry = {
   id: number;
   slug: string;

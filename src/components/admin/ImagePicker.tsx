@@ -7,7 +7,7 @@ type Props = {
   label: string;
   value: string;
   onChange: (url: string) => void;
-  kind: "country-hero" | "program" | "specialization" | "testimonial";
+  kind: "country-hero" | "program" | "specialization" | "testimonial" | "university-hero" | "university-gallery";
   countrySlug: string;
 };
 
