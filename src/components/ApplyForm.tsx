@@ -20,6 +20,7 @@ const inputCls =
 export default function ApplyForm({ destinations, whatsapp }: { destinations: Destination[]; whatsapp: string }) {
   const params = useSearchParams();
   const preselected = params.get("destination") ?? "";
+  const preselectedProgram = params.get("program") ?? "";
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{ id: string; skipped: string[] } | null>(null);
@@ -121,7 +122,12 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
           </label>
           <label className="block text-sm font-bold">
             Preferred Program
-            <input name="program" placeholder="e.g. Culinary Arts, Nursing…" className={`mt-1.5 ${inputCls}`} />
+            <input
+              name="program"
+              defaultValue={preselectedProgram}
+              placeholder="e.g. Culinary Arts, Nursing…"
+              className={`mt-1.5 ${inputCls}`}
+            />
           </label>
           <label className="block text-sm font-bold sm:col-span-2">
             Anything we should know?
