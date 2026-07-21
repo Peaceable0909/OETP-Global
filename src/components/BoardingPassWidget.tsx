@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { PlaneTakeoff, X } from "lucide-react";
-import { DOCUMENT_PORTAL_URL } from "@/lib/documentPortal";
 
 export default function BoardingPassWidget() {
   const [visible, setVisible] = useState(false);
@@ -37,12 +37,12 @@ export default function BoardingPassWidget() {
             <span className="h-1.5 w-1.5 animate-pulse-soft rounded-full bg-emerald-500" /> Boarding
           </p>
         </div>
-        <a
-          href={DOCUMENT_PORTAL_URL}
+        <Link
+          href="/apply/"
           className="ml-1 rounded-full bg-navy px-3.5 py-2 text-xs font-bold text-white transition-transform hover:scale-105"
         >
           Apply
-        </a>
+        </Link>
       </div>
     </div>
   );

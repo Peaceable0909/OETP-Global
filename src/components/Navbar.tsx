@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { DOCUMENT_PORTAL_URL } from "@/lib/documentPortal";
 
 const links = [
   { href: "/destinations/", label: "Destinations" },
@@ -61,12 +60,12 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <a
-            href={DOCUMENT_PORTAL_URL}
+          <Link
+            href="/apply/"
             className="hidden rounded-full bg-study px-5 py-2.5 text-sm font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-study-deep sm:block"
           >
             Apply Now
-          </a>
+          </Link>
           <button
             aria-label="Toggle menu"
             onClick={() => setOpen((v) => !v)}
@@ -95,9 +94,9 @@ export default function Navbar() {
             </li>
           ))}
           <li>
-            <a href={DOCUMENT_PORTAL_URL} className="mt-2 block rounded-xl bg-study px-4 py-3 text-center font-bold text-white hover:bg-study-deep">
+            <Link href="/apply/" className="mt-2 block rounded-xl bg-study px-4 py-3 text-center font-bold text-white hover:bg-study-deep">
               Apply Now
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
