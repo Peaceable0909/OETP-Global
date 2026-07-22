@@ -10,6 +10,8 @@ export type Program = {
   photo: string;
   degreeType: string;
   fieldOfStudy: string;
+  campus: string;
+  intakeMonths: string[];
   durationMonths: number | null;
   tuitionPerYear: number | null;
   applicationFee: number | null;
@@ -84,6 +86,8 @@ const FALLBACK_PROGRAMS: Program[] = FALLBACK_PROGRAMS_RAW.map((p) => ({
   photo: p.photo ?? programImage(p.slug),
   degreeType: "",
   fieldOfStudy: "",
+  campus: "",
+  intakeMonths: [],
   durationMonths: null,
   tuitionPerYear: null,
   applicationFee: null,
@@ -109,6 +113,8 @@ type ProgramRow = {
   photo: string | null;
   degree_type: string | null;
   field_of_study: string | null;
+  campus: string | null;
+  intake_months: string;
   duration_months: number | null;
   tuition_per_year: number | null;
   application_fee: number | null;
@@ -144,6 +150,8 @@ function rowToProgram(row: ProgramRow): Program {
     photo: row.photo ?? programImage(row.slug),
     degreeType: row.degree_type ?? "",
     fieldOfStudy: row.field_of_study ?? "",
+    campus: row.campus ?? "",
+    intakeMonths: parseArray(row.intake_months),
     durationMonths: row.duration_months,
     tuitionPerYear: row.tuition_per_year,
     applicationFee: row.application_fee,

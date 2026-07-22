@@ -83,6 +83,7 @@ export default async function ProgramPage({
           <div className="mt-5 flex flex-wrap gap-2.5">
             {program.degreeType && <Badge accent={accent}>{program.degreeType}</Badge>}
             {program.fieldOfStudy && <Badge accent={accent}>{program.fieldOfStudy}</Badge>}
+            {program.campus && <Badge accent={accent}>{program.campus}</Badge>}
           </div>
         </div>
       </section>
@@ -190,6 +191,11 @@ export default async function ProgramPage({
 
           <Reveal>
             <h2 className="text-2xl font-bold sm:text-3xl">Intake Dates &amp; Application Timeline</h2>
+            {program.intakeMonths.length > 0 && (
+              <p className="mt-3 text-sm text-ink-soft">
+                Typical intake months: {program.intakeMonths.join(", ")}
+              </p>
+            )}
             {intakes.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2.5">
                 {intakes.map((i) => (
@@ -246,6 +252,7 @@ export default async function ProgramPage({
                 />
                 <Row label="Duration" value={program.durationMonths ? `${program.durationMonths} months` : "Varies"} />
                 <Row label="Degree type" value={program.degreeType || "—"} />
+                {program.campus && <Row label="Campus" value={program.campus} />}
                 <Row label="Min IELTS" value={program.minIelts != null ? String(program.minIelts) : "—"} />
               </dl>
               <a

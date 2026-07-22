@@ -7,6 +7,8 @@ export type ProgramRow = {
   photo: string | null;
   degree_type: string | null;
   field_of_study: string | null;
+  campus: string | null;
+  intake_months: string;
   duration_months: number | null;
   tuition_per_year: number | null;
   application_fee: number | null;
@@ -46,6 +48,8 @@ export function rowToApi(row: ProgramRow) {
     photo: row.photo ?? "",
     degreeType: row.degree_type ?? "",
     fieldOfStudy: row.field_of_study ?? "",
+    campus: row.campus ?? "",
+    intakeMonths: parseArray<string>(row.intake_months),
     durationMonths: row.duration_months,
     tuitionPerYear: row.tuition_per_year,
     applicationFee: row.application_fee,
@@ -74,6 +78,8 @@ export type ProgramInput = {
   photo?: string;
   degreeType?: string;
   fieldOfStudy?: string;
+  campus?: string;
+  intakeMonths?: string[];
   durationMonths?: number | null;
   tuitionPerYear?: number | null;
   applicationFee?: number | null;
@@ -112,6 +118,8 @@ export function bindingsForInsert(input: ProgramInput) {
     input.photo || null,
     input.degreeType || null,
     input.fieldOfStudy || null,
+    input.campus || null,
+    JSON.stringify(input.intakeMonths || []),
     input.durationMonths ?? null,
     input.tuitionPerYear ?? null,
     input.applicationFee ?? null,
@@ -137,6 +145,8 @@ export function bindingsForUpdate(input: ProgramInput) {
     input.photo || null,
     input.degreeType || null,
     input.fieldOfStudy || null,
+    input.campus || null,
+    JSON.stringify(input.intakeMonths || []),
     input.durationMonths ?? null,
     input.tuitionPerYear ?? null,
     input.applicationFee ?? null,
