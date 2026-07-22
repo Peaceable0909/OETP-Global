@@ -4,8 +4,10 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import type { Program } from "@/lib/data/programs";
 import ProgramCard from "@/components/ProgramCard";
+import CompactProgramRow from "@/components/CompactProgramRow";
 
 const MAX_COMPARE = 3;
+const MOBILE_PREVIEW_COUNT = 3;
 
 // The grid + the slide-up comparison tray share selection state, so they
 // live in one client component rather than threading state back up to the
@@ -22,6 +24,7 @@ export default function ProgramsCompare({
   accent: string;
 }) {
   const [selected, setSelected] = useState<string[]>([]);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const toggle = (slug: string) => {
     setSelected((prev) =>
@@ -33,7 +36,25 @@ export default function ProgramsCompare({
 
   return (
     <>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Mobile: a handful of compact rows instead of the full tall-card grid, which */}
+      {/* eats the whole screen once a university has more than a few programs. */}
+      <div className="space-y-3 sm:hidden">
+        {programs.slice(0, MOBILE_PREVIEW_COUNT).map((p) => (
+          <CompactProgramRow key={p.slug} program={p} countrySlug={countrySlug} universitySlug={universitySlug} accent={accent} />
+        ))}
+        {programs.length > MOBILE_PREVIEW_COUNT && (
+          <button
+            type="button"
+            onClick={() => setPreviewOpen(true)}
+            className="w-full rounded-full border-2 px-5 py-3 text-sm font-bold"
+            style={{ borderColor: accent, color: accent }}
+          >
+            View all {programs.length} programs →
+          </button>
+        )}
+      </div>
+
+      <div className="hidden gap-6 sm:grid sm:grid-cols-2 lg:grid-cols-3">
         {programs.map((p, i) => (
           <ProgramCard
             key={p.slug}
@@ -50,6 +71,37 @@ export default function ProgramsCompare({
           />
         ))}
       </div>
+
+      {previewOpen && (
+        <div className="fixed inset-0 z-[100] sm:hidden">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setPreviewOpen(false)} />
+          <div className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-6">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="font-display text-lg font-bold">All {programs.length} Programs</h3>
+              <button
+                type="button"
+                onClick={() => setPreviewOpen(false)}
+                aria-label="Close"
+                className="rounded-full bg-surface p-2"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <div className="space-y-3">
+              {programs.map((p) => (
+                <CompactProgramRow
+                  key={p.slug}
+                  program={p}
+                  countrySlug={countrySlug}
+                  universitySlug={universitySlug}
+                  accent={accent}
+                  onNavigate={() => setPreviewOpen(false)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {compared.length > 0 && (
         <div className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-white/95 p-5 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] backdrop-blur">
