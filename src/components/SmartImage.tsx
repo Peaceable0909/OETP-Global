@@ -45,15 +45,17 @@ export default function SmartImage({ src, alt, accent = "#7C3AED", className = "
       <div
         role="img"
         aria-label={alt}
-        className={`flex flex-col items-center justify-center gap-2 bg-[radial-gradient(circle_at_30%_20%,var(--tint)_0%,transparent_60%)] ${className}`}
-        style={{ ["--tint" as string]: `${accent}33`, backgroundColor: `${accent}14` }}
+        className={`flex flex-col items-center justify-center gap-3 overflow-hidden ${className}`}
+        style={{ backgroundImage: `linear-gradient(135deg, ${accent}26 0%, var(--color-surface) 70%)` }}
       >
-        <svg viewBox="0 0 24 24" className="h-8 w-8 opacity-40" fill="none" stroke={accent} strokeWidth="1.5" aria-hidden="true">
-          <rect x="3" y="5" width="18" height="14" rx="2" />
-          <circle cx="8.5" cy="10" r="1.5" />
-          <path d="M21 15l-5-5-9 9" />
-        </svg>
-        <span className="px-3 text-center text-[11px] font-semibold opacity-50" style={{ color: accent }}>
+        <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full" style={{ backgroundColor: `${accent}22` }}>
+          <svg viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke={accent} strokeWidth="1.75" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <circle cx="8.5" cy="10" r="1.5" />
+            <path d="M21 15l-5-5-9 9" />
+          </svg>
+        </span>
+        <span className="px-3 text-center text-xs font-bold uppercase tracking-wide" style={{ color: accent }}>
           {alt}
         </span>
       </div>
