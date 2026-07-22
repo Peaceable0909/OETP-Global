@@ -37,6 +37,7 @@ export const onRequestPut: PagesFunction<Env> = async ({ request, env, params })
   await env.DB.prepare(
     `UPDATE programs SET
       university_slug = ?, name = ?, overview = ?, photo = ?, degree_type = ?, field_of_study = ?,
+      campus = ?, intake_months = ?,
       duration_months = ?, tuition_per_year = ?, application_fee = ?, deposit = ?, currency = ?,
       entry_requirements = ?, min_gpa = ?, min_ielts = ?, min_toefl = ?, required_documents = ?,
       modules = ?, career_prospects = ?, scholarships = ?, faqs = ?,

@@ -33,6 +33,8 @@ function emptyForm(universitySlug: string): FormState {
     photo: "",
     degreeType: "",
     fieldOfStudy: "",
+    campus: "",
+    intakeMonths: [],
     durationMonths: "",
     tuitionPerYear: "",
     applicationFee: "",
@@ -229,11 +231,20 @@ export default function EditProgramForm() {
           <Field label="Degree type (e.g. Bachelor, Master)" value={form.degreeType} onChange={(e) => set("degreeType", e.target.value)} />
           <Field label="Field of study" value={form.fieldOfStudy} onChange={(e) => set("fieldOfStudy", e.target.value)} />
           <Field label="Duration (months)" type="number" value={form.durationMonths} onChange={(e) => set("durationMonths", e.target.value)} />
+          <Field label="Campus (if the university has more than one)" value={form.campus} onChange={(e) => set("campus", e.target.value)} />
         </div>
         <label className="mt-4 block text-xs font-bold text-ink-soft">
           Overview
           <textarea value={form.overview} onChange={(e) => set("overview", e.target.value)} rows={3} className={textCls} />
         </label>
+        <div className="mt-4">
+          <StringListEditor
+            label="Intake Months"
+            values={form.intakeMonths}
+            onChange={(v) => set("intakeMonths", v)}
+            placeholder="e.g. February"
+          />
+        </div>
       </section>
 
       <section className="rounded-2xl border border-line bg-white p-6">

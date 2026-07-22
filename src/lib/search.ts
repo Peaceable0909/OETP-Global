@@ -100,6 +100,8 @@ export type SearchResultProgram = {
   photo: string;
   degreeType: string;
   fieldOfStudy: string;
+  campus: string;
+  intakeMonths: string[];
   durationMonths: number | null;
   tuitionPerYear: number | null;
   applicationFee: number | null;
