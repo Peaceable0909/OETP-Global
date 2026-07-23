@@ -40,7 +40,8 @@ function emptyForm(): FormState {
     internationalStudentPct: "",
     campusType: "",
     gallery: [],
-    videoUrl: "",
+    keyPoints: [],
+    videos: [],
     accreditations: [],
     accommodationSummary: "",
     accommodationCostRange: "",
@@ -244,22 +245,36 @@ export default function EditUniversityForm() {
             value={form.internationalStudentPct}
             onChange={(e) => set("internationalStudentPct", e.target.value)}
           />
-          <Field label="Campus tour video URL (optional)" value={form.videoUrl} onChange={(e) => set("videoUrl", e.target.value)} />
         </div>
-        <label className="mt-4 block text-xs font-bold text-ink-soft">
-          Description
-          <textarea
-            value={form.description}
-            onChange={(e) => set("description", e.target.value)}
-            rows={4}
-            placeholder="A few paragraphs introducing this university — shown on its Overview section."
-            className={textCls}
-          />
-        </label>
         <label className="mt-4 flex items-center gap-2 text-sm font-bold">
           <input type="checkbox" checked={form.featured} onChange={(e) => set("featured", e.target.checked)} />
           Featured on the country page
         </label>
+      </section>
+
+      <section className="rounded-2xl border border-line bg-white p-6">
+        <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-brand-600">About University</h3>
+        <p className="mb-4 text-xs text-ink-soft">
+          Shown at the top of the university page, right before the Overview section.
+        </p>
+        <label className="block text-xs font-bold text-ink-soft">
+          About paragraph
+          <textarea
+            value={form.description}
+            onChange={(e) => set("description", e.target.value)}
+            rows={4}
+            placeholder="A few sentences introducing this university."
+            className={textCls}
+          />
+        </label>
+        <div className="mt-4">
+          <StringListEditor
+            label="Key Points"
+            values={form.keyPoints}
+            onChange={(v) => set("keyPoints", v)}
+            placeholder="e.g. Small class sizes with a 15:1 student-faculty ratio"
+          />
+        </div>
       </section>
 
       <section className="rounded-2xl border border-line bg-white p-6">
@@ -281,6 +296,23 @@ export default function EditUniversityForm() {
           onChange={(v) => set("gallery", v)}
           kind="university-gallery"
           countrySlug={form.slug || "new"}
+        />
+      </section>
+
+      <section className="rounded-2xl border border-line bg-white p-6">
+        <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-brand-600">Videos</h3>
+        <p className="mb-4 text-xs text-ink-soft">
+          Campus tours, student interviews — paste a YouTube, Vimeo, or direct .mp4 link and give it a title.
+        </p>
+        <RepeatableEditor
+          label="Videos"
+          items={form.videos}
+          onChange={(v) => set("videos", v as FormState["videos"])}
+          countrySlug={form.slug || "new"}
+          fields={[
+            { key: "title", label: "Title (e.g. Campus Tour, Meet a Student: Aisha)" },
+            { key: "url", label: "Video URL" },
+          ]}
         />
       </section>
 

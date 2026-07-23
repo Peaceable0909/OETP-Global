@@ -14,7 +14,8 @@ export type UniversityRow = {
   international_student_pct: number | null;
   campus_type: string | null;
   gallery: string;
-  video_url: string | null;
+  key_points: string;
+  videos: string;
   accreditations: string;
   accommodation_summary: string | null;
   accommodation_cost_range: string | null;
@@ -53,7 +54,8 @@ export function rowToApi(row: UniversityRow) {
     internationalStudentPct: row.international_student_pct,
     campusType: row.campus_type ?? "",
     gallery: parseArray<string>(row.gallery),
-    videoUrl: row.video_url ?? "",
+    keyPoints: parseArray<string>(row.key_points),
+    videos: parseArray<{ title: string; url: string }>(row.videos),
     accreditations: parseArray<string>(row.accreditations),
     accommodationSummary: row.accommodation_summary ?? "",
     accommodationCostRange: row.accommodation_cost_range ?? "",
@@ -81,7 +83,8 @@ export type UniversityInput = {
   internationalStudentPct?: number | null;
   campusType?: string;
   gallery?: string[];
-  videoUrl?: string;
+  keyPoints?: string[];
+  videos?: { title: string; url: string }[];
   accreditations?: string[];
   accommodationSummary?: string;
   accommodationCostRange?: string;
@@ -119,7 +122,8 @@ export function bindingsForInsert(input: UniversityInput) {
     input.internationalStudentPct ?? null,
     input.campusType || null,
     JSON.stringify(input.gallery || []),
-    input.videoUrl || null,
+    JSON.stringify(input.keyPoints || []),
+    JSON.stringify(input.videos || []),
     JSON.stringify(input.accreditations || []),
     input.accommodationSummary || null,
     input.accommodationCostRange || null,
@@ -144,7 +148,8 @@ export function bindingsForUpdate(input: UniversityInput) {
     input.internationalStudentPct ?? null,
     input.campusType || null,
     JSON.stringify(input.gallery || []),
-    input.videoUrl || null,
+    JSON.stringify(input.keyPoints || []),
+    JSON.stringify(input.videos || []),
     JSON.stringify(input.accreditations || []),
     input.accommodationSummary || null,
     input.accommodationCostRange || null,

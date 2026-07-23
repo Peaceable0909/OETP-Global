@@ -17,7 +17,8 @@ export type University = {
   internationalStudentPct: number | null;
   campusType: string;
   gallery: string[];
-  videoUrl: string;
+  keyPoints: string[];
+  videos: { title: string; url: string }[];
   accreditations: string[];
   accommodationSummary: string;
   accommodationCostRange: string;
@@ -61,7 +62,8 @@ const FALLBACK_UNIVERSITIES: University[] = [
   internationalStudentPct: null,
   campusType: "",
   gallery: [],
-  videoUrl: "",
+  keyPoints: [],
+  videos: [],
   accreditations: [],
   accommodationSummary: "",
   accommodationCostRange: "",
@@ -86,7 +88,8 @@ type UniversityRow = {
   international_student_pct: number | null;
   campus_type: string | null;
   gallery: string;
-  video_url: string | null;
+  key_points: string;
+  videos: string;
   accreditations: string;
   accommodation_summary: string | null;
   accommodation_cost_range: string | null;
@@ -121,7 +124,8 @@ function rowToUniversity(row: UniversityRow): University {
     internationalStudentPct: row.international_student_pct,
     campusType: row.campus_type ?? "",
     gallery: parseArray(row.gallery),
-    videoUrl: row.video_url ?? "",
+    keyPoints: parseArray(row.key_points),
+    videos: parseArray(row.videos),
     accreditations: parseArray(row.accreditations),
     accommodationSummary: row.accommodation_summary ?? "",
     accommodationCostRange: row.accommodation_cost_range ?? "",
