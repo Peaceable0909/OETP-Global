@@ -6,8 +6,8 @@ import { getUniversities, getUniversity } from "@/lib/data/universities";
 import { getPrograms, getProgram, getRelatedPrograms, getIntakesByProgram } from "@/lib/data/programs";
 import Reveal from "@/components/Reveal";
 import SmartImage from "@/components/SmartImage";
-import Flag from "@/components/Flag";
 import ProgramCard from "@/components/ProgramCard";
+import { formatMoney } from "@/lib/currency";
 import FaqAccordion from "@/components/FaqAccordion";
 import ApplicationTimeline from "@/components/ApplicationTimeline";
 import CTABand from "@/components/CTABand";
@@ -83,11 +83,10 @@ export default async function ProgramPage({
             / <span className="text-white">{program.name}</span>
           </nav>
           <h1
-            className="animate-hero-rise mt-6 flex flex-wrap items-center gap-3 text-4xl font-extrabold sm:text-5xl"
+            className="animate-hero-rise mt-6 text-4xl font-extrabold sm:text-5xl"
             style={{ animationDelay: "90ms" }}
           >
             {program.name}
-            <Flag code={country.code} color={accent} className="h-8 w-[3rem] rounded-lg" />
           </h1>
           <p className="animate-hero-rise mt-2 text-lg font-semibold text-white/90" style={{ animationDelay: "160ms" }}>
             {university.name}, {country.name}
@@ -114,15 +113,15 @@ export default async function ProgramPage({
             <div className="mt-6 grid gap-4 sm:grid-cols-3">
               <CostCell
                 label="Tuition / year"
-                value={program.tuitionPerYear ? `${program.currency} ${program.tuitionPerYear.toLocaleString()}` : "On request"}
+                value={program.tuitionPerYear ? formatMoney(program.tuitionPerYear, program.currency) : "On request"}
               />
               <CostCell
                 label="Application fee"
-                value={program.applicationFee ? `${program.currency} ${program.applicationFee.toLocaleString()}` : "On request"}
+                value={program.applicationFee ? formatMoney(program.applicationFee, program.currency) : "On request"}
               />
               <CostCell
                 label="Deposit"
-                value={program.deposit ? `${program.currency} ${program.deposit.toLocaleString()}` : "On request"}
+                value={program.deposit ? formatMoney(program.deposit, program.currency) : "On request"}
               />
             </div>
           </Reveal>
@@ -260,7 +259,7 @@ export default async function ProgramPage({
               <dl className="mt-5 space-y-3.5 text-sm">
                 <Row
                   label="Tuition / year"
-                  value={program.tuitionPerYear ? `${program.currency} ${program.tuitionPerYear.toLocaleString()}` : "On request"}
+                  value={program.tuitionPerYear ? formatMoney(program.tuitionPerYear, program.currency) : "On request"}
                 />
                 <Row
                   label="Duration"
