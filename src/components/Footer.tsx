@@ -45,6 +45,7 @@ export default async function Footer({ destinations }: { destinations: Destinati
               { href: "/faq/", label: "FAQ" },
               { href: "/about/", label: "About Us" },
               { href: "/contact/", label: "Contact" },
+              { href: "/privacy/", label: "Privacy Policy" },
             ].map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className="text-white/70 transition-colors hover:text-white">
