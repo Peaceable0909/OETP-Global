@@ -18,8 +18,8 @@ export default function WhyChooseUs() {
           <h2 className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl lg:text-[2.5rem]">More Than Just Consultants</h2>
           <ul className="mt-8 space-y-6">
             {points.map((p, i) => (
-              <Reveal key={p.title} delay={i * 100}>
-                <li className="flex gap-4">
+              <li key={p.title}>
+                <Reveal delay={i * 100} className="flex gap-4">
                   <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-line bg-white text-study">
                     <p.icon className="h-5 w-5" aria-hidden="true" />
                   </span>
@@ -27,8 +27,8 @@ export default function WhyChooseUs() {
                     <h3 className="font-display font-bold">{p.title}</h3>
                     <p className="mt-1 text-sm leading-relaxed text-ink-soft">{p.desc}</p>
                   </div>
-                </li>
-              </Reveal>
+                </Reveal>
+              </li>
             ))}
           </ul>
         </Reveal>

@@ -55,12 +55,11 @@ export default function SplitTextReveal({
 
   return createElement(
     as,
-    { ref, className, "aria-label": text },
+    { ref, className },
     units.flatMap((u, i) => {
       const unit = (
         <span
           key={`${u}-${i}`}
-          aria-hidden="true"
           className={`inline-block will-change-transform ${unitClassName}`}
           style={{
             opacity: shown ? 1 : 0,
