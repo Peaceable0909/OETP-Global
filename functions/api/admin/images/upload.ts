@@ -1,5 +1,6 @@
 import { json, type Env } from "../../types";
 import { requireAdmin } from "../_auth";
+import { PhotonImage, SamplingFilter, resize } from "@cf-wasm/photon/workerd";
 
 const MAX_FILE_BYTES = 5 * 1024 * 1024; // 5 MB per image
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -11,6 +12,54 @@ const ALLOWED_KINDS = [
   "university-hero",
   "university-gallery",
 ] as const;
+
+const MAX_DIMENSION = 1600; // matches the resize cap applied to the site's static photos
+const JPEG_QUALITY = 80;
+
+// The static site's own photos get resized/recompressed via a one-off sharp
+// script (Node-only, a native binary — can't run in Workers). Admin uploads
+// land here instead, at runtime, in the Workers/Pages Functions environment,
+// so they need a WASM image lib rather than sharp. Photon (Rust, compiled to
+// WASM) fills that gap — decodes, resizes to the same 1600px cap, and
+// re-encodes. PNGs are kept lossless (uploads of this type are typically
+// logos/graphics that may need transparency); everything else becomes JPEG.
+// Never hard-fails the upload: falls back to storing the original bytes/type
+// untouched if processing throws for any reason.
+async function compressImage(
+  bytes: Uint8Array,
+  contentType: string
+): Promise<{ bytes: Uint8Array; contentType: string; ext: string }> {
+  const fallback = {
+    bytes,
+    contentType,
+    ext: contentType === "image/png" ? "png" : contentType === "image/webp" ? "webp" : "jpg",
+  };
+
+  let input: PhotonImage | undefined;
+  let resized: PhotonImage | undefined;
+  try {
+    input = PhotonImage.new_from_byteslice(bytes);
+    const width = input.get_width();
+    const height = input.get_height();
+    const scale = Math.min(1, MAX_DIMENSION / Math.max(width, height));
+
+    const source =
+      scale < 1
+        ? (resized = resize(input, Math.round(width * scale), Math.round(height * scale), SamplingFilter.Lanczos3))
+        : input;
+
+    if (contentType === "image/png") {
+      return { bytes: source.get_bytes(), contentType: "image/png", ext: "png" };
+    }
+    return { bytes: source.get_bytes_jpeg(JPEG_QUALITY), contentType: "image/jpeg", ext: "jpg" };
+  } catch (e) {
+    console.warn(`[upload] Image processing failed, storing original — ${e instanceof Error ? e.message : String(e)}`);
+    return fallback;
+  } finally {
+    input?.free();
+    resized?.free();
+  }
+}
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!(await requireAdmin(request, env))) return json({ error: "Unauthorized" }, 401);
@@ -45,11 +94,18 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return json({ error: "Only JPEG, PNG, or WebP images are allowed." }, 400);
   }
 
-  const safeName = file.name.replace(/[^\w.\-]+/g, "_").slice(0, 100);
-  const key = `${kind}/${countrySlug || "misc"}/${Date.now()}-${safeName}`;
+  const originalBytes = new Uint8Array(await file.arrayBuffer());
+  const { bytes: outBytes, contentType: outType, ext } = await compressImage(originalBytes, file.type);
 
-  await env.IMAGES.put(key, file.stream(), {
-    httpMetadata: { contentType: file.type },
+  // Extension is controlled by the actual output format above, not whatever
+  // the upload arrived with — serving (functions/api/images/[[key]].ts) sets
+  // Content-Type from the stored R2 metadata, not this path, so this is only
+  // for human-readability when browsing the bucket.
+  const safeName = file.name.replace(/[^\w.\-]+/g, "_").slice(0, 100).replace(/\.[a-zA-Z0-9]+$/, "");
+  const key = `${kind}/${countrySlug || "misc"}/${Date.now()}-${safeName}.${ext}`;
+
+  await env.IMAGES.put(key, outBytes, {
+    httpMetadata: { contentType: outType },
   });
 
   await env.DB.prepare(
