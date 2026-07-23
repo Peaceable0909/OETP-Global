@@ -69,6 +69,12 @@ export default function SmartImage({ src, alt, accent = "#7C3AED", className = "
       alt={alt}
       className={className}
       loading="lazy"
+      // Every call site sets w-full/h-full (or an absolute fill) so these
+      // never affect rendered size — they only give the browser an intrinsic
+      // aspect ratio to reserve layout space with before the photo loads
+      // (Lighthouse's "unsized images" check; caller can still override via rest).
+      width={1600}
+      height={900}
       onError={() => setFailed(true)}
       {...rest}
     />
