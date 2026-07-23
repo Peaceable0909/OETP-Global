@@ -3,13 +3,15 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import { getContactLinks } from "@/lib/data/site";
+import { pageMetadata } from "@/lib/seo";
 import Flag from "@/components/Flag";
 import { MessageCircle, Stamp } from "lucide-react";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Job Opportunities",
   description: "Verified overseas job offers with transparent terms and a money-back guarantee.",
-};
+  path: "/jobs/",
+});
 
 // Placeholder roles until the company provides its confirmed offer list
 const roles = [

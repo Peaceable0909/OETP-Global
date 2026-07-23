@@ -4,13 +4,15 @@ import SectionHeading from "@/components/SectionHeading";
 import StatsBar from "@/components/home/StatsBar";
 import CTABand from "@/components/CTABand";
 import { site } from "@/lib/data/site";
+import { pageMetadata } from "@/lib/seo";
 import { Icon, type IconName } from "@/lib/icons";
 import { Target, Telescope } from "lucide-react";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About Us",
   description: `Who ${site.name} is: our mission, our approach, and why students trust us.`,
-};
+  path: "/about/",
+});
 
 const values: { icon: IconName; title: string; desc: string }[] = [
   { icon: "search", title: "Radical transparency", desc: "Free means free. Paid services are quoted in writing before you commit. No hidden charges at any stage." },

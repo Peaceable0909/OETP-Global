@@ -13,6 +13,9 @@ import SmartImage from "@/components/SmartImage";
 import TrackDestinationView from "@/components/TrackDestinationView";
 import VisaStepsStack from "@/components/VisaStepsStack";
 import UniversityCard from "@/components/UniversityCard";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbSchema, faqPageSchema } from "@/lib/structuredData";
+import { pageMetadata } from "@/lib/seo";
 import { Icon, type IconName } from "@/lib/icons";
 import { Briefcase, FileText } from "lucide-react";
 
@@ -25,7 +28,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const d = await getDestination(slug);
   if (!d) return {};
-  return { title: `Study in ${d.name}`, description: d.summary };
+  return pageMetadata({
+    title: `Study in ${d.name} — Universities, Tuition & Visa Guide`,
+    description: d.summary,
+    path: `/destinations/${d.slug}/`,
+    image: d.photo,
+  });
 }
 
 const tabs = [
@@ -64,6 +72,16 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
 
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Destinations", path: "/destinations/" },
+            { name: d.name, path: `/destinations/${d.slug}/` },
+          ]),
+          ...(d.faqs.length > 0 ? [faqPageSchema(d.faqs)] : []),
+        ]}
+      />
       <TrackDestinationView slug={d.slug} />
       {/* Hero with photo */}
       <section className="relative overflow-hidden text-white">

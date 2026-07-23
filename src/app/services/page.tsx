@@ -3,13 +3,15 @@ import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import CTABand from "@/components/CTABand";
 import { services } from "@/lib/data/site";
+import { pageMetadata } from "@/lib/seo";
 import { Icon, type IconName } from "@/lib/icons";
 import { CreditCard } from "lucide-react";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Our Services",
   description: "Admission processing, visa assistance, document review and more — with transparent pricing. Some services are free, others carry clear fees.",
-};
+  path: "/services/",
+});
 
 export default function ServicesPage() {
   return (

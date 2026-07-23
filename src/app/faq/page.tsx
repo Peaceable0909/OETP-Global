@@ -2,17 +2,22 @@ import type { Metadata } from "next";
 import FaqAccordion from "@/components/FaqAccordion";
 import SectionHeading from "@/components/SectionHeading";
 import CTABand from "@/components/CTABand";
+import JsonLd from "@/components/JsonLd";
+import { faqPageSchema } from "@/lib/structuredData";
+import { pageMetadata } from "@/lib/seo";
 import { faqs, getContactLinks } from "@/lib/data/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "FAQ",
   description: "Answers about admissions, visas, tuition, work rights, documents and our service charges.",
-};
+  path: "/faq/",
+});
 
 export default async function FaqPage() {
   const { whatsapp } = await getContactLinks();
   return (
     <>
+      <JsonLd data={faqPageSchema(faqs)} />
       <section className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
         <SectionHeading
           eyebrow="FAQ"

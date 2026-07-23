@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import SearchHub from "@/components/SearchHub";
 import SectionHeading from "@/components/SectionHeading";
 import CTABand from "@/components/CTABand";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Find a Program",
+export const metadata: Metadata = pageMetadata({
+  title: "Compare Study Abroad Programs by Country, Tuition & Intake",
   description: "Search every program across our destinations by subject, tuition, duration, intake, and more.",
-};
+  path: "/programs/",
+});
 
 export default function ProgramsPage() {
   return (

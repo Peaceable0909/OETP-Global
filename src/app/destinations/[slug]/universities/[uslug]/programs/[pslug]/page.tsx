@@ -12,6 +12,9 @@ import FaqAccordion from "@/components/FaqAccordion";
 import ApplicationTimeline from "@/components/ApplicationTimeline";
 import CTABand from "@/components/CTABand";
 import StatCounter from "@/components/StatCounter";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbSchema, courseSchema, faqPageSchema } from "@/lib/structuredData";
+import { pageMetadata } from "@/lib/seo";
 import { FileText } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -30,7 +33,15 @@ export async function generateMetadata({ params }: { params: Promise<{ pslug: st
   const { pslug } = await params;
   const p = await getProgram(pslug);
   if (!p) return {};
-  return { title: p.name, description: p.overview || `${p.name} — tuition, requirements, and how to apply.` };
+  const university = await getUniversity(p.universitySlug);
+  const country = university ? await getDestination(university.countrySlug) : undefined;
+  const context = university && country ? ` at ${university.name}, ${country.name}` : "";
+  return pageMetadata({
+    title: `${p.name}${context} — Fees & How to Apply`,
+    description: p.overview || `${p.name}${context} — tuition, requirements, and how to apply.`,
+    path: university && country ? `/destinations/${country.slug}/universities/${university.slug}/programs/${p.slug}/` : `/programs/`,
+    image: p.photo,
+  });
 }
 
 export default async function ProgramPage({
@@ -62,8 +73,31 @@ export default async function ProgramPage({
   const accent = country.accent;
   const applyHref = `/apply/?destination=${country.slug}&program=${encodeURIComponent(`${program.name} — ${university.name}`)}`;
 
+  const programPath = `/destinations/${country.slug}/universities/${university.slug}/programs/${program.slug}/`;
+  const universityPath = `/destinations/${country.slug}/universities/${university.slug}/`;
+
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Destinations", path: "/destinations/" },
+            { name: country.name, path: `/destinations/${country.slug}/` },
+            { name: university.name, path: universityPath },
+            { name: program.name, path: programPath },
+          ]),
+          courseSchema({
+            name: program.name,
+            path: programPath,
+            description: program.overview || undefined,
+            universityName: university.name,
+            universityPath,
+            degreeType: program.degreeType || undefined,
+          }),
+          ...(program.faqs.length > 0 ? [faqPageSchema(program.faqs)] : []),
+        ]}
+      />
       <section className="relative overflow-hidden text-white">
         <SmartImage
           src={program.photo}

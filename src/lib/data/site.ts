@@ -5,6 +5,7 @@ import { queryD1 } from "@/lib/data/d1";
 export const site = {
   name: "CompeTenza Business Services",
   shortName: "CompeTenza",
+  url: "https://tenzaglobal.com",
   tagline: "Your Journey. Our Expertise.",
   description:
     "We connect ambitious students and professionals to world-class education and global opportunities with end-to-end support you can trust.",
