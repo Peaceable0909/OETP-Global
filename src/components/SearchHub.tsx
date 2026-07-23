@@ -32,14 +32,23 @@ function SkeletonCard() {
   );
 }
 
-export default function SearchHub() {
+export default function SearchHub({
+  initialResults,
+  initialTotal = 0,
+}: {
+  /** Server-rendered, unfiltered page-1 results — keeps real program cards in
+   *  the static HTML instead of an empty skeleton until the client fetch
+   *  resolves. See src/lib/data/searchIndex.ts. */
+  initialResults?: SearchResultProgram[];
+  initialTotal?: number;
+}) {
   const router = useRouter();
   const [facets, setFacets] = useState<SearchFacets | null>(null);
   const [filters, setFilters] = useState<FilterState>(emptyFilters());
   const [page, setPage] = useState(1);
-  const [results, setResults] = useState<SearchResultProgram[] | null>(null);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [results, setResults] = useState<SearchResultProgram[] | null>(initialResults ?? null);
+  const [total, setTotal] = useState(initialTotal);
+  const [loading, setLoading] = useState(!initialResults);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [compareSlugs, setCompareSlugs] = useState<string[]>([]);
 
@@ -48,6 +57,9 @@ export default function SearchHub() {
   const [suggestOpen, setSuggestOpen] = useState(false);
   const suggestTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fetchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // The mount-time effect run below would otherwise immediately re-fetch the
+  // exact same unfiltered page-1 data we already have server-rendered.
+  const skipNextFetch = useRef(!!initialResults);
 
   useEffect(() => {
     fetch("/api/programs/facets")
@@ -57,6 +69,10 @@ export default function SearchHub() {
   }, []);
 
   useEffect(() => {
+    if (skipNextFetch.current) {
+      skipNextFetch.current = false;
+      return;
+    }
     if (fetchTimer.current) clearTimeout(fetchTimer.current);
     fetchTimer.current = setTimeout(() => {
       setLoading(true);
