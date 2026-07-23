@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import type { Program } from "@/lib/data/programs";
 import ProgramCard from "@/components/ProgramCard";
 import CompactProgramRow from "@/components/CompactProgramRow";
+import { formatMoney } from "@/lib/currency";
 
 const MAX_COMPARE = 3;
 const MOBILE_PREVIEW_COUNT = 3;
@@ -135,7 +136,7 @@ export default function ProgramsCompare({
                       <tr key={p.slug} className="border-t border-line">
                         <td className="py-2 pr-4 font-bold">{p.name}</td>
                         <td className="py-2 pr-4">
-                          {p.tuitionPerYear ? `${p.currency} ${p.tuitionPerYear.toLocaleString()}` : "On request"}
+                          {p.tuitionPerYear ? formatMoney(p.tuitionPerYear, p.currency) : "On request"}
                         </td>
                         <td className="py-2 pr-4">{p.durationMonths ? `${p.durationMonths} months` : "—"}</td>
                         <td className="py-2 pr-4">{p.minIelts ?? "—"}</td>

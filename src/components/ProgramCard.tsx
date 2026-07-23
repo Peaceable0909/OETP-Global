@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Program } from "@/lib/data/programs";
 import Reveal from "@/components/Reveal";
 import SmartImage from "@/components/SmartImage";
+import { formatMoney } from "@/lib/currency";
 
 type CompareControls = { checked: boolean; disabled: boolean; onToggle: () => void };
 
@@ -61,7 +62,7 @@ export default function ProgramCard({
             <p className="mt-2 flex-1 text-sm text-ink-soft">{program.overview}</p>
             <div className="mt-4 flex items-center justify-between text-sm font-bold">
               <span>
-                {program.tuitionPerYear ? `${program.currency} ${program.tuitionPerYear.toLocaleString()}/yr` : "Tuition on request"}
+                {program.tuitionPerYear ? `${formatMoney(program.tuitionPerYear, program.currency)}/yr` : "Tuition on request"}
               </span>
               <span style={{ color: accent }} className="inline-flex items-center gap-1">
                 View

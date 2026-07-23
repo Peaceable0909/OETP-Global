@@ -6,7 +6,6 @@ import { getUniversities, getUniversity, getRelatedUniversities, getReviewsByUni
 import { getPrograms, getProgramsByUniversity } from "@/lib/data/programs";
 import Reveal from "@/components/Reveal";
 import SmartImage from "@/components/SmartImage";
-import Flag from "@/components/Flag";
 import UniversityCard from "@/components/UniversityCard";
 import ProgramsCompare from "@/components/ProgramsCompare";
 import Gallery from "@/components/Gallery";
@@ -75,11 +74,10 @@ export default async function UniversityPage({ params }: { params: Promise<{ slu
             <span className="text-white">{university.name}</span>
           </nav>
           <h1
-            className="animate-hero-rise mt-6 flex flex-wrap items-center gap-3 text-4xl font-extrabold sm:text-5xl"
+            className="animate-hero-rise mt-6 text-4xl font-extrabold sm:text-5xl"
             style={{ animationDelay: "90ms" }}
           >
             {university.name}
-            <Flag code={country.code} color={accent} className="h-8 w-[3rem] rounded-lg" />
           </h1>
           {university.city && (
             <p className="animate-hero-rise mt-2 text-lg font-semibold text-white/90" style={{ animationDelay: "160ms" }}>

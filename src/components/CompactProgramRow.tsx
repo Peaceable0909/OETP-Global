@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { Program } from "@/lib/data/programs";
 import SmartImage from "@/components/SmartImage";
+import { formatMoney } from "@/lib/currency";
 
 export default function CompactProgramRow({
   program,
@@ -40,7 +41,7 @@ export default function CompactProgramRow({
         )}
         <h3 className="truncate text-sm font-bold">{program.name}</h3>
         <p className="truncate text-xs font-semibold text-ink-soft">
-          {program.tuitionPerYear ? `${program.currency} ${program.tuitionPerYear.toLocaleString()}/yr` : "Tuition on request"}
+          {program.tuitionPerYear ? `${formatMoney(program.tuitionPerYear, program.currency)}/yr` : "Tuition on request"}
         </p>
       </div>
       <ChevronRight className="h-5 w-5 shrink-0 text-ink-mute" aria-hidden="true" />

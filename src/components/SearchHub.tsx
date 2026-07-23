@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import FilterRail from "@/components/FilterRail";
 import ProgramCard from "@/components/ProgramCard";
+import { formatMoney } from "@/lib/currency";
 import {
   emptyFilters,
   activeFilterCount,
@@ -316,7 +317,7 @@ export default function SearchHub() {
                         <td className="py-2 pr-4">{p.universityName}</td>
                         <td className="py-2 pr-4">{p.countryName}</td>
                         <td className="py-2 pr-4">
-                          {p.tuitionPerYear ? `${p.currency} ${p.tuitionPerYear.toLocaleString()}` : "On request"}
+                          {p.tuitionPerYear ? formatMoney(p.tuitionPerYear, p.currency) : "On request"}
                         </td>
                         <td className="py-2 pr-4">{p.durationMonths ? `${p.durationMonths} months` : "—"}</td>
                       </tr>
