@@ -1,3 +1,17 @@
+export type AdminOffer = {
+  id: number;
+  slug: string;
+  title: string;
+  destination: string;
+  tagline: string;
+  badge: string;
+  totalSpots: number | null;
+  spotsTaken: number;
+  expiresAt: string;
+  active: boolean;
+  createdAt: string;
+};
+
 export type AdminTestimonial = {
   id: number;
   slug: string;
