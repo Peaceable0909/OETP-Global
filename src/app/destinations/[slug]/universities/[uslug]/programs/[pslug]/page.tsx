@@ -5,11 +5,13 @@ import { getDestination } from "@/lib/data/destinations";
 import { getUniversities, getUniversity } from "@/lib/data/universities";
 import { getPrograms, getProgram, getRelatedPrograms, getIntakesByProgram } from "@/lib/data/programs";
 import Reveal from "@/components/Reveal";
+import SmartImage from "@/components/SmartImage";
 import Flag from "@/components/Flag";
 import ProgramCard from "@/components/ProgramCard";
 import FaqAccordion from "@/components/FaqAccordion";
 import ApplicationTimeline from "@/components/ApplicationTimeline";
 import CTABand from "@/components/CTABand";
+import StatCounter from "@/components/StatCounter";
 import { FileText } from "lucide-react";
 import type { ReactNode } from "react";
 
@@ -62,25 +64,35 @@ export default async function ProgramPage({
 
   return (
     <>
-      <section className="bg-white px-5 pt-12 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <nav className="text-sm font-semibold text-ink-soft">
-            <Link href="/" className="hover:text-ink">Home</Link> /{" "}
-            <Link href="/destinations/" className="hover:text-ink">Destinations</Link> /{" "}
-            <Link href={`/destinations/${country.slug}/`} className="hover:text-ink">{country.name}</Link> /{" "}
-            <Link href={`/destinations/${country.slug}/universities/${university.slug}/`} className="hover:text-ink">
+      <section className="relative overflow-hidden text-white">
+        <SmartImage
+          src={program.photo}
+          alt={program.name}
+          accent={accent}
+          className="hero-kenburns absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
+        <div className="relative mx-auto max-w-7xl px-5 pb-14 pt-12 lg:px-8">
+          <nav className="animate-hero-rise text-sm font-semibold text-white/75">
+            <Link href="/" className="hover:text-white">Home</Link> /{" "}
+            <Link href="/destinations/" className="hover:text-white">Destinations</Link> /{" "}
+            <Link href={`/destinations/${country.slug}/`} className="hover:text-white">{country.name}</Link> /{" "}
+            <Link href={`/destinations/${country.slug}/universities/${university.slug}/`} className="hover:text-white">
               {university.name}
             </Link>{" "}
-            / <span className="text-ink">{program.name}</span>
+            / <span className="text-white">{program.name}</span>
           </nav>
-          <h1 className="mt-6 flex flex-wrap items-center gap-3 text-4xl font-extrabold sm:text-5xl">
+          <h1
+            className="animate-hero-rise mt-6 flex flex-wrap items-center gap-3 text-4xl font-extrabold sm:text-5xl"
+            style={{ animationDelay: "90ms" }}
+          >
             {program.name}
             <Flag code={country.code} color={accent} className="h-8 w-[3rem] rounded-lg" />
           </h1>
-          <p className="mt-2 text-lg font-semibold text-ink-soft">
+          <p className="animate-hero-rise mt-2 text-lg font-semibold text-white/90" style={{ animationDelay: "160ms" }}>
             {university.name}, {country.name}
           </p>
-          <div className="mt-5 flex flex-wrap gap-2.5">
+          <div className="animate-hero-rise mt-5 flex flex-wrap gap-2.5" style={{ animationDelay: "230ms" }}>
             {program.degreeType && <Badge accent={accent}>{program.degreeType}</Badge>}
             {program.fieldOfStudy && <Badge accent={accent}>{program.fieldOfStudy}</Badge>}
             {program.campus && <Badge accent={accent}>{program.campus}</Badge>}
@@ -250,7 +262,18 @@ export default async function ProgramPage({
                   label="Tuition / year"
                   value={program.tuitionPerYear ? `${program.currency} ${program.tuitionPerYear.toLocaleString()}` : "On request"}
                 />
-                <Row label="Duration" value={program.durationMonths ? `${program.durationMonths} months` : "Varies"} />
+                <Row
+                  label="Duration"
+                  value={
+                    program.durationMonths ? (
+                      <>
+                        <StatCounter value={program.durationMonths} duration={800} /> months
+                      </>
+                    ) : (
+                      "Varies"
+                    )
+                  }
+                />
                 <Row label="Degree type" value={program.degreeType || "—"} />
                 {program.campus && <Row label="Campus" value={program.campus} />}
                 <Row label="Min IELTS" value={program.minIelts != null ? String(program.minIelts) : "—"} />
@@ -290,7 +313,7 @@ function CostCell({ label, value }: { label: string; value: string }) {
   );
 }
 
-function Row({ label, value }: { label: string; value: string }) {
+function Row({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-4 border-b border-line pb-3">
       <dt className="font-semibold text-ink-soft">{label}</dt>

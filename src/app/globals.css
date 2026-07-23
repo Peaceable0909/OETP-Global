@@ -113,6 +113,19 @@
   from { opacity: 0; transform: translateY(46px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.animate-hero-rise {
+  animation: heroRise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* One-shot slow zoom on a hero photo so a static banner reads as alive on
+   load, without looping forever and drawing attention away from the text. */
+.hero-kenburns {
+  animation: heroKenBurns 20s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes heroKenBurns {
+  from { transform: scale(1.1); }
+  to { transform: scale(1); }
+}
 @keyframes pulse-soft {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.72; transform: scale(1.04); }

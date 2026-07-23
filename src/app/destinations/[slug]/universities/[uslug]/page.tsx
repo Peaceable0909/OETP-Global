@@ -15,6 +15,8 @@ import ReviewsSection from "@/components/ReviewsSection";
 import FaqAccordion from "@/components/FaqAccordion";
 import RankingBadge from "@/components/RankingBadge";
 import CTABand from "@/components/CTABand";
+import StatCounter from "@/components/StatCounter";
+import type { ReactNode } from "react";
 
 export async function generateStaticParams() {
   const universities = await getUniversities();
@@ -61,27 +63,30 @@ export default async function UniversityPage({ params }: { params: Promise<{ slu
           src={university.heroPhoto}
           alt={university.name}
           accent={accent}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="hero-kenburns absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30" />
         <div className="relative mx-auto max-w-7xl px-5 pb-14 pt-12 lg:px-8">
-          <nav className="text-sm font-semibold text-white/75">
+          <nav className="animate-hero-rise text-sm font-semibold text-white/75">
             <Link href="/" className="hover:text-white">Home</Link> /{" "}
             <Link href="/destinations/" className="hover:text-white">Destinations</Link> /{" "}
             <Link href={`/destinations/${country.slug}/`} className="hover:text-white">{country.name}</Link> /{" "}
             <Link href={`/destinations/${country.slug}/universities/`} className="hover:text-white">Universities</Link> /{" "}
             <span className="text-white">{university.name}</span>
           </nav>
-          <h1 className="mt-6 flex flex-wrap items-center gap-3 text-4xl font-extrabold sm:text-5xl">
+          <h1
+            className="animate-hero-rise mt-6 flex flex-wrap items-center gap-3 text-4xl font-extrabold sm:text-5xl"
+            style={{ animationDelay: "90ms" }}
+          >
             {university.name}
             <Flag code={country.code} color={accent} className="h-8 w-[3rem] rounded-lg" />
           </h1>
           {university.city && (
-            <p className="mt-2 text-lg font-semibold text-white/90">
+            <p className="animate-hero-rise mt-2 text-lg font-semibold text-white/90" style={{ animationDelay: "160ms" }}>
               {university.city}, {country.name}
             </p>
           )}
-          <div className="mt-5 flex flex-wrap items-center gap-3">
+          <div className="animate-hero-rise mt-5 flex flex-wrap items-center gap-3" style={{ animationDelay: "230ms" }}>
             <RankingBadge national={university.rankingNational} world={university.rankingWorld} accent={accent} />
             <span className="inline-flex items-center gap-1.5 rounded-full bg-black/45 px-4 py-2 text-xs font-bold">
               {programs.length} program{programs.length === 1 ? "" : "s"} available
@@ -138,10 +143,13 @@ export default async function UniversityPage({ params }: { params: Promise<{ slu
               <div className="mt-6 grid gap-4 sm:grid-cols-3">
                 {university.foundedYear && <StatCell label="Founded" value={String(university.foundedYear)} />}
                 {university.studentPopulation && (
-                  <StatCell label="Students" value={university.studentPopulation.toLocaleString()} />
+                  <StatCell label="Students" value={<StatCounter value={university.studentPopulation} />} />
                 )}
                 {university.internationalStudentPct != null && (
-                  <StatCell label="International Students" value={`${university.internationalStudentPct}%`} />
+                  <StatCell
+                    label="International Students"
+                    value={<StatCounter value={university.internationalStudentPct} suffix="%" />}
+                  />
                 )}
                 {university.campusType && <StatCell label="Campus" value={university.campusType} />}
               </div>
@@ -273,7 +281,7 @@ export default async function UniversityPage({ params }: { params: Promise<{ slu
   );
 }
 
-function StatCell({ label, value }: { label: string; value: string }) {
+function StatCell({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="rounded-2xl border border-line bg-white p-5 text-center">
       <p className="font-display text-lg font-extrabold">{value}</p>
