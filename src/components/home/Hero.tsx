@@ -187,7 +187,7 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
             </span>
           ))}
 
-          <span className="pointer-events-none absolute bottom-[6%] left-[2%] flex items-center gap-1.5 rounded-full bg-hot px-3 py-1.5 text-xs font-bold text-white animate-float">
+          <span className="pointer-events-none absolute bottom-[6%] left-[2%] flex items-center gap-1.5 rounded-full bg-hot-deep px-3 py-1.5 text-xs font-bold text-white animate-float">
             <PlaneTakeoff className="h-3.5 w-3.5" aria-hidden="true" /> Lagos
           </span>
 

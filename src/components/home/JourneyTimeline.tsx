@@ -115,8 +115,8 @@ export default function JourneyTimeline() {
 
           <ol className="relative grid gap-10 md:grid-cols-5">
             {steps.map((s, i) => (
-              <Reveal key={s.title} delay={i * 110}>
-                <li className="text-center">
+              <li key={s.title} className="text-center">
+                <Reveal delay={i * 110}>
                   <span
                     ref={(el) => {
                       badgeRefs.current[i] = el;
@@ -130,8 +130,8 @@ export default function JourneyTimeline() {
                   </span>
                   <h3 className="mt-1 font-display text-lg font-bold">{s.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-white/70">{s.desc}</p>
-                </li>
-              </Reveal>
+                </Reveal>
+              </li>
             ))}
           </ol>
         </div>
