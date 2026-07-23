@@ -23,9 +23,19 @@ export type ProgramRow = {
   career_prospects: string;
   scholarships: string;
   faqs: string;
+  fee_breakdown: string;
   status: string;
   created_at: string;
   updated_at: string;
+};
+
+export type FeeBreakdownRow = {
+  label: string;
+  registrationFee: number;
+  managementFee: number;
+  tuitionFee: number;
+  total: number;
+  currency: string;
 };
 
 function parseArray<T>(text: string | null): T[] {
@@ -64,6 +74,7 @@ export function rowToApi(row: ProgramRow) {
     careerProspects: parseArray<string>(row.career_prospects),
     scholarships: parseArray<{ name: string; amount?: string; note?: string }>(row.scholarships),
     faqs: parseArray<{ q: string; a: string }>(row.faqs),
+    feeBreakdown: parseArray<FeeBreakdownRow>(row.fee_breakdown),
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
@@ -94,6 +105,7 @@ export type ProgramInput = {
   careerProspects?: string[];
   scholarships?: { name: string; amount?: string; note?: string }[];
   faqs?: { q: string; a: string }[];
+  feeBreakdown?: FeeBreakdownRow[];
 };
 
 const SLUG_RE = /^[a-z0-9-]+$/;
@@ -134,6 +146,7 @@ export function bindingsForInsert(input: ProgramInput) {
     JSON.stringify(input.careerProspects || []),
     JSON.stringify(input.scholarships || []),
     JSON.stringify(input.faqs || []),
+    JSON.stringify(input.feeBreakdown || []),
   ];
 }
 
@@ -161,5 +174,6 @@ export function bindingsForUpdate(input: ProgramInput) {
     JSON.stringify(input.careerProspects || []),
     JSON.stringify(input.scholarships || []),
     JSON.stringify(input.faqs || []),
+    JSON.stringify(input.feeBreakdown || []),
   ];
 }

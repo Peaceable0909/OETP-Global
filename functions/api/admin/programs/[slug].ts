@@ -40,7 +40,7 @@ export const onRequestPut: PagesFunction<Env> = async ({ request, env, params })
       campus = ?, intake_months = ?,
       duration_months = ?, tuition_per_year = ?, application_fee = ?, deposit = ?, currency = ?,
       entry_requirements = ?, min_gpa = ?, min_ielts = ?, min_toefl = ?, required_documents = ?,
-      modules = ?, career_prospects = ?, scholarships = ?, faqs = ?,
+      modules = ?, career_prospects = ?, scholarships = ?, faqs = ?, fee_breakdown = ?,
       updated_at = datetime('now')
      WHERE slug = ?`
   )

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDestination } from "@/lib/data/destinations";
 import { getUniversities, getUniversity } from "@/lib/data/universities";
-import { getPrograms, getProgram, getRelatedPrograms, getIntakesByProgram } from "@/lib/data/programs";
+import { getPrograms, getProgram, getRelatedPrograms, getIntakesByProgram, type FeeBreakdownRow } from "@/lib/data/programs";
 import Reveal from "@/components/Reveal";
 import SmartImage from "@/components/SmartImage";
 import ProgramCard from "@/components/ProgramCard";
@@ -158,7 +158,56 @@ export default async function ProgramPage({
                 value={program.deposit ? formatMoney(program.deposit, program.currency) : "On request"}
               />
             </div>
+            {program.feeBreakdown.length > 0 && (
+              <p className="mt-3 text-xs text-ink-soft">
+                {university.name} bills in {program.feeBreakdown[0].currency} — the figures above are a rounded USD
+                reference for comparing programs. See the exact year-by-year schedule below.
+              </p>
+            )}
           </Reveal>
+
+          {program.feeBreakdown.length > 0 && (
+            <Reveal>
+              <h2 className="text-2xl font-bold sm:text-3xl">Tuition & Fees — Year by Year</h2>
+              <p className="mt-3 max-w-2xl text-sm text-ink-soft">
+                {university.name}&apos;s literal billing schedule, split out by registration, management, and tuition
+                fees for each year of study.
+              </p>
+              <div className="mt-6 space-y-4">
+                {groupFeeBreakdown(program.feeBreakdown).map(([level, rows]) => (
+                  <details key={level} className="group rounded-2xl border border-line bg-white" open>
+                    <summary className="cursor-pointer list-none px-6 py-4 font-display text-sm font-bold marker:hidden [&::-webkit-details-marker]:hidden">
+                      {level}
+                    </summary>
+                    <div className="overflow-x-auto px-6 pb-5">
+                      <table className="w-full min-w-[480px] text-left text-sm">
+                        <thead>
+                          <tr className="text-xs uppercase tracking-wide text-ink-mute">
+                            <th className="py-2 pr-3 font-semibold">Year</th>
+                            <th className="py-2 pr-3 font-semibold">Registration</th>
+                            <th className="py-2 pr-3 font-semibold">Management</th>
+                            <th className="py-2 pr-3 font-semibold">Tuition</th>
+                            <th className="py-2 font-semibold">Total</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {rows.map((r) => (
+                            <tr key={r.label} className="border-t border-line">
+                              <td className="py-2.5 pr-3 font-semibold">{r.year}</td>
+                              <td className="py-2.5 pr-3 text-ink-soft">{formatMoney(r.registrationFee, r.currency)}</td>
+                              <td className="py-2.5 pr-3 text-ink-soft">{formatMoney(r.managementFee, r.currency)}</td>
+                              <td className="py-2.5 pr-3 text-ink-soft">{formatMoney(r.tuitionFee, r.currency)}</td>
+                              <td className="py-2.5 font-bold">{formatMoney(r.total, r.currency)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </Reveal>
+          )}
 
           <Reveal>
             <h2 className="text-2xl font-bold sm:text-3xl">Entry Requirements</h2>
@@ -344,6 +393,19 @@ function CostCell({ label, value }: { label: string; value: string }) {
       <p className="mt-1 text-xs font-semibold text-ink-mute">{label}</p>
     </div>
   );
+}
+
+// Fee rows are stored flat with labels like "Bachelor · Year 1" — group them
+// back into one table per degree level for display.
+function groupFeeBreakdown(rows: FeeBreakdownRow[]): [string, (FeeBreakdownRow & { year: string })[]][] {
+  const map = new Map<string, (FeeBreakdownRow & { year: string })[]>();
+  for (const r of rows) {
+    const [level, year] = r.label.split("·").map((s) => s.trim());
+    const list = map.get(level) ?? [];
+    list.push({ ...r, year: year || r.label });
+    map.set(level, list);
+  }
+  return Array.from(map.entries());
 }
 
 function Row({ label, value }: { label: string; value: ReactNode }) {

@@ -26,7 +26,23 @@ export type Program = {
   careerProspects: string[];
   scholarships: { name: string; amount?: string; note?: string }[];
   faqs: { q: string; a: string }[];
+  feeBreakdown: FeeBreakdownRow[];
   status: string;
+};
+
+// A single billing year at a single degree level, in the partner
+// institution's own currency — e.g. Shinawatra University bills
+// registration/management/tuition separately, in THB, per year of study.
+// `currency` defaults to THB in the UI layer since every program using this
+// so far is Thai; kept per-row (not per-program) in case a future partner
+// bills in a different currency.
+export type FeeBreakdownRow = {
+  label: string;
+  registrationFee: number;
+  managementFee: number;
+  tuitionFee: number;
+  total: number;
+  currency: string;
 };
 
 export type ProgramIntake = {
@@ -104,6 +120,7 @@ const FALLBACK_PROGRAMS: Program[] = FALLBACK_PROGRAMS_RAW.map((p) => ({
   careerProspects: [],
   scholarships: [],
   faqs: [],
+  feeBreakdown: [],
   status: "published",
 }));
 
@@ -131,6 +148,7 @@ type ProgramRow = {
   career_prospects: string;
   scholarships: string;
   faqs: string;
+  fee_breakdown: string;
   status: string;
 };
 
@@ -168,6 +186,7 @@ function rowToProgram(row: ProgramRow): Program {
     careerProspects: parseArray(row.career_prospects),
     scholarships: parseArray(row.scholarships),
     faqs: parseArray(row.faqs),
+    feeBreakdown: parseArray(row.fee_breakdown),
     status: row.status,
   };
 }

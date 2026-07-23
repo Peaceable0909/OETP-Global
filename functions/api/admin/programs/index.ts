@@ -42,8 +42,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       campus, intake_months,
       duration_months, tuition_per_year, application_fee, deposit, currency,
       entry_requirements, min_gpa, min_ielts, min_toefl, required_documents,
-      modules, career_prospects, scholarships, faqs
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      modules, career_prospects, scholarships, faqs, fee_breakdown
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
     .bind(...bindingsForInsert(input))
     .run();
