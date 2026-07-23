@@ -12,10 +12,10 @@ export const site = {
     "To connect ambitious individuals with trusted international education and career opportunities while making the admission, application, and relocation process simple, transparent, and accessible.",
   vision:
     "To become one of Africa's most trusted global mobility consultancies, empowering thousands of students and professionals to study, work, and build successful careers around the world.",
-  // TODO: replace with the real company contacts once the domain email + WhatsApp line exist
+  // TODO: replace with the real WhatsApp line once it exists
   whatsapp: "https://wa.me/2340000000000",
   telegram: "https://t.me/competenzabot",
-  email: "info@competenza.example",
+  email: "admissions@tenzaglobal.com",
   address: "Lagos, Nigeria",
 };
 
