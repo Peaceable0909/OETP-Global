@@ -31,8 +31,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (existing) return json({ error: "An offer with this slug already exists." }, 409);
 
   await env.DB.prepare(
-    `INSERT INTO offers (slug, title, destination, tagline, badge, total_spots, spots_taken, expires_at, active)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO offers (
+      slug, title, destination, tagline, badge, total_spots, spots_taken, expires_at, active,
+      discount_label, original_price, discounted_price, price_currency, perks, popular_programs, cta_note
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   )
     .bind(...bindingsForInsert(input))
     .run();

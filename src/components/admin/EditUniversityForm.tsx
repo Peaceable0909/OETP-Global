@@ -15,10 +15,12 @@ import RepeatableEditor from "./RepeatableEditor";
 // way to let the input be empty without fighting controlled-input semantics.
 type FormState = Omit<
   AdminUniversity,
-  "id" | "status" | "createdAt" | "updatedAt" | "rankingNational" | "rankingWorld" | "foundedYear" | "studentPopulation" | "internationalStudentPct"
+  "id" | "status" | "createdAt" | "updatedAt" | "rankings" | "foundedYear" | "studentPopulation" | "internationalStudentPct"
 > & {
-  rankingNational: string;
-  rankingWorld: string;
+  // Kept as string values (like every other numeric field in this form) so
+  // RepeatableEditor — built for Record<string, string>[] — can edit it
+  // directly; converted to {label, value:number}[] only at save() time.
+  rankings: Record<string, string>[];
   foundedYear: string;
   studentPopulation: string;
   internationalStudentPct: string;
@@ -33,8 +35,7 @@ function emptyForm(): FormState {
     tagline: "",
     description: "",
     heroPhoto: "",
-    rankingNational: "",
-    rankingWorld: "",
+    rankings: [],
     foundedYear: "",
     studentPopulation: "",
     internationalStudentPct: "",
@@ -102,8 +103,7 @@ export default function EditUniversityForm() {
       const u = data.university;
       setForm({
         ...u,
-        rankingNational: u.rankingNational?.toString() ?? "",
-        rankingWorld: u.rankingWorld?.toString() ?? "",
+        rankings: u.rankings.map((r) => ({ label: r.label, value: String(r.value) })),
         foundedYear: u.foundedYear?.toString() ?? "",
         studentPopulation: u.studentPopulation?.toString() ?? "",
         internationalStudentPct: u.internationalStudentPct?.toString() ?? "",
@@ -131,8 +131,9 @@ export default function EditUniversityForm() {
     try {
       const payload = {
         ...form,
-        rankingNational: numOrNull(form.rankingNational),
-        rankingWorld: numOrNull(form.rankingWorld),
+        rankings: form.rankings
+          .filter((r) => (r.label || "").trim() && (r.value || "").trim())
+          .map((r) => ({ label: r.label.trim(), value: Number(r.value) })),
         foundedYear: numOrNull(form.foundedYear),
         studentPopulation: numOrNull(form.studentPopulation),
         internationalStudentPct: numOrNull(form.internationalStudentPct),
@@ -234,8 +235,6 @@ export default function EditUniversityForm() {
           <Field label="City" value={form.city} onChange={(e) => set("city", e.target.value)} />
           <Field label="Tagline" value={form.tagline} onChange={(e) => set("tagline", e.target.value)} />
           <Field label="Campus type (e.g. urban, suburban, campus)" value={form.campusType} onChange={(e) => set("campusType", e.target.value)} />
-          <Field label="National ranking" type="number" value={form.rankingNational} onChange={(e) => set("rankingNational", e.target.value)} />
-          <Field label="World ranking" type="number" value={form.rankingWorld} onChange={(e) => set("rankingWorld", e.target.value)} />
           <Field label="Founded year" type="number" value={form.foundedYear} onChange={(e) => set("foundedYear", e.target.value)} />
           <Field label="Student population" type="number" value={form.studentPopulation} onChange={(e) => set("studentPopulation", e.target.value)} />
           <Field
@@ -250,6 +249,25 @@ export default function EditUniversityForm() {
           <input type="checkbox" checked={form.featured} onChange={(e) => set("featured", e.target.checked)} />
           Featured on the country page
         </label>
+      </section>
+
+      <section className="rounded-2xl border border-line bg-white p-6">
+        <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-brand-600">Rankings</h3>
+        <p className="mb-4 text-xs text-ink-soft">
+          Type whatever label actually applies — &quot;Thailand&quot;, &quot;Asia&quot;, &quot;World&quot;,
+          &quot;ASEAN&quot;, anything — instead of being limited to National/World. Add as many as are meaningful for
+          this university; none are required.
+        </p>
+        <RepeatableEditor
+          label="Rankings"
+          items={form.rankings}
+          onChange={(v) => set("rankings", v)}
+          countrySlug={form.slug || "new"}
+          fields={[
+            { key: "label", label: "Label (e.g. Asia, Thailand, World)" },
+            { key: "value", label: "Rank (e.g. 250)" },
+          ]}
+        />
       </section>
 
       <section className="rounded-2xl border border-line bg-white p-6">

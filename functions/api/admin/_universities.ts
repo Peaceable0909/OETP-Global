@@ -7,8 +7,7 @@ export type UniversityRow = {
   tagline: string | null;
   description: string | null;
   hero_photo: string | null;
-  ranking_national: number | null;
-  ranking_world: number | null;
+  rankings: string;
   founded_year: number | null;
   student_population: number | null;
   international_student_pct: number | null;
@@ -47,8 +46,7 @@ export function rowToApi(row: UniversityRow) {
     tagline: row.tagline ?? "",
     description: row.description ?? "",
     heroPhoto: row.hero_photo ?? "",
-    rankingNational: row.ranking_national,
-    rankingWorld: row.ranking_world,
+    rankings: parseArray<{ label: string; value: number }>(row.rankings),
     foundedYear: row.founded_year,
     studentPopulation: row.student_population,
     internationalStudentPct: row.international_student_pct,
@@ -76,8 +74,7 @@ export type UniversityInput = {
   tagline?: string;
   description?: string;
   heroPhoto?: string;
-  rankingNational?: number | null;
-  rankingWorld?: number | null;
+  rankings?: { label: string; value: number }[];
   foundedYear?: number | null;
   studentPopulation?: number | null;
   internationalStudentPct?: number | null;
@@ -115,8 +112,7 @@ export function bindingsForInsert(input: UniversityInput) {
     input.tagline || null,
     input.description || null,
     input.heroPhoto || null,
-    input.rankingNational ?? null,
-    input.rankingWorld ?? null,
+    JSON.stringify(input.rankings || []),
     input.foundedYear ?? null,
     input.studentPopulation ?? null,
     input.internationalStudentPct ?? null,
@@ -141,8 +137,7 @@ export function bindingsForUpdate(input: UniversityInput) {
     input.tagline || null,
     input.description || null,
     input.heroPhoto || null,
-    input.rankingNational ?? null,
-    input.rankingWorld ?? null,
+    JSON.stringify(input.rankings || []),
     input.foundedYear ?? null,
     input.studentPopulation ?? null,
     input.internationalStudentPct ?? null,

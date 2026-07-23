@@ -10,6 +10,13 @@ export type AdminOffer = {
   expiresAt: string;
   active: boolean;
   createdAt: string;
+  discountLabel: string;
+  originalPrice: number | null;
+  discountedPrice: number | null;
+  priceCurrency: string;
+  perks: string[];
+  popularPrograms: string[];
+  ctaNote: string;
 };
 
 export type AdminTestimonial = {
@@ -59,8 +66,7 @@ export type AdminUniversity = {
   tagline: string;
   description: string;
   heroPhoto: string;
-  rankingNational: number | null;
-  rankingWorld: number | null;
+  rankings: { label: string; value: number }[];
   foundedYear: number | null;
   studentPopulation: number | null;
   internationalStudentPct: number | null;
