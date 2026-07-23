@@ -17,6 +17,15 @@ export type Env = {
   // Override the From header once tenzaglobal.com is verified in Resend; falls
   // back to a Resend sandbox sender in _email.ts until then.
   EMAIL_FROM?: string;
+  // Where the new-application staff notification (with documents attached)
+  // gets sent. Optional — apply.ts just skips sending it if unset.
+  STAFF_NOTIFICATION_EMAIL?: string;
+  // Google Apps Script web app URL (google-apps-script/apply-webhook.gs) that
+  // logs new applications to a Sheet and saves documents to Drive as PDF —
+  // the one piece email (Resend) can't do, since PDF conversion has no
+  // Workers-compatible library.
+  APPS_SCRIPT_WEBHOOK_URL?: string;
+  APPS_SCRIPT_SHARED_SECRET?: string;
 };
 
 export const json = (data: unknown, status = 200) =>

@@ -1,5 +1,5 @@
 import { json, type Env } from "./types";
-import { sendEmail, applicationConfirmationEmail } from "./_email";
+import { sendEmail, applicationConfirmationEmail, applicationStaffNotificationEmail } from "./_email";
 
 const DEFAULT_WHATSAPP = "https://wa.me/2340000000000";
 
@@ -13,6 +13,59 @@ function makeApplicationId(): string {
   let code = "";
   for (const b of bytes) code += alphabet[b % alphabet.length];
   return `CBS-${code}`;
+}
+
+// btoa() chokes on huge strings built via String.fromCharCode(...bytes) in
+// one call (call-stack blowup) — chunk it, same pattern as any other
+// Workers-runtime base64 encoder.
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+  }
+  return btoa(binary);
+}
+
+type ScriptDocument = { docType: string; filename: string; mimeType: string; base64: string };
+
+// Best-effort, never throws — the application has already been saved by the
+// time this runs, so a slow/unreachable Apps Script deployment (cold start,
+// quota, wrong URL) must never turn a successful submission into a 500.
+// Apps Script only handles the Sheet log + Drive/PDF backup now (the one
+// thing Workers can't do) — both emails go through Resend below instead.
+async function backUpToAppsScript(
+  env: Env,
+  payload: {
+    id: string;
+    fullName: string;
+    email: string;
+    phone: string;
+    country: string;
+    destination: string;
+    program: string;
+    message: string;
+    documents: ScriptDocument[];
+  }
+): Promise<{ ok: boolean; folderUrl?: string }> {
+  if (!env.APPS_SCRIPT_WEBHOOK_URL || !env.APPS_SCRIPT_SHARED_SECRET) return { ok: false };
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    const res = await fetch(env.APPS_SCRIPT_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ secret: env.APPS_SCRIPT_SHARED_SECRET, ...payload }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    if (!res.ok) return { ok: false };
+    const data = await res.json<{ ok: boolean; folderUrl?: string }>().catch(() => ({ ok: false }) as const);
+    return { ok: !!data.ok, folderUrl: data.folderUrl };
+  } catch {
+    return { ok: false };
+  }
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
@@ -54,6 +107,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   const uploaded: string[] = [];
   const skipped: string[] = [];
+  const scriptDocuments: ScriptDocument[] = [];
 
   for (const docType of DOC_FIELDS) {
     const file = form.get(docType);
@@ -68,7 +122,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     }
     const safeName = file.name.replace(/[^\w.\-]+/g, "_").slice(0, 100);
     const key = `${id}/${docType}/${safeName}`;
-    await env.DOCS.put(key, file.stream(), {
+    const bytes = await file.arrayBuffer();
+    await env.DOCS.put(key, bytes, {
       httpMetadata: { contentType: file.type },
     });
     await env.DB.prepare(
@@ -78,6 +133,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       .bind(id, docType, file.name, key, file.size)
       .run();
     uploaded.push(docType);
+    scriptDocuments.push({ docType, filename: safeName, mimeType: file.type, base64: arrayBufferToBase64(bytes) });
   }
 
   // Reserve a hot-cake spot when the application targets an offer with limited spots
@@ -99,5 +155,48 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     await env.DB.prepare(`UPDATE applications SET confirmation_sent_at = datetime('now') WHERE id = ?`).bind(id).run();
   }
 
-  return json({ id, uploaded, skipped, emailSent: emailResult.sent, emailError: emailResult.error ?? null });
+  // Sheet log + Drive/PDF backup (see google-apps-script/apply-webhook.gs) —
+  // the one piece of this Resend can't do.
+  const backup = await backUpToAppsScript(env, {
+    id,
+    fullName,
+    email,
+    phone,
+    country,
+    destination,
+    program,
+    message,
+    documents: scriptDocuments,
+  });
+
+  let staffNotified = false;
+  if (env.STAFF_NOTIFICATION_EMAIL) {
+    const staffResult = await sendEmail(env, {
+      to: env.STAFF_NOTIFICATION_EMAIL,
+      ...applicationStaffNotificationEmail({
+        id,
+        fullName,
+        email,
+        phone,
+        country,
+        destination,
+        program,
+        message,
+        documentNames: scriptDocuments.map((d) => `${d.docType}: ${d.filename}`),
+        driveFolderUrl: backup.folderUrl,
+      }),
+      attachments: scriptDocuments.map((d) => ({ filename: d.filename, content: d.base64 })),
+    });
+    staffNotified = staffResult.sent;
+  }
+
+  return json({
+    id,
+    uploaded,
+    skipped,
+    emailSent: emailResult.sent,
+    emailError: emailResult.error ?? null,
+    staffNotified,
+    documentsBackedUp: backup.ok,
+  });
 };

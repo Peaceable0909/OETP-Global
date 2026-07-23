@@ -12,7 +12,16 @@ export type SendEmailResult = { sent: boolean; error?: string };
 // as the DEPLOY_HOOK_URL fetch in the admin publish.ts routes).
 export async function sendEmail(
   env: Env,
-  opts: { to: string; subject: string; html: string; replyTo?: string }
+  opts: {
+    to: string;
+    subject: string;
+    html: string;
+    replyTo?: string;
+    // Resend expects base64 content per attachment — same shape apply.ts
+    // already builds its Apps Script document payload in, so callers can
+    // reuse that array directly with no re-encoding.
+    attachments?: { filename: string; content: string }[];
+  }
 ): Promise<SendEmailResult> {
   if (!env.RESEND_API_KEY) {
     return { sent: false, error: "RESEND_API_KEY not configured — email not sent." };
@@ -30,6 +39,7 @@ export async function sendEmail(
         subject: opts.subject,
         html: opts.html,
         reply_to: opts.replyTo,
+        attachments: opts.attachments,
       }),
     });
     if (!res.ok) {
@@ -70,6 +80,40 @@ export function applicationConfirmationEmail(opts: { id: string; fullName: strin
       <p style="font-size:14px;line-height:1.6;color:#4B5563;margin:0 0 20px">Save this ID — you'll use it in every conversation with us. A counselor will contact you within 24–48 hours.</p>
       <a href="${opts.whatsapp}?text=${encodeURIComponent(`Hello! I just applied. My Application ID is ${opts.id}.`)}"
          style="display:inline-block;background:#25D366;color:#fff;font-weight:700;text-decoration:none;padding:12px 24px;border-radius:999px">Continue on WhatsApp</a>
+    `),
+  };
+}
+
+export function applicationStaffNotificationEmail(opts: {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  country: string;
+  destination: string;
+  program: string;
+  message: string;
+  documentNames: string[];
+  driveFolderUrl?: string;
+}): { subject: string; html: string } {
+  const docsHtml =
+    opts.documentNames.length > 0
+      ? `<ul>${opts.documentNames.map((d) => `<li>${d}</li>`).join("")}</ul>`
+      : "<p><em>No documents uploaded.</em></p>";
+  return {
+    subject: `New Application: ${opts.fullName} (${opts.id})`,
+    html: shell(`
+      <h1 style="font-size:20px;margin:0 0 12px">New application: ${opts.fullName}</h1>
+      <p style="font-size:14px;line-height:1.7;margin:0 0 4px"><strong>Application ID:</strong> ${opts.id}</p>
+      <p style="font-size:14px;line-height:1.7;margin:0 0 4px"><strong>Email:</strong> ${opts.email}</p>
+      <p style="font-size:14px;line-height:1.7;margin:0 0 4px"><strong>Phone:</strong> ${opts.phone}</p>
+      <p style="font-size:14px;line-height:1.7;margin:0 0 4px"><strong>Country:</strong> ${opts.country}</p>
+      <p style="font-size:14px;line-height:1.7;margin:0 0 4px"><strong>Destination:</strong> ${opts.destination}</p>
+      <p style="font-size:14px;line-height:1.7;margin:0 0 4px"><strong>Program:</strong> ${opts.program || "—"}</p>
+      ${opts.message ? `<p style="font-size:14px;line-height:1.7;margin:8px 0 4px"><strong>Message:</strong> ${opts.message}</p>` : ""}
+      <p style="font-size:14px;margin:16px 0 4px"><strong>Documents</strong> (attached):</p>
+      ${docsHtml}
+      ${opts.driveFolderUrl ? `<p style="font-size:13px;margin-top:12px"><a href="${opts.driveFolderUrl}">Open the Drive backup folder →</a></p>` : ""}
     `),
   };
 }
