@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import Magnetic from "@/components/Magnetic";
-import Cubes from "@/components/reactbits/Cubes";
+import LazyCubes from "@/components/LazyCubes";
 import SplitTextReveal from "@/components/reactbits/SplitTextReveal";
 import { getContactLinks } from "@/lib/data/site";
 import { MessageCircle } from "lucide-react";
@@ -12,10 +12,10 @@ export default async function CTABand() {
     <section className="relative overflow-hidden bg-navy py-20 text-white">
       {/* interactive cube fields on the flanks — hover to tilt, click to ripple */}
       <div className="absolute -left-10 top-1/2 hidden h-64 w-64 -translate-y-1/2 opacity-70 lg:block" aria-hidden="true">
-        <Cubes gridSize={6} radius={2.5} rippleColor="#ea580c" faceColor="#111827" />
+        <LazyCubes gridSize={6} radius={2.5} rippleColor="#ea580c" faceColor="#111827" />
       </div>
       <div className="absolute -right-10 top-1/2 hidden h-64 w-64 -translate-y-1/2 opacity-70 lg:block" aria-hidden="true">
-        <Cubes gridSize={6} radius={2.5} rippleColor="#2563eb" faceColor="#111827" />
+        <LazyCubes gridSize={6} radius={2.5} rippleColor="#2563eb" faceColor="#111827" />
       </div>
 
       <Reveal className="relative mx-auto max-w-3xl px-5 text-center">

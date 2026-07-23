@@ -9,6 +9,7 @@ import SmartImage from "@/components/SmartImage";
 import HeroSearch from "@/components/home/HeroSearch";
 import Magnetic from "@/components/Magnetic";
 import SplitTextReveal from "@/components/reactbits/SplitTextReveal";
+import { Icon } from "@/lib/icons";
 import { MessageCircle, PlaneTakeoff } from "lucide-react";
 import type { Destination } from "@/lib/data/destinations";
 
@@ -42,23 +43,35 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
   const [flying, setFlying] = useState(false);
   const dragStart = useRef<{ x: number; y: number } | null>(null);
 
-  // The globe's chunk is ~285KB — code-splitting it alone doesn't stop the
-  // browser from fetching it immediately, since it renders on first paint
-  // like everything else above the fold. Waiting for the page's own `load`
-  // event means the rest of the page (text, buttons, images) gets full
-  // bandwidth/parse priority first, and the globe's chunk starts only once
-  // that's done — same placeholder either way, so there's no visible change
-  // beyond the globe animating in a beat later.
+  // The WebGL globe is a genuinely heavy mount (Canvas + shader compilation +
+  // a continuous render loop on top of the ~285KB R3F/three chunk) — a
+  // Lighthouse audit found it responsible for ~8s of mobile scripting time,
+  // pushing Time-to-Interactive past 19s. Dragging a 3D globe with touch is
+  // also marginal UX on a phone, so below the same `lg:` breakpoint the rest
+  // of the site already treats as "desktop-only decoration" (see CTABand's
+  // Cubes), we skip mounting it entirely and show a static globe icon
+  // instead. Starts false to match SSR and avoid a hydration mismatch, then
+  // corrected on mount — same pattern as globeReady below.
+  const [globeEligible, setGlobeEligible] = useState(false);
+  useEffect(() => {
+    setGlobeEligible(window.matchMedia("(min-width: 1024px)").matches);
+  }, []);
+
+  // Once eligible, wait for a genuinely idle main thread rather than just the
+  // `load` event (resources finishing doesn't mean the CPU is free) — a
+  // stronger signal that mounting the globe now won't itself become the
+  // thing blocking interactivity. Safari has no requestIdleCallback, so it
+  // falls back to a short timeout.
   const [globeReady, setGlobeReady] = useState(false);
   useEffect(() => {
-    if (document.readyState === "complete") {
-      setGlobeReady(true);
-      return;
-    }
-    const onLoad = () => setGlobeReady(true);
-    window.addEventListener("load", onLoad);
-    return () => window.removeEventListener("load", onLoad);
-  }, []);
+    if (!globeEligible) return;
+    const ric =
+      window.requestIdleCallback ??
+      ((cb: IdleRequestCallback) => window.setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 0 }), 200));
+    const cic = window.cancelIdleCallback ?? window.clearTimeout;
+    const handle = ric(() => setGlobeReady(true), { timeout: 2000 });
+    return () => cic(handle);
+  }, [globeEligible]);
 
   const onGlobePointerDown = (e: React.PointerEvent) => {
     dragStart.current = { x: e.clientX, y: e.clientY };
@@ -132,11 +145,21 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
         {/* 3D interactive globe + flight-path pins */}
         <div className="relative mx-auto aspect-square w-full max-w-[22rem] sm:max-w-[26rem]">
           <div className="absolute inset-0" onPointerDown={onGlobePointerDown} onPointerUp={onGlobePointerUp}>
-            {globeReady ? (
-              <Globe3D />
+            {globeEligible ? (
+              globeReady ? (
+                <Globe3D />
+              ) : (
+                <div className="grid h-full w-full place-items-center" aria-hidden="true">
+                  <div className="h-[70%] w-[70%] animate-pulse rounded-full bg-surface" />
+                </div>
+              )
             ) : (
-              <div className="grid h-full w-full place-items-center" aria-hidden="true">
-                <div className="h-[70%] w-[70%] animate-pulse rounded-full bg-surface" />
+              <div
+                className="grid h-full w-full place-items-center rounded-full"
+                style={{ backgroundImage: "radial-gradient(circle at 35% 30%, #a78bfa33 0%, var(--color-surface) 70%)" }}
+                aria-hidden="true"
+              >
+                <Icon name="globe" className="h-[42%] w-[42%] animate-spin text-study/70 [animation-duration:6s]" />
               </div>
             )}
           </div>
