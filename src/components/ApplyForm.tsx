@@ -165,6 +165,17 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
         </fieldset>
       </Reveal>
 
+      <label className="flex items-start gap-2.5 text-xs font-medium text-ink-soft">
+        <input type="checkbox" name="privacy_consent" required className="mt-0.5 h-4 w-4 shrink-0 rounded border-line text-study focus:ring-study" />
+        <span>
+          I have read and agree to the{" "}
+          <a href="/privacy/" target="_blank" rel="noopener noreferrer" className="font-semibold text-study hover:underline">
+            Privacy Policy
+          </a>
+          , including how my documents are stored and used to process my application.
+        </span>
+      </label>
+
       <button
         type="submit"
         disabled={submitting}
