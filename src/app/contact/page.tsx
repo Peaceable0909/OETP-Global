@@ -3,13 +3,15 @@ import Reveal from "@/components/Reveal";
 import SectionHeading from "@/components/SectionHeading";
 import LeadForm from "@/components/LeadForm";
 import { site, getContactLinks } from "@/lib/data/site";
+import { pageMetadata } from "@/lib/seo";
 import { Icon, type IconName } from "@/lib/icons";
 import { getDestinations } from "@/lib/data/destinations";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact",
   description: "Talk to a counselor on WhatsApp or Telegram, or leave your details and we'll reach out.",
-};
+  path: "/contact/",
+});
 
 export default async function ContactPage() {
   const [destinations, links] = await Promise.all([getDestinations(), getContactLinks()]);

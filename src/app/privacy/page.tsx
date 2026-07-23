@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Reveal from "@/components/Reveal";
 import { site } from "@/lib/data/site";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Privacy Policy",
   description: `How ${site.name} collects, uses, and protects your personal information.`,
-};
+  path: "/privacy/",
+});
 
 type Section = { title: string; body: string[] };
 

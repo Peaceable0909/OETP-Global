@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import ApplyForm from "@/components/ApplyForm";
+import { pageMetadata } from "@/lib/seo";
 import { getDestinations } from "@/lib/data/destinations";
 import { getContactLinks } from "@/lib/data/site";
 
-export const metadata: Metadata = {
-  title: "Apply Now",
+export const metadata: Metadata = pageMetadata({
+  title: "Apply Now — Study Abroad Application",
   description: "Apply in under 10 minutes. Upload your documents and get an instant Application ID.",
-};
+  path: "/apply/",
+});
 
 export default async function ApplyPage() {
   const [destinations, links] = await Promise.all([getDestinations(), getContactLinks()]);

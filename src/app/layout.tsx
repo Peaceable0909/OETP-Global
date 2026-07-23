@@ -8,6 +8,8 @@ import HotTicker from "@/components/HotTicker";
 import BoardingPassWidget from "@/components/BoardingPassWidget";
 import MobileTabBar from "@/components/MobileTabBar";
 import ScrollProgress from "@/components/ScrollProgress";
+import JsonLd from "@/components/JsonLd";
+import { organizationSchema } from "@/lib/structuredData";
 import { getDestinations } from "@/lib/data/destinations";
 import { getContactLinks } from "@/lib/data/site";
 
@@ -40,6 +42,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${manrope.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col pb-20 sm:pb-0">
+        <JsonLd data={organizationSchema()} />
         <a href="#main" className="skip-link">
           Skip to main content
         </a>

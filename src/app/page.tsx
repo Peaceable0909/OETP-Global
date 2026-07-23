@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
 import StatsBar from "@/components/home/StatsBar";
 import HotCakes from "@/components/home/HotCakes";
@@ -12,9 +13,21 @@ import FaqAccordion from "@/components/FaqAccordion";
 import SectionHeading from "@/components/SectionHeading";
 import DeparturesBoard from "@/components/home/DeparturesBoard";
 import DarkStatsBand from "@/components/home/DarkStatsBand";
+import JsonLd from "@/components/JsonLd";
+import { faqPageSchema } from "@/lib/structuredData";
+import { pageMetadata } from "@/lib/seo";
 import Link from "next/link";
 import { faqs, getContactLinks, getTestimonials } from "@/lib/data/site";
 import { getDestinations } from "@/lib/data/destinations";
+
+export const metadata: Metadata = pageMetadata({
+  title: "Study Abroad Consultancy — Apply to Universities in Thailand, Cyprus, Malaysia & More",
+  description:
+    "Free assessment, transparent admissions, and end-to-end visa support for students applying to partner universities in Thailand, Cyprus, Malaysia, Cambodia, Albania and Russia.",
+  path: "/",
+});
+
+const homeFaqs = faqs.slice(0, 5);
 
 export default async function Home() {
   const [destinations, links, testimonials] = await Promise.all([
@@ -24,6 +37,7 @@ export default async function Home() {
   ]);
   return (
     <>
+      <JsonLd data={faqPageSchema(homeFaqs)} />
       <Hero destinations={destinations} whatsapp={links.whatsapp} />
       <StatsBar />
       <HotCakes destinations={destinations} />
@@ -41,7 +55,7 @@ export default async function Home() {
           sub="The things every applicant wants to know — including exactly what's free and what's paid."
         />
         <div className="mt-12">
-          <FaqAccordion items={faqs.slice(0, 5)} />
+          <FaqAccordion items={homeFaqs} />
         </div>
         <p className="mt-8 text-center">
           <Link href="/faq/" className="font-bold text-study underline-offset-4 hover:underline">

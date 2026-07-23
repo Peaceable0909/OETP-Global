@@ -15,6 +15,9 @@ import FaqAccordion from "@/components/FaqAccordion";
 import RankingBadge from "@/components/RankingBadge";
 import CTABand from "@/components/CTABand";
 import StatCounter from "@/components/StatCounter";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbSchema, educationalOrganizationSchema, faqPageSchema } from "@/lib/structuredData";
+import { pageMetadata } from "@/lib/seo";
 import type { ReactNode } from "react";
 
 export async function generateStaticParams() {
@@ -26,7 +29,14 @@ export async function generateMetadata({ params }: { params: Promise<{ uslug: st
   const { uslug } = await params;
   const u = await getUniversity(uslug);
   if (!u) return {};
-  return { title: u.name, description: u.tagline || u.description || `Programs, fees, and requirements at ${u.name}.` };
+  const country = await getDestination(u.countrySlug);
+  const countryName = country?.name || "";
+  return pageMetadata({
+    title: countryName ? `${u.name} in ${countryName} — Programs, Fees & Admission Requirements` : `${u.name} — Programs, Fees & Admission Requirements`,
+    description: u.tagline || u.description || `Programs, fees, and requirements at ${u.name}${countryName ? ` in ${countryName}` : ""}.`,
+    path: `/destinations/${u.countrySlug}/universities/${u.slug}/`,
+    image: u.heroPhoto,
+  });
 }
 
 const tabs = [
@@ -57,6 +67,26 @@ export default async function UniversityPage({ params }: { params: Promise<{ slu
 
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Destinations", path: "/destinations/" },
+            { name: country.name, path: `/destinations/${country.slug}/` },
+            { name: "Universities", path: `/destinations/${country.slug}/universities/` },
+            { name: university.name, path: `/destinations/${country.slug}/universities/${university.slug}/` },
+          ]),
+          educationalOrganizationSchema({
+            name: university.name,
+            path: `/destinations/${country.slug}/universities/${university.slug}/`,
+            description: university.tagline || university.description || undefined,
+            image: university.heroPhoto,
+            city: university.city || undefined,
+            countryName: country.name,
+          }),
+          ...(university.faqs.length > 0 ? [faqPageSchema(university.faqs)] : []),
+        ]}
+      />
       <section className="relative overflow-hidden text-white">
         <SmartImage
           src={university.heroPhoto}

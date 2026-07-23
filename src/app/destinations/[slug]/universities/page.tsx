@@ -7,6 +7,9 @@ import { getPrograms } from "@/lib/data/programs";
 import UniversityCard from "@/components/UniversityCard";
 import Flag from "@/components/Flag";
 import CTABand from "@/components/CTABand";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbSchema } from "@/lib/structuredData";
+import { pageMetadata } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const destinations = await getDestinations();
@@ -17,7 +20,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const d = await getDestination(slug);
   if (!d) return {};
-  return { title: `Universities in ${d.name}`, description: `Partner universities and institutions in ${d.name}.` };
+  return pageMetadata({
+    title: `Top Universities in ${d.name} — Compare Programs & Fees`,
+    description: `Partner universities and institutions in ${d.name}.`,
+    path: `/destinations/${d.slug}/universities/`,
+    image: d.photo,
+  });
 }
 
 export default async function CountryUniversitiesPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -31,6 +39,14 @@ export default async function CountryUniversitiesPage({ params }: { params: Prom
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Destinations", path: "/destinations/" },
+          { name: d.name, path: `/destinations/${d.slug}/` },
+          { name: "Universities", path: `/destinations/${d.slug}/universities/` },
+        ])}
+      />
       <section className="bg-white px-5 pt-12 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <nav className="text-sm font-semibold text-ink-soft">
