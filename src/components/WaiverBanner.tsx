@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { fetchOffers, fallbackOffers, type Offer } from "@/lib/offers";
 import { useCountdown } from "@/lib/useCountdown";
+import { formatMoney } from "@/lib/currency";
 import { Flame } from "lucide-react";
 
 export default function WaiverBanner({ destination }: { destination: string }) {
@@ -22,6 +23,7 @@ export default function WaiverBanner({ destination }: { destination: string }) {
   if (!offer || !cd || cd.expired) return null;
 
   const spotsLeft = Math.max((offer.total_spots ?? 0) - offer.spots_taken, 0);
+  const hasPrice = offer.discounted_price != null;
   const cells = [
     { v: cd.days, l: "Days" },
     { v: cd.hours, l: "Hours" },
@@ -38,12 +40,23 @@ export default function WaiverBanner({ destination }: { destination: string }) {
           </span>
           <div>
             <p className="text-xs font-extrabold uppercase tracking-widest text-white/80">
-              Application fee waived for first {offer.total_spots} students!
+              {offer.discount_label || offer.title}
+              {offer.total_spots != null ? ` — first ${offer.total_spots} students!` : ""}
             </p>
-            <p className="mt-1 font-display text-2xl font-extrabold">
-              <span className="mr-2 text-white/70 line-through decoration-hot decoration-2">€300</span>
-              <span className="text-3xl text-amber-300">€0</span>
-              <span className="ml-3 rounded-full bg-white/15 px-3 py-1 align-middle text-xs font-bold">
+            <p className="mt-1 flex flex-wrap items-center gap-3 font-display text-2xl font-extrabold">
+              {hasPrice && (
+                <span>
+                  {offer.original_price != null && (
+                    <span className="mr-2 text-white/70 line-through decoration-hot decoration-2">
+                      {formatMoney(offer.original_price, offer.price_currency)}
+                    </span>
+                  )}
+                  <span className="text-3xl text-amber-300">
+                    {formatMoney(offer.discounted_price!, offer.price_currency)}
+                  </span>
+                </span>
+              )}
+              <span className="rounded-full bg-white/15 px-3 py-1 align-middle text-xs font-bold">
                 {spotsLeft} spots left
               </span>
             </p>

@@ -36,7 +36,7 @@ export default function UniversityCard({
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/5 to-transparent" />
               <div className="absolute left-4 top-4">
-                <RankingBadge national={university.rankingNational} world={university.rankingWorld} accent={accent} />
+                <RankingBadge rankings={university.rankings} accent={accent} />
               </div>
             </div>
             <div className="flex flex-1 flex-col p-6">

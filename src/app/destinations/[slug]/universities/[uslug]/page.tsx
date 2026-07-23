@@ -115,7 +115,7 @@ export default async function UniversityPage({ params }: { params: Promise<{ slu
             </p>
           )}
           <div className="animate-hero-rise mt-5 flex flex-wrap items-center gap-3" style={{ animationDelay: "230ms" }}>
-            <RankingBadge national={university.rankingNational} world={university.rankingWorld} accent={accent} />
+            <RankingBadge rankings={university.rankings} accent={accent} />
             <span className="inline-flex items-center gap-1.5 rounded-full bg-black/45 px-4 py-2 text-xs font-bold">
               {programs.length} program{programs.length === 1 ? "" : "s"} available
             </span>

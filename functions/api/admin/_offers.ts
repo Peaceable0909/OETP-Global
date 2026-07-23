@@ -10,7 +10,24 @@ export type OfferRow = {
   expires_at: string | null;
   active: number;
   created_at: string;
+  discount_label: string | null;
+  original_price: number | null;
+  discounted_price: number | null;
+  price_currency: string;
+  perks: string;
+  popular_programs: string;
+  cta_note: string | null;
 };
+
+function parseArray<T>(text: string | null): T[] {
+  if (!text) return [];
+  try {
+    const v = JSON.parse(text);
+    return Array.isArray(v) ? v : [];
+  } catch {
+    return [];
+  }
+}
 
 export function rowToApi(row: OfferRow) {
   return {
@@ -25,6 +42,13 @@ export function rowToApi(row: OfferRow) {
     expiresAt: row.expires_at ?? "",
     active: !!row.active,
     createdAt: row.created_at,
+    discountLabel: row.discount_label ?? "",
+    originalPrice: row.original_price,
+    discountedPrice: row.discounted_price,
+    priceCurrency: row.price_currency || "USD",
+    perks: parseArray<string>(row.perks),
+    popularPrograms: parseArray<string>(row.popular_programs),
+    ctaNote: row.cta_note ?? "",
   };
 }
 
@@ -38,6 +62,13 @@ export type OfferInput = {
   spotsTaken?: number;
   expiresAt?: string;
   active?: boolean;
+  discountLabel?: string;
+  originalPrice?: number | null;
+  discountedPrice?: number | null;
+  priceCurrency?: string;
+  perks?: string[];
+  popularPrograms?: string[];
+  ctaNote?: string;
 };
 
 const SLUG_RE = /^[a-z0-9-]+$/;
@@ -64,6 +95,13 @@ export function bindingsForInsert(input: OfferInput) {
     input.spotsTaken ?? 0,
     input.expiresAt || null,
     input.active === false ? 0 : 1,
+    input.discountLabel || null,
+    input.originalPrice ?? null,
+    input.discountedPrice ?? null,
+    input.priceCurrency || "USD",
+    JSON.stringify(input.perks || []),
+    JSON.stringify(input.popularPrograms || []),
+    input.ctaNote || null,
   ];
 }
 
@@ -77,5 +115,12 @@ export function bindingsForUpdate(input: OfferInput) {
     input.spotsTaken ?? 0,
     input.expiresAt || null,
     input.active === false ? 0 : 1,
+    input.discountLabel || null,
+    input.originalPrice ?? null,
+    input.discountedPrice ?? null,
+    input.priceCurrency || "USD",
+    JSON.stringify(input.perks || []),
+    JSON.stringify(input.popularPrograms || []),
+    input.ctaNote || null,
   ];
 }

@@ -8,6 +8,18 @@ export type Offer = {
   spots_taken: number;
   expires_at: string | null;
   active: number;
+  // Generic promo fields — not every offer is a fee waiver, so none of these
+  // assume that shape. discount_label is the headline ("$1,000 Tuition
+  // Discount", "Application Fee Waived", whatever actually applies);
+  // original/discounted price render a was/now price block when both are
+  // set; perks and popular_programs are free-form lists.
+  discount_label: string | null;
+  original_price: number | null;
+  discounted_price: number | null;
+  price_currency: string;
+  perks: string[];
+  popular_programs: string[];
+  cta_note: string | null;
 };
 
 // Mirrors the seed rows in the D1 `offers` table. Used when the /api/offers
@@ -23,6 +35,13 @@ export const fallbackOffers: Offer[] = [
     spots_taken: 3,
     expires_at: "2026-08-15T23:59:59Z",
     active: 1,
+    discount_label: "Application Fee WAIVED",
+    original_price: 300,
+    discounted_price: 0,
+    price_currency: "EUR",
+    perks: [],
+    popular_programs: [],
+    cta_note: null,
   },
   {
     slug: "cyprus-admissions-open",
@@ -34,6 +53,13 @@ export const fallbackOffers: Offer[] = [
     spots_taken: 0,
     expires_at: "2026-09-01T23:59:59Z",
     active: 1,
+    discount_label: null,
+    original_price: null,
+    discounted_price: null,
+    price_currency: "USD",
+    perks: [],
+    popular_programs: [],
+    cta_note: null,
   },
   {
     slug: "malaysia-business-it",
@@ -45,6 +71,13 @@ export const fallbackOffers: Offer[] = [
     spots_taken: 0,
     expires_at: "2026-09-15T23:59:59Z",
     active: 1,
+    discount_label: null,
+    original_price: null,
+    discounted_price: null,
+    price_currency: "USD",
+    perks: [],
+    popular_programs: [],
+    cta_note: null,
   },
   {
     slug: "cambodia-hospitality",
@@ -56,6 +89,13 @@ export const fallbackOffers: Offer[] = [
     spots_taken: 0,
     expires_at: "2026-09-30T23:59:59Z",
     active: 1,
+    discount_label: null,
+    original_price: null,
+    discounted_price: null,
+    price_currency: "USD",
+    perks: [],
+    popular_programs: [],
+    cta_note: null,
   },
 ];
 

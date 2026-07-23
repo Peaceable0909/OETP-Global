@@ -33,7 +33,8 @@ export const onRequestPut: PagesFunction<Env> = async ({ request, env, params })
 
   await env.DB.prepare(
     `UPDATE offers SET
-      title = ?, destination = ?, tagline = ?, badge = ?, total_spots = ?, spots_taken = ?, expires_at = ?, active = ?
+      title = ?, destination = ?, tagline = ?, badge = ?, total_spots = ?, spots_taken = ?, expires_at = ?, active = ?,
+      discount_label = ?, original_price = ?, discounted_price = ?, price_currency = ?, perks = ?, popular_programs = ?, cta_note = ?
      WHERE slug = ?`
   )
     .bind(...bindingsForUpdate(input), slug)

@@ -5,10 +5,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Save } from "lucide-react";
 import type { AdminOffer } from "@/lib/admin/types";
 import type { AdminCountry } from "@/lib/admin/types";
+import StringListEditor from "./StringListEditor";
 
-type FormState = Omit<AdminOffer, "id" | "createdAt" | "totalSpots" | "spotsTaken"> & {
+type FormState = Omit<
+  AdminOffer,
+  "id" | "createdAt" | "totalSpots" | "spotsTaken" | "originalPrice" | "discountedPrice"
+> & {
   totalSpots: string;
   spotsTaken: string;
+  originalPrice: string;
+  discountedPrice: string;
 };
 
 function emptyForm(): FormState {
@@ -22,6 +28,13 @@ function emptyForm(): FormState {
     spotsTaken: "0",
     expiresAt: "",
     active: true,
+    discountLabel: "",
+    originalPrice: "",
+    discountedPrice: "",
+    priceCurrency: "USD",
+    perks: [],
+    popularPrograms: [],
+    ctaNote: "",
   };
 }
 
@@ -29,6 +42,15 @@ const textCls =
   "mt-1 w-full rounded-lg border border-line px-3 py-2.5 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100";
 
 const BADGE_OPTIONS = ["", "HOT", "MOST POPULAR", "NEW", "TRENDING"];
+
+function Field({ label, ...rest }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <label className="block text-xs font-bold text-ink-soft">
+      {label}
+      <input {...rest} className={textCls} />
+    </label>
+  );
+}
 
 // <input type="datetime-local"> works in local time with no timezone suffix;
 // offers.expires_at is stored/compared as a UTC ISO string, so convert both ways.
@@ -82,6 +104,8 @@ export default function EditOfferForm() {
         totalSpots: o.totalSpots != null ? String(o.totalSpots) : "",
         spotsTaken: String(o.spotsTaken ?? 0),
         expiresAt: toLocalInputValue(o.expiresAt),
+        originalPrice: o.originalPrice != null ? String(o.originalPrice) : "",
+        discountedPrice: o.discountedPrice != null ? String(o.discountedPrice) : "",
       });
       setLoading(false);
     })();
@@ -102,6 +126,8 @@ export default function EditOfferForm() {
         totalSpots: form.totalSpots === "" ? null : Number(form.totalSpots),
         spotsTaken: form.spotsTaken === "" ? 0 : Number(form.spotsTaken),
         expiresAt: fromLocalInputValue(form.expiresAt),
+        originalPrice: form.originalPrice === "" ? null : Number(form.originalPrice),
+        discountedPrice: form.discountedPrice === "" ? null : Number(form.discountedPrice),
       };
       const res = await fetch(url, {
         method,
@@ -201,6 +227,49 @@ export default function EditOfferForm() {
           Tagline (one or two sentences shown on the card)
           <textarea value={form.tagline} onChange={(e) => set("tagline", e.target.value)} rows={2} className={textCls} />
         </label>
+      </section>
+
+      <section className="rounded-2xl border border-line bg-white p-6">
+        <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-brand-600">Discount / Pricing (optional)</h3>
+        <p className="mb-4 text-xs text-ink-soft">
+          Not every offer is a fee waiver — use whatever headline actually applies (e.g. &quot;$1,000 Tuition
+          Discount&quot;, &quot;Application Fee Waived&quot;). Leave the prices blank for an offer with no specific
+          discount amount to show.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block text-xs font-bold text-ink-soft sm:col-span-2">
+            Discount headline (e.g. $1,000 Tuition Discount)
+            <input value={form.discountLabel} onChange={(e) => set("discountLabel", e.target.value)} className={textCls} />
+          </label>
+          <Field label="Currency (e.g. USD)" value={form.priceCurrency} onChange={(e) => set("priceCurrency", e.target.value.toUpperCase())} />
+          <div />
+          <Field label="Original price" type="number" step="0.01" value={form.originalPrice} onChange={(e) => set("originalPrice", e.target.value)} />
+          <Field label="Discounted price" type="number" step="0.01" value={form.discountedPrice} onChange={(e) => set("discountedPrice", e.target.value)} />
+        </div>
+        <label className="mt-4 block text-xs font-bold text-ink-soft">
+          Reassurance note under the CTA (e.g. &quot;Pay tuition only after your eligibility is confirmed.&quot;)
+          <input value={form.ctaNote} onChange={(e) => set("ctaNote", e.target.value)} className={textCls} />
+        </label>
+      </section>
+
+      <section className="rounded-2xl border border-line bg-white p-6">
+        <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-brand-600">Perks</h3>
+        <StringListEditor
+          label="Perks"
+          values={form.perks}
+          onChange={(v) => set("perks", v)}
+          placeholder="e.g. FREE Accommodation"
+        />
+      </section>
+
+      <section className="rounded-2xl border border-line bg-white p-6">
+        <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-brand-600">Popular Programmes</h3>
+        <StringListEditor
+          label="Popular programmes"
+          values={form.popularPrograms}
+          onChange={(v) => set("popularPrograms", v)}
+          placeholder="e.g. Business Administration"
+        />
       </section>
 
       <section className="rounded-2xl border border-line bg-white p-6">

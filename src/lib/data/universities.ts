@@ -10,8 +10,7 @@ export type University = {
   tagline: string;
   description: string;
   heroPhoto: string;
-  rankingNational: number | null;
-  rankingWorld: number | null;
+  rankings: { label: string; value: number }[];
   foundedYear: number | null;
   studentPopulation: number | null;
   internationalStudentPct: number | null;
@@ -55,8 +54,7 @@ const FALLBACK_UNIVERSITIES: University[] = [
   tagline: "",
   description: "",
   heroPhoto: universityImage(u.slug),
-  rankingNational: null,
-  rankingWorld: null,
+  rankings: [],
   foundedYear: null,
   studentPopulation: null,
   internationalStudentPct: null,
@@ -81,8 +79,7 @@ type UniversityRow = {
   tagline: string | null;
   description: string | null;
   hero_photo: string | null;
-  ranking_national: number | null;
-  ranking_world: number | null;
+  rankings: string;
   founded_year: number | null;
   student_population: number | null;
   international_student_pct: number | null;
@@ -117,8 +114,7 @@ function rowToUniversity(row: UniversityRow): University {
     tagline: row.tagline ?? "",
     description: row.description ?? "",
     heroPhoto: row.hero_photo ?? universityImage(row.slug),
-    rankingNational: row.ranking_national,
-    rankingWorld: row.ranking_world,
+    rankings: parseArray<{ label: string; value: number }>(row.rankings),
     foundedYear: row.founded_year,
     studentPopulation: row.student_population,
     internationalStudentPct: row.international_student_pct,

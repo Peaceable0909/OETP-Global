@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { fetchOffers, type Offer } from "@/lib/offers";
 import type { Destination } from "@/lib/data/destinations";
 import { useCountdown } from "@/lib/useCountdown";
+import { formatMoney } from "@/lib/currency";
 import Reveal from "@/components/Reveal";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
@@ -67,6 +68,8 @@ function OfferCard({
   const dest = destinations.find((d) => d.slug === offer.destination);
   const limited = offer.total_spots != null;
   const spotsLeft = limited ? Math.max(offer.total_spots! - offer.spots_taken, 0) : null;
+  const perks = offer.perks?.length > 0 ? offer.perks : dest?.highlights ?? [];
+  const hasPrice = offer.discounted_price != null;
 
   const card = (
       <TiltCard className="h-full" maxTilt={6}>
@@ -97,14 +100,26 @@ function OfferCard({
         <div className="flex flex-1 flex-col gap-3.5 p-5">
           <h3 className="font-display text-[15px] font-bold leading-snug">{offer.title}</h3>
 
-          <ul className="space-y-1.5 text-[13px] font-medium text-ink-soft">
-            {(dest?.highlights ?? []).slice(0, 3).map((h) => (
-              <li key={h} className="flex gap-2">
-                <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-success" aria-hidden="true" />
-                <span className="line-clamp-1">{h}</span>
-              </li>
-            ))}
-          </ul>
+          {perks.length > 0 && (
+            <ul className="space-y-1.5 text-[13px] font-medium text-ink-soft">
+              {perks.slice(0, 3).map((h) => (
+                <li key={h} className="flex gap-2">
+                  <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-success" aria-hidden="true" />
+                  <span className="line-clamp-1">{h}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {offer.popular_programs?.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {offer.popular_programs.slice(0, 4).map((p) => (
+                <span key={p} className="rounded-full bg-surface px-2.5 py-1 text-[11px] font-bold text-ink-soft">
+                  {p}
+                </span>
+              ))}
+            </div>
+          )}
 
           {limited && (
             <div className="space-y-1.5">
@@ -116,12 +131,25 @@ function OfferCard({
               </div>
               <p className="inline-flex items-center gap-1.5 text-xs font-extrabold text-hot-deep">
                 <Flame className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                Fee waived — {spotsLeft} of {offer.total_spots} spots left
+                {offer.discount_label || "Limited offer"} — {spotsLeft} of {offer.total_spots} spots left
               </p>
             </div>
           )}
 
-          <p className="text-sm font-bold text-ink">From {dest?.tuitionFrom}</p>
+          <p className="text-sm font-bold text-ink">
+            {hasPrice ? (
+              <>
+                {offer.original_price != null && (
+                  <span className="mr-1.5 text-ink-mute line-through">
+                    {formatMoney(offer.original_price, offer.price_currency)}
+                  </span>
+                )}
+                {formatMoney(offer.discounted_price!, offer.price_currency)}
+              </>
+            ) : (
+              `From ${dest?.tuitionFrom}`
+            )}
+          </p>
 
           {limited ? (
             <div className="mt-auto space-y-3">
@@ -134,6 +162,7 @@ function OfferCard({
               >
                 Apply Now <span aria-hidden>→</span>
               </Link>
+              {offer.cta_note && <p className="text-center text-[11px] text-ink-mute">{offer.cta_note}</p>}
             </div>
           ) : (
             <Link
