@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef } from "react";
 import gsap from "gsap";
 import "./Cubes.css";
 
-type Props = {
+export type CubesProps = {
   gridSize?: number;
   maxAngle?: number;
   radius?: number;
@@ -31,7 +31,7 @@ export default function Cubes({
   autoAnimate = true,
   rippleOnClick = true,
   className = "",
-}: Props) {
+}: CubesProps) {
   const sceneRef = useRef<HTMLDivElement>(null);
   const inViewRef = useRef(false);
   const rafRef = useRef<number | null>(null);
