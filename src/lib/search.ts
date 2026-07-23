@@ -116,6 +116,7 @@ export type SearchResultProgram = {
   careerProspects: string[];
   scholarships: { name: string; amount?: string; note?: string }[];
   faqs: { q: string; a: string }[];
+  feeBreakdown: { label: string; registrationFee: number; managementFee: number; tuitionFee: number; total: number; currency: string }[];
   status: string;
   universityName: string;
   countrySlug: string;

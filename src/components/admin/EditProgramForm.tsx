@@ -13,7 +13,7 @@ import ModulesEditor from "./ModulesEditor";
 // number | null right before the API call, same approach as EditUniversityForm.
 type FormState = Omit<
   AdminProgram,
-  "id" | "status" | "createdAt" | "updatedAt" | "durationMonths" | "tuitionPerYear" | "applicationFee" | "deposit" | "minGpa" | "minIelts" | "minToefl"
+  "id" | "status" | "createdAt" | "updatedAt" | "durationMonths" | "tuitionPerYear" | "applicationFee" | "deposit" | "minGpa" | "minIelts" | "minToefl" | "feeBreakdown"
 > & {
   durationMonths: string;
   tuitionPerYear: string;
@@ -22,6 +22,10 @@ type FormState = Omit<
   minGpa: string;
   minIelts: string;
   minToefl: string;
+  // Kept as string fields here (like every other numeric field in this form)
+  // so RepeatableEditor — built for Record<string, string>[] — can edit it
+  // directly; converted to numbers only at save() time.
+  feeBreakdown: Record<string, string>[];
 };
 
 function emptyForm(universitySlug: string): FormState {
@@ -49,6 +53,7 @@ function emptyForm(universitySlug: string): FormState {
     careerProspects: [],
     scholarships: [],
     faqs: [],
+    feeBreakdown: [],
   };
 }
 
@@ -110,6 +115,14 @@ export default function EditProgramForm() {
         minGpa: p.minGpa?.toString() ?? "",
         minIelts: p.minIelts?.toString() ?? "",
         minToefl: p.minToefl?.toString() ?? "",
+        feeBreakdown: p.feeBreakdown.map((f) => ({
+          label: f.label,
+          registrationFee: String(f.registrationFee),
+          managementFee: String(f.managementFee),
+          tuitionFee: String(f.tuitionFee),
+          total: String(f.total),
+          currency: f.currency,
+        })),
       });
       setStatus(p.status);
       setLoading(false);
@@ -133,6 +146,14 @@ export default function EditProgramForm() {
         minGpa: numOrNull(form.minGpa),
         minIelts: numOrNull(form.minIelts),
         minToefl: numOrNull(form.minToefl),
+        feeBreakdown: form.feeBreakdown.map((f) => ({
+          label: f.label || "",
+          registrationFee: Number(f.registrationFee) || 0,
+          managementFee: Number(f.managementFee) || 0,
+          tuitionFee: Number(f.tuitionFee) || 0,
+          total: Number(f.total) || 0,
+          currency: f.currency || "THB",
+        })),
       };
 
       const method = isNew ? "POST" : "PUT";
@@ -292,6 +313,29 @@ export default function EditProgramForm() {
       <section className="rounded-2xl border border-line bg-white p-6">
         <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-brand-600">Career Prospects</h3>
         <StringListEditor label="Career prospects" values={form.careerProspects} onChange={(v) => set("careerProspects", v)} placeholder="e.g. Software Engineer" />
+      </section>
+
+      <section className="rounded-2xl border border-line bg-white p-6">
+        <h3 className="mb-1 text-sm font-bold uppercase tracking-wider text-brand-600">Fee Breakdown (Year-by-Year)</h3>
+        <p className="mb-4 text-xs text-ink-soft">
+          The institution&apos;s own literal billing schedule, in its own currency (e.g. THB for Shinawatra University)
+          — shown as a detailed table on the program page, separate from the single USD &quot;Tuition / year&quot;
+          figure above used for cross-country search filtering.
+        </p>
+        <RepeatableEditor
+          label="Fee rows"
+          items={form.feeBreakdown}
+          onChange={(v) => set("feeBreakdown", v)}
+          countrySlug={form.universitySlug || "new"}
+          fields={[
+            { key: "label", label: "Label (e.g. Bachelor · Year 1)" },
+            { key: "currency", label: "Currency (e.g. THB)" },
+            { key: "registrationFee", label: "Registration fee" },
+            { key: "managementFee", label: "Management fee" },
+            { key: "tuitionFee", label: "Tuition fee" },
+            { key: "total", label: "Total amount" },
+          ]}
+        />
       </section>
 
       <section className="rounded-2xl border border-line bg-white p-6">
