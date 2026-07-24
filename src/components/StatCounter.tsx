@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { formatMoney } from "@/lib/currency";
 
 /** Counts up to `value` once it scrolls into view — same IntersectionObserver
  * + reduced-motion pattern as Reveal, just driving a number instead of opacity. */
@@ -8,14 +9,16 @@ export default function StatCounter({
   value,
   suffix = "",
   duration = 1200,
-  format,
+  currency,
 }: {
   value: number;
   suffix?: string;
   duration?: number;
-  /** Overrides the default toLocaleString()+suffix rendering — e.g. to run
-   *  the count through formatMoney() for a currency-symbol prefix. */
-  format?: (n: number) => string;
+  /** Renders through formatMoney() for a currency-symbol prefix instead of
+   *  the default toLocaleString()+suffix rendering. A plain string, not a
+   *  callback — this component can be reached from a Server Component tree,
+   *  which can't pass functions across the client boundary. */
+  currency?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [display, setDisplay] = useState(0);
@@ -46,5 +49,5 @@ export default function StatCounter({
     return () => io.disconnect();
   }, [value, duration]);
 
-  return <span ref={ref}>{format ? format(display) : `${display.toLocaleString()}${suffix}`}</span>;
+  return <span ref={ref}>{currency ? formatMoney(display, currency) : `${display.toLocaleString()}${suffix}`}</span>;
 }

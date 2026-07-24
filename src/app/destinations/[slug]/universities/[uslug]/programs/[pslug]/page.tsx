@@ -403,11 +403,7 @@ export default async function ProgramPage({
                     label="Tuition / year"
                     value={
                       program.tuitionPerYear ? (
-                        <StatCounter
-                          value={program.tuitionPerYear}
-                          duration={900}
-                          format={(n) => formatMoney(n, program.currency)}
-                        />
+                        <StatCounter value={program.tuitionPerYear} duration={900} currency={program.currency} />
                       ) : (
                         "On request"
                       )
@@ -471,7 +467,7 @@ function CostCell({
     <Reveal delay={delay} y={16}>
       <div className="rounded-2xl border border-line bg-white p-5 text-center transition-shadow duration-300 hover:shadow-md">
         <p className="font-display text-lg font-extrabold">
-          {amount ? <StatCounter value={amount} duration={900} format={(n) => formatMoney(n, currency)} /> : "On request"}
+          {amount ? <StatCounter value={amount} duration={900} currency={currency} /> : "On request"}
         </p>
         <p className="mt-1 text-xs font-semibold text-ink-mute">{label}</p>
       </div>
