@@ -13,6 +13,9 @@ import ApplicationTimeline from "@/components/ApplicationTimeline";
 import CTABand from "@/components/CTABand";
 import StatCounter from "@/components/StatCounter";
 import JsonLd from "@/components/JsonLd";
+import TiltCard from "@/components/TiltCard";
+import Accordion from "@/components/Accordion";
+import SectionNav, { type NavSection } from "@/components/SectionNav";
 import { breadcrumbSchema, courseSchema, faqPageSchema } from "@/lib/structuredData";
 import { pageMetadata } from "@/lib/seo";
 import { FileText } from "lucide-react";
@@ -76,6 +79,19 @@ export default async function ProgramPage({
   const programPath = `/destinations/${country.slug}/universities/${university.slug}/programs/${program.slug}/`;
   const universityPath = `/destinations/${country.slug}/universities/${university.slug}/`;
 
+  const sections: NavSection[] = [
+    { id: "overview", label: "Overview" },
+    { id: "costs", label: "Costs" },
+    ...(program.feeBreakdown.length > 0 ? [{ id: "fees", label: "Fees Breakdown" }] : []),
+    { id: "requirements", label: "Requirements" },
+    { id: "documents", label: "Documents" },
+    ...(program.modules.length > 0 ? [{ id: "modules", label: "Modules" }] : []),
+    ...(program.careerProspects.length > 0 ? [{ id: "career", label: "Careers" }] : []),
+    ...(program.scholarships.length > 0 ? [{ id: "scholarships", label: "Scholarships" }] : []),
+    { id: "intake", label: "Intake & Timeline" },
+    ...(program.faqs.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
+  ];
+
   return (
     <>
       <JsonLd
@@ -125,195 +141,236 @@ export default async function ProgramPage({
           <p className="animate-hero-rise mt-2 text-lg font-semibold text-white/90" style={{ animationDelay: "160ms" }}>
             {university.name}, {country.name}
           </p>
-          <div className="animate-hero-rise mt-5 flex flex-wrap gap-2.5" style={{ animationDelay: "230ms" }}>
-            {program.degreeType && <Badge accent={accent}>{program.degreeType}</Badge>}
-            {program.fieldOfStudy && <Badge accent={accent}>{program.fieldOfStudy}</Badge>}
-            {program.campus && <Badge accent={accent}>{program.campus}</Badge>}
+          <div className="mt-5 flex flex-wrap gap-2.5">
+            {program.degreeType && (
+              <Badge accent={accent} delay={230}>
+                {program.degreeType}
+              </Badge>
+            )}
+            {program.fieldOfStudy && (
+              <Badge accent={accent} delay={290}>
+                {program.fieldOfStudy}
+              </Badge>
+            )}
+            {program.campus && (
+              <Badge accent={accent} delay={350}>
+                {program.campus}
+              </Badge>
+            )}
           </div>
         </div>
       </section>
 
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-14 lg:grid-cols-[1fr_20rem] lg:px-8">
         <div className="space-y-14">
-          <Reveal>
-            <h2 className="text-2xl font-bold sm:text-3xl">Overview</h2>
-            <p className="mt-4 max-w-2xl text-ink-soft">
-              {program.overview || "Details coming soon — contact us for the latest information on this program."}
-            </p>
-          </Reveal>
+          {/* A sticky element can never hold position past its own parent's
+              height — this needs to live inside the tall content column
+              (not a slim dedicated wrapper) to have room to stick through
+              the whole scroll. */}
+          <SectionNav sections={sections} accent={accent} variant="mobile" />
 
-          <Reveal>
-            <h2 className="text-2xl font-bold sm:text-3xl">Costs</h2>
-            <div className="mt-6 grid gap-4 sm:grid-cols-3">
-              <CostCell
-                label="Tuition / year"
-                value={program.tuitionPerYear ? formatMoney(program.tuitionPerYear, program.currency) : "On request"}
-              />
-              <CostCell
-                label="Application fee"
-                value={program.applicationFee ? formatMoney(program.applicationFee, program.currency) : "On request"}
-              />
-              <CostCell
-                label="Deposit"
-                value={program.deposit ? formatMoney(program.deposit, program.currency) : "On request"}
-              />
-            </div>
-            {program.feeBreakdown.length > 0 && (
-              <p className="mt-3 text-xs text-ink-soft">
-                {university.name} bills in {program.feeBreakdown[0].currency} — the figures above are a rounded USD
-                reference for comparing programs. See the exact year-by-year schedule below.
+          <section id="overview" className="scroll-mt-28">
+            <Reveal>
+              <h2 className="text-2xl font-bold sm:text-3xl">Overview</h2>
+              <p className="mt-4 max-w-2xl text-ink-soft">
+                {program.overview || "Details coming soon — contact us for the latest information on this program."}
               </p>
-            )}
-          </Reveal>
+            </Reveal>
+          </section>
+
+          <section id="costs" className="scroll-mt-28">
+            <Reveal>
+              <h2 className="text-2xl font-bold sm:text-3xl">Costs</h2>
+              <div className="mt-6 grid gap-4 sm:grid-cols-3">
+                <CostCell
+                  label="Tuition / year"
+                  amount={program.tuitionPerYear}
+                  currency={program.currency}
+                  delay={0}
+                />
+                <CostCell
+                  label="Application fee"
+                  amount={program.applicationFee}
+                  currency={program.currency}
+                  delay={80}
+                />
+                <CostCell label="Deposit" amount={program.deposit} currency={program.currency} delay={160} />
+              </div>
+              {program.feeBreakdown.length > 0 && (
+                <p className="mt-3 text-xs text-ink-soft">
+                  {university.name} bills in {program.feeBreakdown[0].currency} — the figures above are a rounded USD
+                  reference for comparing programs. See the exact year-by-year schedule below.
+                </p>
+              )}
+            </Reveal>
+          </section>
 
           {program.feeBreakdown.length > 0 && (
-            <Reveal>
-              <h2 className="text-2xl font-bold sm:text-3xl">Tuition & Fees — Year by Year</h2>
-              <p className="mt-3 max-w-2xl text-sm text-ink-soft">
-                {university.name}&apos;s literal billing schedule, split out by registration, management, and tuition
-                fees for each year of study.
-              </p>
-              <div className="mt-6 space-y-4">
-                {groupFeeBreakdown(program.feeBreakdown).map(([level, rows]) => (
-                  <details key={level} className="group rounded-2xl border border-line bg-white" open>
-                    <summary className="cursor-pointer list-none px-6 py-4 font-display text-sm font-bold marker:hidden [&::-webkit-details-marker]:hidden">
-                      {level}
-                    </summary>
-                    <div className="overflow-x-auto px-6 pb-5">
-                      <table className="w-full min-w-[480px] text-left text-sm">
-                        <thead>
-                          <tr className="text-xs uppercase tracking-wide text-ink-mute">
-                            <th className="py-2 pr-3 font-semibold">Year</th>
-                            <th className="py-2 pr-3 font-semibold">Registration</th>
-                            <th className="py-2 pr-3 font-semibold">Management</th>
-                            <th className="py-2 pr-3 font-semibold">Tuition</th>
-                            <th className="py-2 font-semibold">Total</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {rows.map((r) => (
-                            <tr key={r.label} className="border-t border-line">
-                              <td className="py-2.5 pr-3 font-semibold">{r.year}</td>
-                              <td className="py-2.5 pr-3 text-ink-soft">{formatMoney(r.registrationFee, r.currency)}</td>
-                              <td className="py-2.5 pr-3 text-ink-soft">{formatMoney(r.managementFee, r.currency)}</td>
-                              <td className="py-2.5 pr-3 text-ink-soft">{formatMoney(r.tuitionFee, r.currency)}</td>
-                              <td className="py-2.5 font-bold">{formatMoney(r.total, r.currency)}</td>
+            <section id="fees" className="scroll-mt-28">
+              <Reveal>
+                <h2 className="text-2xl font-bold sm:text-3xl">Tuition & Fees — Year by Year</h2>
+                <p className="mt-3 max-w-2xl text-sm text-ink-soft">
+                  {university.name}&apos;s literal billing schedule, split out by registration, management, and tuition
+                  fees for each year of study.
+                </p>
+                <div className="mt-6 space-y-4">
+                  {groupFeeBreakdown(program.feeBreakdown).map(([level, rows]) => (
+                    <Accordion key={level} title={level} defaultOpen>
+                      <div className="-mx-6 overflow-x-auto px-6">
+                        <table className="w-full min-w-[480px] text-left text-sm">
+                          <thead>
+                            <tr className="text-xs uppercase tracking-wide text-ink-mute">
+                              <th className="py-2 pr-3 font-semibold">Year</th>
+                              <th className="py-2 pr-3 font-semibold">Registration</th>
+                              <th className="py-2 pr-3 font-semibold">Management</th>
+                              <th className="py-2 pr-3 font-semibold">Tuition</th>
+                              <th className="py-2 font-semibold">Total</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </details>
-                ))}
-              </div>
-            </Reveal>
+                          </thead>
+                          <tbody>
+                            {rows.map((r) => (
+                              <tr key={r.label} className="border-t border-line">
+                                <td className="py-2.5 pr-3 font-semibold">{r.year}</td>
+                                <td className="py-2.5 pr-3 text-ink-soft">{formatMoney(r.registrationFee, r.currency)}</td>
+                                <td className="py-2.5 pr-3 text-ink-soft">{formatMoney(r.managementFee, r.currency)}</td>
+                                <td className="py-2.5 pr-3 text-ink-soft">{formatMoney(r.tuitionFee, r.currency)}</td>
+                                <td className="py-2.5 font-bold">{formatMoney(r.total, r.currency)}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </Accordion>
+                  ))}
+                </div>
+              </Reveal>
+            </section>
           )}
 
-          <Reveal>
-            <h2 className="text-2xl font-bold sm:text-3xl">Entry Requirements</h2>
+          <section id="requirements" className="scroll-mt-28">
+            <Reveal>
+              <h2 className="text-2xl font-bold sm:text-3xl">Entry Requirements</h2>
+            </Reveal>
             <ul className="mt-4 space-y-2.5 text-sm text-ink-soft">
-              {program.entryRequirements.map((r) => (
-                <li key={r} className="flex gap-2">
-                  <span className="text-success">✓</span> {r}
-                </li>
+              {program.entryRequirements.map((r, i) => (
+                <Reveal key={r} delay={i * 60} x={-16} y={0}>
+                  <li className="flex gap-2">
+                    <span className="text-success">✓</span> {r}
+                  </li>
+                </Reveal>
               ))}
             </ul>
-          </Reveal>
+          </section>
 
-          <Reveal>
-            <h2 className="text-2xl font-bold sm:text-3xl">Documents You&apos;ll Upload</h2>
+          <section id="documents" className="scroll-mt-28">
+            <Reveal>
+              <h2 className="text-2xl font-bold sm:text-3xl">Documents You&apos;ll Upload</h2>
+            </Reveal>
             <ul className="mt-4 space-y-2.5 text-sm text-ink-soft">
-              {program.requiredDocuments.map((r) => (
-                <li key={r} className="flex gap-2">
-                  <FileText className="mt-0.5 h-4 w-4 shrink-0 text-doc" aria-hidden="true" /> {r}
-                </li>
+              {program.requiredDocuments.map((r, i) => (
+                <Reveal key={r} delay={i * 60} x={16} y={0}>
+                  <li className="flex gap-2">
+                    <FileText className="mt-0.5 h-4 w-4 shrink-0 text-doc" aria-hidden="true" /> {r}
+                  </li>
+                </Reveal>
               ))}
             </ul>
-          </Reveal>
+          </section>
 
           {program.modules.length > 0 && (
-            <Reveal>
-              <h2 className="text-2xl font-bold sm:text-3xl">Modules</h2>
-              <div className="mt-4 space-y-3">
-                {program.modules.map((m) => (
-                  <details key={m.year} className="group rounded-2xl border border-line bg-white">
-                    <summary className="cursor-pointer list-none px-6 py-4 font-display text-sm font-bold marker:hidden [&::-webkit-details-marker]:hidden">
-                      Year {m.year}
-                    </summary>
-                    <ul className="space-y-1.5 px-6 pb-5 text-sm text-ink-soft">
-                      {m.courses.map((c) => (
-                        <li key={c}>{c}</li>
-                      ))}
-                    </ul>
-                  </details>
-                ))}
-              </div>
-            </Reveal>
+            <section id="modules" className="scroll-mt-28">
+              <Reveal>
+                <h2 className="text-2xl font-bold sm:text-3xl">Modules</h2>
+                <div className="mt-4 space-y-3">
+                  {program.modules.map((m) => (
+                    <Accordion key={m.year} title={`Year ${m.year}`}>
+                      <ul className="space-y-1.5 text-sm text-ink-soft">
+                        {m.courses.map((c) => (
+                          <li key={c}>{c}</li>
+                        ))}
+                      </ul>
+                    </Accordion>
+                  ))}
+                </div>
+              </Reveal>
+            </section>
           )}
 
           {program.careerProspects.length > 0 && (
-            <Reveal>
-              <h2 className="text-2xl font-bold sm:text-3xl">Career Prospects</h2>
+            <section id="career" className="scroll-mt-28">
+              <Reveal>
+                <h2 className="text-2xl font-bold sm:text-3xl">Career Prospects</h2>
+              </Reveal>
               <ul className="mt-4 space-y-2.5 text-sm text-ink-soft">
-                {program.careerProspects.map((c) => (
-                  <li key={c} className="flex gap-2">
-                    <span style={{ color: accent }}>✦</span> {c}
-                  </li>
+                {program.careerProspects.map((c, i) => (
+                  <Reveal key={c} delay={i * 60} x={-16} y={0}>
+                    <li className="flex gap-2">
+                      <span style={{ color: accent }}>✦</span> {c}
+                    </li>
+                  </Reveal>
                 ))}
               </ul>
-            </Reveal>
+            </section>
           )}
 
           {program.scholarships.length > 0 && (
-            <Reveal>
-              <h2 className="text-2xl font-bold sm:text-3xl">Scholarships</h2>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                {program.scholarships.map((s) => (
-                  <div key={s.name} className="rounded-2xl border border-line bg-white p-5">
-                    <h3 className="font-display font-bold">{s.name}</h3>
-                    {s.amount && (
-                      <p className="mt-1 text-sm font-bold" style={{ color: accent }}>
-                        {s.amount}
-                      </p>
-                    )}
-                    {s.note && <p className="mt-1 text-sm text-ink-soft">{s.note}</p>}
-                  </div>
-                ))}
-              </div>
-            </Reveal>
+            <section id="scholarships" className="scroll-mt-28">
+              <Reveal>
+                <h2 className="text-2xl font-bold sm:text-3xl">Scholarships</h2>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  {program.scholarships.map((s, i) => (
+                    <Reveal key={s.name} delay={i * 90}>
+                      <TiltCard maxTilt={5}>
+                        <div className="h-full rounded-2xl border border-line bg-white p-5 transition-shadow duration-300 hover:shadow-lg">
+                          <h3 className="font-display font-bold">{s.name}</h3>
+                          {s.amount && (
+                            <p className="mt-1 text-sm font-bold" style={{ color: accent }}>
+                              {s.amount}
+                            </p>
+                          )}
+                          {s.note && <p className="mt-1 text-sm text-ink-soft">{s.note}</p>}
+                        </div>
+                      </TiltCard>
+                    </Reveal>
+                  ))}
+                </div>
+              </Reveal>
+            </section>
           )}
 
-          <Reveal>
-            <h2 className="text-2xl font-bold sm:text-3xl">Intake Dates &amp; Application Timeline</h2>
-            {program.intakeMonths.length > 0 && (
-              <p className="mt-3 text-sm text-ink-soft">
-                Typical intake months: {program.intakeMonths.join(", ")}
-              </p>
-            )}
-            {intakes.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2.5">
-                {intakes.map((i) => (
-                  <span key={i.id} className="rounded-full border border-line px-4 py-2 text-sm font-bold">
-                    {i.month} {i.year}
-                    {i.deadline && <span className="ml-1.5 font-normal text-ink-soft">· apply by {i.deadline}</span>}
-                  </span>
-                ))}
+          <section id="intake" className="scroll-mt-28">
+            <Reveal>
+              <h2 className="text-2xl font-bold sm:text-3xl">Intake Dates &amp; Application Timeline</h2>
+              {program.intakeMonths.length > 0 && (
+                <p className="mt-3 text-sm text-ink-soft">
+                  Typical intake months: {program.intakeMonths.join(", ")}
+                </p>
+              )}
+              {intakes.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2.5">
+                  {intakes.map((i) => (
+                    <span key={i.id} className="rounded-full border border-line px-4 py-2 text-sm font-bold">
+                      {i.month} {i.year}
+                      {i.deadline && <span className="ml-1.5 font-normal text-ink-soft">· apply by {i.deadline}</span>}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <div className="mt-8">
+                <ApplicationTimeline />
               </div>
-            )}
-            <div className="mt-8">
-              <ApplicationTimeline />
-            </div>
-          </Reveal>
+            </Reveal>
+          </section>
 
           {program.faqs.length > 0 && (
-            <div>
+            <section id="faq" className="scroll-mt-28">
               <Reveal>
                 <h2 className="text-2xl font-bold sm:text-3xl">FAQ</h2>
               </Reveal>
               <div className="mt-6">
                 <FaqAccordion items={program.faqs} />
               </div>
-            </div>
+            </section>
           )}
 
           {related.length > 0 && (
@@ -335,38 +392,51 @@ export default async function ProgramPage({
           )}
         </div>
 
-        <aside className="lg:sticky lg:top-32 lg:self-start">
+        <aside className="space-y-6 lg:sticky lg:top-32 lg:self-start">
+          <SectionNav sections={sections} accent={accent} variant="desktop" />
           <Reveal delay={100}>
-            <div className="rounded-3xl border border-line bg-white p-7">
-              <h2 className="font-display text-lg font-bold">At a Glance</h2>
-              <dl className="mt-5 space-y-3.5 text-sm">
-                <Row
-                  label="Tuition / year"
-                  value={program.tuitionPerYear ? formatMoney(program.tuitionPerYear, program.currency) : "On request"}
-                />
-                <Row
-                  label="Duration"
-                  value={
-                    program.durationMonths ? (
-                      <>
-                        <StatCounter value={program.durationMonths} duration={800} /> months
-                      </>
-                    ) : (
-                      "Varies"
-                    )
-                  }
-                />
-                <Row label="Degree type" value={program.degreeType || "—"} />
-                {program.campus && <Row label="Campus" value={program.campus} />}
-                <Row label="Min IELTS" value={program.minIelts != null ? String(program.minIelts) : "—"} />
-              </dl>
-              <a
-                href={applyHref}
-                className="btn-sheen mt-6 block rounded-full bg-study px-6 py-3.5 text-center font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-study-deep"
-              >
-                Apply Now →
-              </a>
-            </div>
+            <TiltCard maxTilt={4}>
+              <div className="rounded-3xl border border-line bg-white p-7">
+                <h2 className="font-display text-lg font-bold">At a Glance</h2>
+                <dl className="mt-5 space-y-3.5 text-sm">
+                  <Row
+                    label="Tuition / year"
+                    value={
+                      program.tuitionPerYear ? (
+                        <StatCounter
+                          value={program.tuitionPerYear}
+                          duration={900}
+                          format={(n) => formatMoney(n, program.currency)}
+                        />
+                      ) : (
+                        "On request"
+                      )
+                    }
+                  />
+                  <Row
+                    label="Duration"
+                    value={
+                      program.durationMonths ? (
+                        <>
+                          <StatCounter value={program.durationMonths} duration={800} /> months
+                        </>
+                      ) : (
+                        "Varies"
+                      )
+                    }
+                  />
+                  <Row label="Degree type" value={program.degreeType || "—"} />
+                  {program.campus && <Row label="Campus" value={program.campus} />}
+                  <Row label="Min IELTS" value={program.minIelts != null ? String(program.minIelts) : "—"} />
+                </dl>
+                <a
+                  href={applyHref}
+                  className="btn-sheen mt-6 block rounded-full bg-study px-6 py-3.5 text-center font-bold text-white transition-all duration-300 hover:scale-[1.02] hover:bg-study-deep"
+                >
+                  Apply Now →
+                </a>
+              </div>
+            </TiltCard>
           </Reveal>
         </aside>
       </div>
@@ -375,23 +445,37 @@ export default async function ProgramPage({
   );
 }
 
-function Badge({ children, accent }: { children: ReactNode; accent: string }) {
+function Badge({ children, accent, delay = 0 }: { children: ReactNode; accent: string; delay?: number }) {
   return (
     <span
-      className="rounded-full px-3 py-1.5 text-xs font-extrabold uppercase tracking-wider text-white"
-      style={{ backgroundColor: accent }}
+      className="animate-hero-rise rounded-full px-3 py-1.5 text-xs font-extrabold uppercase tracking-wider text-white"
+      style={{ backgroundColor: accent, animationDelay: `${delay}ms` }}
     >
       {children}
     </span>
   );
 }
 
-function CostCell({ label, value }: { label: string; value: string }) {
+function CostCell({
+  label,
+  amount,
+  currency,
+  delay = 0,
+}: {
+  label: string;
+  amount: number | null;
+  currency: string;
+  delay?: number;
+}) {
   return (
-    <div className="rounded-2xl border border-line bg-white p-5 text-center">
-      <p className="font-display text-lg font-extrabold">{value}</p>
-      <p className="mt-1 text-xs font-semibold text-ink-mute">{label}</p>
-    </div>
+    <Reveal delay={delay} y={16}>
+      <div className="rounded-2xl border border-line bg-white p-5 text-center transition-shadow duration-300 hover:shadow-md">
+        <p className="font-display text-lg font-extrabold">
+          {amount ? <StatCounter value={amount} duration={900} format={(n) => formatMoney(n, currency)} /> : "On request"}
+        </p>
+        <p className="mt-1 text-xs font-semibold text-ink-mute">{label}</p>
+      </div>
+    </Reveal>
   );
 }
 
