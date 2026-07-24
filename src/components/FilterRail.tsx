@@ -1,9 +1,57 @@
 "use client";
 
+import { useState, type ReactNode } from "react";
+import { ChevronDown } from "lucide-react";
 import type { SearchFacets, FilterState } from "@/lib/search";
 
 function toggle(list: string[], value: string): string[] {
   return list.includes(value) ? list.filter((v) => v !== value) : [...list, value];
+}
+
+// A collapsible section shared by every facet group below — keeps the sheet
+// scannable instead of dumping every filter as one long flat scroll. Height
+// animates via grid-template-rows (0fr <-> 1fr) rather than max-height, so it
+// doesn't need a guessed pixel cap for content of varying length.
+function Section({
+  title,
+  count = 0,
+  defaultOpen = false,
+  children,
+}: {
+  title: string;
+  count?: number;
+  defaultOpen?: boolean;
+  children: ReactNode;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="border-b border-line py-1 first:pt-0 last:border-b-0">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="flex w-full items-center justify-between py-3 text-left"
+      >
+        <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-ink-mute">
+          {title}
+          {count > 0 && (
+            <span className="rounded-full bg-study-soft px-1.5 py-0.5 text-[10px] font-extrabold text-study">
+              {count}
+            </span>
+          )}
+        </span>
+        <ChevronDown
+          className={`h-4 w-4 shrink-0 text-ink-mute transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          aria-hidden="true"
+        />
+      </button>
+      <div className="grid transition-[grid-template-rows] duration-300 ease-out" style={{ gridTemplateRows: open ? "1fr" : "0fr" }}>
+        <div className="overflow-hidden">
+          <div className="pb-4">{children}</div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function CheckboxGroup({
@@ -11,17 +59,18 @@ function CheckboxGroup({
   options,
   selected,
   onChange,
+  defaultOpen,
 }: {
   label: string;
   options: string[];
   selected: string[];
   onChange: (next: string[]) => void;
+  defaultOpen?: boolean;
 }) {
   if (options.length === 0) return null;
   return (
-    <div className="border-b border-line py-4 first:pt-0 last:border-b-0">
-      <h4 className="text-xs font-bold uppercase tracking-wider text-ink-mute">{label}</h4>
-      <div className="mt-2.5 space-y-2">
+    <Section title={label} count={selected.length} defaultOpen={defaultOpen ?? selected.length > 0}>
+      <div className="space-y-2">
         {options.map((opt) => (
           <label key={opt} className="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
             <input
@@ -34,7 +83,7 @@ function CheckboxGroup({
           </label>
         ))}
       </div>
-    </div>
+    </Section>
   );
 }
 
@@ -61,6 +110,10 @@ export default function FilterRail({
   const universityNameToSlug = new Map(facets.universities.map((u) => [u.name, u.slug]));
   const universitySlugToName = new Map(facets.universities.map((u) => [u.slug, u.name]));
 
+  const tuitionCount = value.minTuition || value.maxTuition ? 1 : 0;
+  const durationCount = value.minDuration || value.maxDuration ? 1 : 0;
+  const ieltsCount = value.maxIelts ? 1 : 0;
+
   return (
     <div>
       <CheckboxGroup
@@ -68,6 +121,7 @@ export default function FilterRail({
         options={countryOptions}
         selected={value.country.map((slug) => countrySlugToName.get(slug) ?? slug)}
         onChange={(names) => set("country", names.map((n) => countryNameToSlug.get(n) ?? n))}
+        defaultOpen
       />
       <CheckboxGroup
         label="University"
@@ -79,11 +133,11 @@ export default function FilterRail({
       <CheckboxGroup label="Subject area" options={facets.fieldsOfStudy} selected={value.fieldOfStudy} onChange={(v) => set("fieldOfStudy", v)} />
 
       {facets.tuitionRange.min != null && (
-        <div className="border-b border-line py-4">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-ink-mute">
-            Tuition / year ({facets.tuitionRange.min.toLocaleString()}–{facets.tuitionRange.max?.toLocaleString()})
-          </h4>
-          <div className="mt-2.5 flex gap-2">
+        <Section title="Tuition / year" count={tuitionCount} defaultOpen={tuitionCount > 0}>
+          <p className="mb-2.5 text-xs text-ink-mute">
+            Range: {facets.tuitionRange.min.toLocaleString()}–{facets.tuitionRange.max?.toLocaleString()}
+          </p>
+          <div className="flex gap-2">
             <input
               type="number"
               placeholder="Min"
@@ -99,15 +153,15 @@ export default function FilterRail({
               className="w-full rounded-lg border border-line px-2.5 py-1.5 text-sm outline-none focus:border-study"
             />
           </div>
-        </div>
+        </Section>
       )}
 
       {facets.durationRange.min != null && (
-        <div className="border-b border-line py-4">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-ink-mute">
-            Duration in months ({facets.durationRange.min}–{facets.durationRange.max})
-          </h4>
-          <div className="mt-2.5 flex gap-2">
+        <Section title="Duration in months" count={durationCount} defaultOpen={durationCount > 0}>
+          <p className="mb-2.5 text-xs text-ink-mute">
+            Range: {facets.durationRange.min}–{facets.durationRange.max}
+          </p>
+          <div className="flex gap-2">
             <input
               type="number"
               placeholder="Min"
@@ -123,24 +177,23 @@ export default function FilterRail({
               className="w-full rounded-lg border border-line px-2.5 py-1.5 text-sm outline-none focus:border-study"
             />
           </div>
-        </div>
+        </Section>
       )}
 
       <CheckboxGroup label="Intake month" options={facets.intakeMonths} selected={value.intakeMonth} onChange={(v) => set("intakeMonth", v)} />
 
       {facets.ieltsRange.min != null && (
-        <div className="border-b border-line py-4">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-ink-mute">Your IELTS score</h4>
+        <Section title="Your IELTS score" count={ieltsCount} defaultOpen={ieltsCount > 0}>
           <input
             type="number"
             step="0.5"
             placeholder="e.g. 6.0"
             value={value.maxIelts}
             onChange={(e) => set("maxIelts", e.target.value)}
-            className="mt-2.5 w-full rounded-lg border border-line px-2.5 py-1.5 text-sm outline-none focus:border-study"
+            className="w-full rounded-lg border border-line px-2.5 py-1.5 text-sm outline-none focus:border-study"
           />
           <p className="mt-1 text-xs text-ink-mute">Shows programs whose requirement is at or below this score.</p>
-        </div>
+        </Section>
       )}
 
       {facets.hasScholarships && (

@@ -144,6 +144,16 @@
   50% { opacity: 0.72; transform: scale(1.04); }
 }
 
+/* backdrop dim-in for mobile bottom sheets/modals, paired with .animate-hero-rise
+   on the sheet itself so the whole thing doesn't just pop into existence */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fadeIn 0.25s ease both;
+}
+
 html {
   scroll-behavior: smooth;
 }

@@ -184,11 +184,13 @@ export default function SearchHub({
       </div>
 
       <div className="mt-4 flex items-center justify-between lg:hidden">
-        <p className="text-sm text-ink-soft">{loading ? "Searching…" : `${total} program${total === 1 ? "" : "s"}`}</p>
+        <p className={`text-sm text-ink-soft transition-opacity duration-200 ${loading ? "opacity-60" : "opacity-100"}`}>
+          {loading ? "Searching…" : `${total} program${total === 1 ? "" : "s"}`}
+        </p>
         <button
           type="button"
           onClick={() => setMobileFiltersOpen(true)}
-          className="inline-flex items-center gap-1.5 rounded-full border border-line px-4 py-2 text-sm font-bold"
+          className="inline-flex items-center gap-1.5 rounded-full border border-line px-4 py-2 text-sm font-bold transition-colors active:bg-surface"
         >
           <SlidersHorizontal className="h-4 w-4" /> Filters{activeCount > 0 ? ` (${activeCount})` : ""}
         </button>
@@ -210,7 +212,7 @@ export default function SearchHub({
         </aside>
 
         <div>
-          <p className="mb-5 hidden text-sm text-ink-soft lg:block">
+          <p className={`mb-5 hidden text-sm text-ink-soft transition-opacity duration-200 lg:block ${loading ? "opacity-60" : "opacity-100"}`}>
             {loading ? "Searching…" : `${total} program${total === 1 ? "" : "s"} match your filters`}
           </p>
 
@@ -231,7 +233,7 @@ export default function SearchHub({
               )}
             </div>
           ) : (
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            <div className={`grid gap-6 transition-opacity duration-200 sm:grid-cols-2 xl:grid-cols-3 ${loading ? "opacity-50" : "opacity-100"}`}>
               {results?.map((p, i) => (
                 <ProgramCard
                   key={p.slug}
@@ -278,8 +280,8 @@ export default function SearchHub({
 
       {mobileFiltersOpen && (
         <div className="fixed inset-0 z-[100] lg:hidden">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setMobileFiltersOpen(false)} />
-          <div className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-6">
+          <div className="animate-fade-in absolute inset-0 bg-black/50" onClick={() => setMobileFiltersOpen(false)} />
+          <div className="animate-hero-rise absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-6">
             <div className="mb-3 flex items-center justify-between">
               <h3 className="font-display text-lg font-bold">Filters</h3>
               <button type="button" onClick={() => setMobileFiltersOpen(false)} aria-label="Close filters" className="rounded-full bg-surface p-2">
@@ -299,7 +301,7 @@ export default function SearchHub({
       )}
 
       {compared.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-white/95 p-5 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] backdrop-blur">
+        <div className="animate-hero-rise fixed inset-x-0 bottom-[calc(4.5rem_+_env(safe-area-inset-bottom))] z-50 border-t border-line bg-white/95 p-5 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] backdrop-blur sm:bottom-0">
           <div className="mx-auto max-w-6xl">
             <div className="mb-3 flex items-center justify-between">
               <p className="text-sm font-bold">
