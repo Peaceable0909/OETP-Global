@@ -68,7 +68,7 @@ async function backUpToAppsScript(
   }
 }
 
-export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+export const onRequestPost: PagesFunction<Env> = async ({ request, env, waitUntil }) => {
   let form: FormData;
   try {
     form = await request.formData();
@@ -155,25 +155,15 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     await env.DB.prepare(`UPDATE applications SET confirmation_sent_at = datetime('now') WHERE id = ?`).bind(id).run();
   }
 
-  // Sheet log + Drive/PDF backup (see google-apps-script/apply-webhook.gs) —
-  // the one piece of this Resend can't do.
-  const backup = await backUpToAppsScript(env, {
-    id,
-    fullName,
-    email,
-    phone,
-    country,
-    destination,
-    program,
-    message,
-    documents: scriptDocuments,
-  });
-
-  let staffNotified = false;
-  if (env.STAFF_NOTIFICATION_EMAIL) {
-    const staffResult = await sendEmail(env, {
-      to: env.STAFF_NOTIFICATION_EMAIL,
-      ...applicationStaffNotificationEmail({
+  // Sheet log + Drive/PDF backup (google-apps-script/apply-webhook.gs) and the
+  // staff notification email both involve slow, non-essential network calls
+  // (Apps Script cold starts can take several seconds; the staff email
+  // carries the full document attachments) — neither should make the
+  // student's own request wait. Run them after the response is already on
+  // its way via waitUntil, same as any other post-response side effect.
+  waitUntil(
+    (async () => {
+      const backup = await backUpToAppsScript(env, {
         id,
         fullName,
         email,
@@ -182,13 +172,29 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
         destination,
         program,
         message,
-        documentNames: scriptDocuments.map((d) => `${d.docType}: ${d.filename}`),
-        driveFolderUrl: backup.folderUrl,
-      }),
-      attachments: scriptDocuments.map((d) => ({ filename: d.filename, content: d.base64 })),
-    });
-    staffNotified = staffResult.sent;
-  }
+        documents: scriptDocuments,
+      });
+
+      if (env.STAFF_NOTIFICATION_EMAIL) {
+        await sendEmail(env, {
+          to: env.STAFF_NOTIFICATION_EMAIL,
+          ...applicationStaffNotificationEmail({
+            id,
+            fullName,
+            email,
+            phone,
+            country,
+            destination,
+            program,
+            message,
+            documentNames: scriptDocuments.map((d) => `${d.docType}: ${d.filename}`),
+            driveFolderUrl: backup.folderUrl,
+          }),
+          attachments: scriptDocuments.map((d) => ({ filename: d.filename, content: d.base64 })),
+        });
+      }
+    })()
+  );
 
   return json({
     id,
@@ -196,7 +202,5 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     skipped,
     emailSent: emailResult.sent,
     emailError: emailResult.error ?? null,
-    staffNotified,
-    documentsBackedUp: backup.ok,
   });
 };
