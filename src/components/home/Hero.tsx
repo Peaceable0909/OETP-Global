@@ -93,16 +93,10 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
     return () => cic(handle);
   }, [globeEligible]);
 
-  // Give up on the 3D globe and fall back to the static icon if it hasn't
-  // mounted within a reasonable window — a hung dynamic-import fetch (bad
-  // connection, restrictive in-app browser) would otherwise leave the "idle
-  // wait" pulse spinning forever with no visual resolution at all.
+  // Falls back to the static icon on a genuine render error (WebGL context
+  // creation throwing, restrictive in-app browsers) — GlobeErrorBoundary's
+  // onError below is what actually sets this to true.
   const [globeFailed, setGlobeFailed] = useState(false);
-  useEffect(() => {
-    if (!globeReady || globeFailed) return;
-    const t = setTimeout(() => setGlobeFailed(true), 6000);
-    return () => clearTimeout(t);
-  }, [globeReady, globeFailed]);
 
   const onGlobePointerDown = (e: React.PointerEvent) => {
     dragStart.current = { x: e.clientX, y: e.clientY };
