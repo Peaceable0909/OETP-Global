@@ -50,6 +50,7 @@
   --animate-dash: dash 4s linear infinite;
   --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
   --animate-wiggle: wiggle 1.6s ease-in-out infinite;
+  --animate-fly-path: flyPath 2.8s ease-in-out infinite;
 }
 
 /* A single sheen band sweeps across primary buttons on hover — light moving
@@ -92,6 +93,18 @@
   0% { transform: translate(0, 0) rotate(0deg); }
   45% { transform: translate(22px, 17px) rotate(18deg) scale(1.08); }
   100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+/* the ApplyForm submitting overlay's plane: travels along an arbitrary SVG
+   arc via offset-path (set inline, per-instance) rather than a fixed
+   translate/rotate pair, so it can follow a proper climbing-takeoff curve
+   and bank naturally with offset-rotate instead of looking like it's
+   sliding sideways */
+@keyframes flyPath {
+  0% { offset-distance: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
 }
 
 @keyframes ticker {
