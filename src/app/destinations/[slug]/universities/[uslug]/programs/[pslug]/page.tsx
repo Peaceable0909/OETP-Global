@@ -162,7 +162,7 @@ export default async function ProgramPage({
       </section>
 
       <div className="mx-auto grid max-w-7xl gap-12 px-5 py-14 lg:grid-cols-[1fr_20rem] lg:px-8">
-        <div className="space-y-14">
+        <div className="min-w-0 space-y-14">
           {/* A sticky element can never hold position past its own parent's
               height — this needs to live inside the tall content column
               (not a slim dedicated wrapper) to have room to stick through
@@ -392,7 +392,7 @@ export default async function ProgramPage({
           )}
         </div>
 
-        <aside className="space-y-6 lg:sticky lg:top-32 lg:self-start">
+        <aside className="min-w-0 space-y-6 lg:sticky lg:top-32 lg:self-start">
           <SectionNav sections={sections} accent={accent} variant="desktop" />
           <Reveal delay={100}>
             <TiltCard maxTilt={4}>
