@@ -83,7 +83,7 @@ export default function FeaturedOfferBanner({ destination }: { destination: stri
           )}
         </div>
 
-        {offer.perks.length > 0 && (
+        {offer.perks?.length > 0 && (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {offer.perks.map((perk) => (
               <div key={perk} className="flex flex-col items-center gap-2 rounded-2xl bg-white/10 p-3 text-center">
