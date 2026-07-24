@@ -99,7 +99,7 @@ export const fallbackOffers: Offer[] = [
   },
 ];
 
-// WaiverBanner, HotTicker, and HotCakes each call fetchOffers() independently
+// FeaturedOfferBanner, HotTicker, and HotCakes each call fetchOffers() independently
 // and commonly co-exist on the same page — cache the in-flight/resolved
 // request at module scope so they share one network call instead of firing
 // one each.
