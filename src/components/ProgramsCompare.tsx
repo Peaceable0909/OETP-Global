@@ -75,8 +75,8 @@ export default function ProgramsCompare({
 
       {previewOpen && (
         <div className="fixed inset-0 z-[100] sm:hidden">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setPreviewOpen(false)} />
-          <div className="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-6">
+          <div className="animate-fade-in absolute inset-0 bg-black/50" onClick={() => setPreviewOpen(false)} />
+          <div className="animate-hero-rise absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-3xl bg-white p-6">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="font-display text-lg font-bold">All {programs.length} Programs</h3>
               <button
@@ -105,7 +105,7 @@ export default function ProgramsCompare({
       )}
 
       {compared.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-white/95 p-5 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] backdrop-blur">
+        <div className="animate-hero-rise fixed inset-x-0 bottom-[calc(4.5rem_+_env(safe-area-inset-bottom))] z-50 border-t border-line bg-white/95 p-5 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] backdrop-blur sm:bottom-0">
           <div className="mx-auto max-w-6xl">
             <div className="mb-3 flex items-center justify-between">
               <p className="text-sm font-bold">
