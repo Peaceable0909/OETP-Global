@@ -26,6 +26,8 @@ import {
   Search,
   FileText,
   UtensilsCrossed,
+  BedDouble,
+  Users,
 } from "lucide-react";
 
 export const icons = {
@@ -56,6 +58,8 @@ export const icons = {
   search: Search,
   "file-text": FileText,
   utensils: UtensilsCrossed,
+  bed: BedDouble,
+  users: Users,
 } as const;
 
 export type IconName = keyof typeof icons;

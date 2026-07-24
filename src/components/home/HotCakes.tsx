@@ -102,7 +102,7 @@ function OfferCard({
 
           {perks.length > 0 && (
             <ul className="space-y-1.5 text-[13px] font-medium text-ink-soft">
-              {perks.slice(0, 3).map((h) => (
+              {perks.map((h) => (
                 <li key={h} className="flex gap-2">
                   <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-success" aria-hidden="true" />
                   <span className="line-clamp-1">{h}</span>

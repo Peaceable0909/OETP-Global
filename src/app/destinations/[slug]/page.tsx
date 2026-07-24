@@ -7,7 +7,7 @@ import { getPrograms } from "@/lib/data/programs";
 import Reveal from "@/components/Reveal";
 import FaqAccordion from "@/components/FaqAccordion";
 import CTABand from "@/components/CTABand";
-import WaiverBanner from "@/components/WaiverBanner";
+import FeaturedOfferBanner from "@/components/FeaturedOfferBanner";
 import Flag from "@/components/Flag";
 import SmartImage from "@/components/SmartImage";
 import TrackDestinationView from "@/components/TrackDestinationView";
@@ -114,7 +114,7 @@ export default async function DestinationPage({ params }: { params: Promise<{ sl
       {/* Fee waiver countdown banner (only renders when destination has a limited offer) */}
       <div className="mx-auto -mt-8 max-w-7xl px-5 lg:px-8">
         <div className="relative z-10">
-          <WaiverBanner destination={d.slug} />
+          <FeaturedOfferBanner destination={d.slug} />
         </div>
       </div>
 
