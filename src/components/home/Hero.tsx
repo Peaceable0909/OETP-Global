@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Component, useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { site, heroPhotos } from "@/lib/data/site";
@@ -25,6 +26,25 @@ const Globe3D = dynamic(() => import("@/components/Globe3D"), {
     </div>
   ),
 });
+
+// Some mobile contexts (weak connections, in-app browsers like WhatsApp/
+// Instagram that restrict WebGL, low-memory devices) can make the ~285KB R3F
+// chunk hang or the WebGL context throw entirely. React error boundaries
+// only catch render-phase exceptions, so this is paired with a load timeout
+// below rather than relied on alone — together they guarantee the hero never
+// gets stuck on the "loading" pulse forever.
+class GlobeErrorBoundary extends Component<{ onError: () => void; children: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch() {
+    this.props.onError();
+  }
+  render() {
+    return this.state.hasError ? null : this.props.children;
+  }
+}
 
 const pins = [
   { code: "CY", color: "#0284C7", label: "Cyprus", x: "58%", y: "10%", cls: "animate-float" },
@@ -72,6 +92,17 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
     const handle = ric(() => setGlobeReady(true), { timeout: 2000 });
     return () => cic(handle);
   }, [globeEligible]);
+
+  // Give up on the 3D globe and fall back to the static icon if it hasn't
+  // mounted within a reasonable window — a hung dynamic-import fetch (bad
+  // connection, restrictive in-app browser) would otherwise leave the "idle
+  // wait" pulse spinning forever with no visual resolution at all.
+  const [globeFailed, setGlobeFailed] = useState(false);
+  useEffect(() => {
+    if (!globeReady || globeFailed) return;
+    const t = setTimeout(() => setGlobeFailed(true), 6000);
+    return () => clearTimeout(t);
+  }, [globeReady, globeFailed]);
 
   const onGlobePointerDown = (e: React.PointerEvent) => {
     dragStart.current = { x: e.clientX, y: e.clientY };
@@ -145,9 +176,11 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
         {/* 3D interactive globe + flight-path pins */}
         <div className="relative mx-auto aspect-square w-full max-w-[22rem] sm:max-w-[26rem]">
           <div className="absolute inset-0" onPointerDown={onGlobePointerDown} onPointerUp={onGlobePointerUp}>
-            {globeEligible ? (
+            {globeEligible && !globeFailed ? (
               globeReady ? (
-                <Globe3D />
+                <GlobeErrorBoundary onError={() => setGlobeFailed(true)}>
+                  <Globe3D />
+                </GlobeErrorBoundary>
               ) : (
                 <div className="grid h-full w-full place-items-center" aria-hidden="true">
                   <div className="h-[70%] w-[70%] animate-pulse rounded-full bg-surface" />
