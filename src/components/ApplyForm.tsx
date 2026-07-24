@@ -6,6 +6,7 @@ import type { Destination } from "@/lib/data/destinations";
 import { AlertTriangle, MessageCircle, PartyPopper } from "lucide-react";
 import DestinationPicker from "@/components/apply/DestinationPicker";
 import ProgramPicker from "@/components/apply/ProgramPicker";
+import SubmittingOverlay from "@/components/apply/SubmittingOverlay";
 import Reveal from "@/components/Reveal";
 
 type UploadField = { name: string; label: string; hint: string };
@@ -51,6 +52,10 @@ export default function ApplyForm({ destinations, whatsapp }: { destinations: De
     } finally {
       setSubmitting(false);
     }
+  }
+
+  if (submitting) {
+    return <SubmittingOverlay />;
   }
 
   if (result) {
