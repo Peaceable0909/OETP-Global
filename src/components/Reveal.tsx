@@ -6,10 +6,15 @@ type Props = {
   children: ReactNode;
   delay?: number;
   y?: number;
+  /** Horizontal offset instead of (or alongside) the default vertical rise —
+   *  lets list-heavy sections alternate slide-in direction instead of every
+   *  section using the identical up-fade, which reads as monotonous on a
+   *  long page. */
+  x?: number;
   className?: string;
 };
 
-export default function Reveal({ children, delay = 0, y = 28, className = "" }: Props) {
+export default function Reveal({ children, delay = 0, y = 28, x = 0, className = "" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
 
@@ -39,7 +44,7 @@ export default function Reveal({ children, delay = 0, y = 28, className = "" }: 
       className={className}
       style={{
         opacity: shown ? 1 : 0,
-        transform: shown ? "none" : `translateY(${y}px)`,
+        transform: shown ? "none" : `translate(${x}px, ${y}px)`,
         transition: `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}ms, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
       }}
     >

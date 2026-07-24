@@ -8,10 +8,14 @@ export default function StatCounter({
   value,
   suffix = "",
   duration = 1200,
+  format,
 }: {
   value: number;
   suffix?: string;
   duration?: number;
+  /** Overrides the default toLocaleString()+suffix rendering — e.g. to run
+   *  the count through formatMoney() for a currency-symbol prefix. */
+  format?: (n: number) => string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [display, setDisplay] = useState(0);
@@ -42,10 +46,5 @@ export default function StatCounter({
     return () => io.disconnect();
   }, [value, duration]);
 
-  return (
-    <span ref={ref}>
-      {display.toLocaleString()}
-      {suffix}
-    </span>
-  );
+  return <span ref={ref}>{format ? format(display) : `${display.toLocaleString()}${suffix}`}</span>;
 }
