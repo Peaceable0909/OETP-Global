@@ -36,8 +36,8 @@ export default function Accordion({
           aria-hidden="true"
         />
       </button>
-      <div className="grid transition-[grid-template-rows] duration-300 ease-out" style={{ gridTemplateRows: open ? "1fr" : "0fr" }}>
-        <div className="overflow-hidden">
+      <div className="grid min-w-0 transition-[grid-template-rows] duration-300 ease-out" style={{ gridTemplateRows: open ? "1fr" : "0fr" }}>
+        <div className="min-w-0 overflow-hidden">
           <div className="px-6 pb-5">{children}</div>
         </div>
       </div>
