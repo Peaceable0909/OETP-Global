@@ -154,6 +154,13 @@
   animation: fadeIn 0.25s ease both;
 }
 
+/* application timeline steps "light up" as the traveling dot passes them */
+@keyframes iconPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+
 html {
   scroll-behavior: smooth;
 }
