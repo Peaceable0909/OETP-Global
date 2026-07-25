@@ -38,26 +38,45 @@ export default function ApplicationTimeline() {
       const badges = badgeRefs.current.filter(Boolean) as HTMLSpanElement[];
 
       // Below sm the steps wrap into a 2-column grid, so there's no single
-      // row for a plane to follow — instead light each badge up in sequence,
-      // once, as the section scrolls into view. Same "steps activating"
-      // feel as the desktop flight path, without needing a matching path.
+      // row for a plane to follow — instead light each badge up in sequence
+      // as the section scrolls into view. Same "steps activating" feel as
+      // the desktop flight path, without needing a matching path.
       if (!window.matchMedia("(min-width: 640px)").matches) {
-        gsap.set(badges, { backgroundColor: "var(--color-surface)", color: "var(--color-ink-mute)" });
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: "top 85%",
-          once: true,
-          onEnter: () => {
+        gsap.set(badges, { scale: 0.5, opacity: 0.5, backgroundColor: "var(--color-surface)", color: "var(--color-ink-mute)" });
+
+        // Plain IntersectionObserver for detection (the same proven pattern
+        // Reveal/SectionNav already use on this codebase), GSAP only for the
+        // tween itself — ScrollTrigger's own trigger-element detection here
+        // was unreliable (confirmed via direct testing: badges stayed
+        // dimmed even after scrolling the section fully into view).
+        const io = new IntersectionObserver(
+          ([entry]) => {
+            if (!entry.isIntersecting) return;
+            io.disconnect();
             const tl = gsap.timeline();
             badges.forEach((b, i) => {
-              tl.to(b, { backgroundColor: stages[i].color, color: "#ffffff", scale: 1.2, duration: 0.25, ease: "power2.out" }, i * 0.18).to(
+              tl.to(
                 b,
-                { scale: 1, duration: 0.2, ease: "power2.inOut" },
-                i * 0.18 + 0.25
-              );
+                { scale: 1.25, opacity: 1, backgroundColor: stages[i].color, color: "#ffffff", duration: 0.35, ease: "back.out(2.2)" },
+                i * 0.15
+              ).to(b, { scale: 1, duration: 0.25, ease: "power2.inOut" }, i * 0.15 + 0.35);
+            });
+            // a one-shot intro that already finished by the time someone
+            // actually looks reads as "no animation" — this slow staggered
+            // breathing pulse keeps the section visibly alive afterward too.
+            gsap.to(badges, {
+              scale: 1.06,
+              duration: 1.6,
+              ease: "sine.inOut",
+              yoyo: true,
+              repeat: -1,
+              stagger: { each: 0.25, from: "start" },
+              delay: badges.length * 0.15 + 0.6,
             });
           },
-        });
+          { threshold: 0.3 }
+        );
+        io.observe(sectionRef.current);
         return;
       }
 
