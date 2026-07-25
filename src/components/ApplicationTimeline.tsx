@@ -34,12 +34,33 @@ export default function ApplicationTimeline() {
     () => {
       if (!pathRef.current || !planeRef.current || !sectionRef.current) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      // The flight path is hidden below sm — nothing to scrub against, so
-      // leave every badge showing its real color rather than dimming them
-      // with no mechanism left on-screen to relight them.
-      if (!window.matchMedia("(min-width: 640px)").matches) return;
 
       const badges = badgeRefs.current.filter(Boolean) as HTMLSpanElement[];
+
+      // Below sm the steps wrap into a 2-column grid, so there's no single
+      // row for a plane to follow — instead light each badge up in sequence,
+      // once, as the section scrolls into view. Same "steps activating"
+      // feel as the desktop flight path, without needing a matching path.
+      if (!window.matchMedia("(min-width: 640px)").matches) {
+        gsap.set(badges, { backgroundColor: "var(--color-surface)", color: "var(--color-ink-mute)" });
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: "top 85%",
+          once: true,
+          onEnter: () => {
+            const tl = gsap.timeline();
+            badges.forEach((b, i) => {
+              tl.to(b, { backgroundColor: stages[i].color, color: "#ffffff", scale: 1.2, duration: 0.25, ease: "power2.out" }, i * 0.18).to(
+                b,
+                { scale: 1, duration: 0.2, ease: "power2.inOut" },
+                i * 0.18 + 0.25
+              );
+            });
+          },
+        });
+        return;
+      }
+
       gsap.set(badges, { backgroundColor: "var(--color-surface)", color: "var(--color-ink-mute)" });
 
       gsap.set(planeRef.current, {
