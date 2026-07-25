@@ -65,16 +65,14 @@ export default function Hero({ destinations, whatsapp }: { destinations: Destina
 
   // The WebGL globe is a genuinely heavy mount (Canvas + shader compilation +
   // a continuous render loop on top of the ~285KB R3F/three chunk) — a
-  // Lighthouse audit found it responsible for ~8s of mobile scripting time,
-  // pushing Time-to-Interactive past 19s. Dragging a 3D globe with touch is
-  // also marginal UX on a phone, so below the same `lg:` breakpoint the rest
-  // of the site already treats as "desktop-only decoration" (see CTABand's
-  // Cubes), we skip mounting it entirely and show a static globe icon
-  // instead. Starts false to match SSR and avoid a hydration mismatch, then
-  // corrected on mount — same pattern as globeReady below.
+  // Lighthouse audit previously found it responsible for ~8s of mobile
+  // scripting time. Now intentionally enabled on all screen sizes (product
+  // decision to match desktop visually); the idle-callback wait below and
+  // GlobeErrorBoundary/static-icon fallback are what keep that choice safe
+  // on weak devices/connections instead of a hard mobile cutoff.
   const [globeEligible, setGlobeEligible] = useState(false);
   useEffect(() => {
-    setGlobeEligible(window.matchMedia("(min-width: 1024px)").matches);
+    setGlobeEligible(true);
   }, []);
 
   // Once eligible, wait for a genuinely idle main thread rather than just the
