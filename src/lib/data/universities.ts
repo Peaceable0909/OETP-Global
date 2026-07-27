@@ -42,7 +42,7 @@ export type UniversityReview = {
 // previously-embedded program list, not yet filled in with real campus
 // details (no admin editor for Universities/Programs exists yet).
 const FALLBACK_UNIVERSITIES: University[] = [
-  { slug: "albania-partner-institutions", countrySlug: "albania", name: "Albania — Partner Institutions" },
+  { slug: "albania-partner-institutions", countrySlug: "albania", name: "Western Balkans University (WBU)" },
   { slug: "cyprus-partner-institutions", countrySlug: "cyprus", name: "Cyprus — Partner Institutions" },
   { slug: "malaysia-partner-institutions", countrySlug: "malaysia", name: "Malaysia — Partner Institutions" },
   { slug: "cambodia-partner-institutions", countrySlug: "cambodia", name: "Cambodia — Partner Institutions" },
