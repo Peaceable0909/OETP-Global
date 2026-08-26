@@ -258,7 +258,7 @@ export default function HotCakes({ destinations }: { destinations: Destination[]
       {/* Desktop: the snap-scrolling conveyor */}
       <div
         ref={trackRef}
-        className="mt-10 hidden snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:flex lg:px-8 [&::-webkit-scrollbar]:hidden"
+        className="mx-auto mt-10 hidden max-w-7xl snap-x snap-mandatory gap-6 overflow-x-auto px-5 pb-4 [scrollbar-width:none] sm:flex lg:px-8 [&::-webkit-scrollbar]:hidden"
       >
         {offers.map((o, i) => (
           <OfferCard key={o.slug} offer={o} index={i} destinations={destinations} />
