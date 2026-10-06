@@ -98,6 +98,7 @@ const markers: Marker[] = [
   { slug: "cambodia", name: "Cambodia", code: "KH", color: "#166534", lat: 12.57, lng: 104.99 },
   { slug: "thailand", name: "Thailand", code: "TH", color: "#CA8A04", lat: 13.75, lng: 100.5 },
   { slug: "russia", name: "Russia", code: "RU", color: "#0891B2", lat: 55.75, lng: 37.62 },
+  { slug: "finland", name: "Finland", code: "FI", color: "#1D4ED8", lat: 60.17, lng: 24.94 },
 ];
 
 function latLngToVec3(lat: number, lng: number, r: number): [number, number, number] {

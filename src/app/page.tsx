@@ -23,7 +23,7 @@ import { getDestinations } from "@/lib/data/destinations";
 export const metadata: Metadata = pageMetadata({
   title: "Study Abroad Consultancy — Apply to Universities in Thailand, Cyprus, Malaysia & More",
   description:
-    "Free assessment, transparent admissions, and end-to-end visa support for students applying to partner universities in Thailand, Cyprus, Malaysia, Cambodia, Albania and Russia.",
+    "Free assessment, transparent admissions, and end-to-end visa support for students applying to partner universities in Thailand, Cyprus, Malaysia, Cambodia, Albania, Russia and Finland.",
   path: "/",
 });
 
