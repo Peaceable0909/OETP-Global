@@ -7,8 +7,8 @@ import { pageMetadata } from "@/lib/seo";
 import { getDestinations } from "@/lib/data/destinations";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Study Abroad Destinations — Thailand, Cyprus, Malaysia, Cambodia, Albania & Russia",
-  description: "Explore study and work destinations with straightforward admissions and visa processes: Cyprus, Albania, Malaysia, Cambodia, Thailand, Russia.",
+  title: "Study Abroad Destinations — Thailand, Cyprus, Malaysia, Cambodia, Albania, Russia & Finland",
+  description: "Explore study and work destinations with straightforward admissions and visa processes: Cyprus, Albania, Malaysia, Cambodia, Thailand, Russia, Finland.",
   path: "/destinations/",
 });
 

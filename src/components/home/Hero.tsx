@@ -53,6 +53,7 @@ const pins = [
   { code: "KH", color: "#166534", label: "Cambodia", x: "20%", y: "82%", cls: "animate-float-slow" },
   { code: "TH", color: "#CA8A04", label: "Thailand", x: "12%", y: "32%", cls: "animate-float" },
   { code: "RU", color: "#0891B2", label: "Russia", x: "38%", y: "2%", cls: "animate-float-slow" },
+  { code: "FI", color: "#1D4ED8", label: "Finland", x: "88%", y: "62%", cls: "animate-float" },
 ];
 
 export default function Hero({ destinations, whatsapp }: { destinations: Destination[]; whatsapp: string }) {

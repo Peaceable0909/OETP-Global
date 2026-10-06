@@ -55,6 +55,8 @@ function DestinationCard({ d }: { d: Destination }) {
   );
 }
 
+const NUMBER_WORDS: Record<number, string> = { 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight", 9: "Nine", 10: "Ten" };
+
 export default function DestinationsGrid({ destinations }: { destinations: Destination[] }) {
   return (
     <section className="relative bg-surface py-24">
@@ -62,7 +64,7 @@ export default function DestinationsGrid({ destinations }: { destinations: Desti
         <SectionHeading
           eyebrow="Destinations"
           title="Where Will Your Story Begin?"
-          sub="Six destinations with straightforward admissions and visa processes — each one vetted, each one with real support on the ground."
+          sub={`${NUMBER_WORDS[destinations.length] ?? destinations.length} destinations with straightforward admissions and visa processes — each one vetted, each one with real support on the ground.`}
         />
 
         {/* compact 2-up cards on mobile, the classic grid from sm up */}
